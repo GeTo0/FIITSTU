@@ -49,16 +49,6 @@ int connect_to_client(char **port) {
     return new_socket;
 }
 
-int send_message(int sockfd, char *message) {
-    if (send(sockfd, message, strlen(message), 0) < 0) {
-        perror("Send failed");
-        return -1; // Return -1 on failure
-    } else {
-        printf("Message sent to server: %s\n", message);
-        return 0; // Return 0 on success
-    }
-}
-
 void server_side(char **port, char *socket_path) {
     int new_socket = connect_to_client(port);
     char buffer[MAX_LINE_LENGTH];

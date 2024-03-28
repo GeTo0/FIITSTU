@@ -55,7 +55,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "c:/Users/domin/CLionProjects/SPAASM2/cmake-build-debug"
+			"value" : "c:/Users/domin/OneDrive/My Computer/FIIT STU/2. rocnik/letny semester/SPAASM/Zadanie 2 - C/SPAASM2/cmake-build-debug"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -479,7 +479,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/Users/domin/CLionProjects/SPAASM2"
+			"value" : "C:/Users/domin/OneDrive/My Computer/FIIT STU/2. rocnik/letny semester/SPAASM/Zadanie 2 - C/SPAASM2"
 		},
 		{
 			"name" : "CMAKE_INSTALL_PREFIX",
@@ -1095,7 +1095,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/domin/CLionProjects/SPAASM2/cmake-build-debug"
+			"value" : "C:/Users/domin/OneDrive/My Computer/FIIT STU/2. rocnik/letny semester/SPAASM/Zadanie 2 - C/SPAASM2/cmake-build-debug"
 		},
 		{
 			"name" : "SPAASM2_IS_TOP_LEVEL",
@@ -1119,7 +1119,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/domin/CLionProjects/SPAASM2"
+			"value" : "C:/Users/domin/OneDrive/My Computer/FIIT STU/2. rocnik/letny semester/SPAASM/Zadanie 2 - C/SPAASM2"
 		}
 	],
 	"kind" : "cache",

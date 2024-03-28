@@ -1,4 +1,4 @@
-# Install script for directory: C:/Users/domin/CLionProjects/SPAASM2
+# Install script for directory: C:/Users/domin/OneDrive/My Computer/FIIT STU/2. rocnik/letny semester/SPAASM/Zadanie 2 - C/SPAASM2
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "C:/Users/domin/CLionProjects/SPAASM2/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "C:/Users/domin/OneDrive/My Computer/FIIT STU/2. rocnik/letny semester/SPAASM/Zadanie 2 - C/SPAASM2/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

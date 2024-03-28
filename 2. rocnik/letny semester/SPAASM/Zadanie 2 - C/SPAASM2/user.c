@@ -41,6 +41,16 @@ int connect_to_server(char **port) {
     return sockfd;
 }
 
+int send_message(int sockfd, char *message) {
+    if (send(sockfd, message, strlen(message), 0) < 0) {
+        perror("Send failed");
+        return -1; // Return -1 on failure
+    } else {
+        printf("Message sent to server: %s\n", message);
+        return 0; // Return 0 on success
+    }
+}
+
 char *lsh_read_line(void) {
     char *line = malloc(MAX_LINE_LENGTH * sizeof(char));
     if (!line) {
@@ -151,11 +161,10 @@ int lsh_execute(char **args, char **port, int *sockfd) {
     return 1;
 }
 
-void client_side(char **port) {
+void client_side(char **port, int *sockfd) {
     char *line;
     char **args;
     int status;
-    int sockfd = -1;
     printf("PORT IS %s\n", *port);
 
     do {
@@ -163,7 +172,7 @@ void client_side(char **port) {
         printf("> ");
         line = lsh_read_line();
         args = lsh_split_line(line);
-        status = lsh_execute(args, port, &sockfd);
+        status = lsh_execute(args, port, sockfd);
         printf("PORT IS %s\n", *port);
 
 
@@ -176,7 +185,7 @@ void client_side(char **port) {
     } while (status);
 
     // Close the socket if it's open before exiting
-    if (sockfd != -1) {
-        close(sockfd);
+    if (*sockfd != -1) {
+        close(*sockfd);
     }
 }

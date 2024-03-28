@@ -16,6 +16,7 @@ int main(int argc, char **argv) {
     char *port = NULL;
     char *mode = NULL;
     char *socket_path = NULL;
+    int sockfd = -1;
     int i;
 
     for (i = 1; i < argc; i++) {
@@ -58,7 +59,10 @@ int main(int argc, char **argv) {
     if (strcmp(mode, "-s") == 0) {
         server_side(&port, socket_path);
     } else if (strcmp(mode, "-c") == 0) {
-        client_side(&port);
+        if (port != NULL){
+            sockfd = connect_to_server(&port);
+        }
+        client_side(&port, &sockfd);
     }
     free(port);
 
