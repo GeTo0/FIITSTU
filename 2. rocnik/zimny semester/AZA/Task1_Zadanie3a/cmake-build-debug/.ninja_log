@@ -1,0 +1,6 @@
+# ninja log v5
+3	500	7225220418187327	CMakeFiles/Task1_Zadanie3.dir/main.cpp.obj	60d96e2e4d2ae6c1
+501	633	7225220419498869	Task1_Zadanie3.exe	c919ed80dd083ebe
+9	308	7228877013245468	build.ninja	c93d3e066970a4e6
+1	911	7228877023525786	CMakeFiles/Task1_Zadanie3.dir/Zadanie3a_Zatovic.cpp.obj	353b1b223af84085
+913	1139	7228877025760830	Task1_Zadanie3.exe	650204c32111e7ac

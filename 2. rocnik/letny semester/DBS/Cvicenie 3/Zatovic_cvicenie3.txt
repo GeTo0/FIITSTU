@@ -1,0 +1,16 @@
+1) SELECT name, signed_in_at FROM programmers
+2) SELECT name, signed_in_at FROM programmers WHERE name LIKE 'R%'
+3) SELECT name, signed_in_at FROM programmers WHERE name LIKE 'R%' ORDER BY signed_in_at DESC limit 1
+4) SELECT name FROM programmers WHERE LENGTH(name)<12
+5) SELECT CASE WHEN LENGTH(name)>12 THEN LEFT(name,12) ELSE name END FROM programmers
+6) SELECT REVERSE(UPPER(name)) AS reversed_name FROM programmers
+7) SELECT SPLIT_PART(name, ' ', 1) from programmers
+8) SELECT name, signed_in_at FROM programmers WHERE EXTRACT(YEAR FROM signed_in_at)=2016
+9) SELECT name, signed_in_at FROM programmers  WHERE EXTRACT(YEAR FROM signed_in_at)=2016 AND EXTRACT(MONTH FROM signed_in_at)=2
+10) SELECT name, signed_in_at, DATE '2016-04-01' - signed_in_at AS working_days FROM programmers ORDER BY working_days
+11) SELECT DISTINCT l.label from languages l join projects p on l.id = p.language_id
+12) SELECT DISTINCT l.label from languages l  join projects p on l.id = p.language_id WHERE EXTRACT(YEAR from p.created_at)=2014
+13) SELECT name FROM projects WHERE language_id IN (SELECT id FROM languages WHERE label in ('ruby','python'));
+14) SELECT DISTINCT p.name FROM programmers p JOIN projects_programmers pl ON p.id = pl.programmer_id JOIN languages l on pl.id = l.id WHERE l.label = 'python';
+15) SELECT DISTINCT p.name FROM programmers p JOIN projects_programmers pr ON p.id = pr.id JOIN languages l ON pr.project_id = l.id
+WHERE l.label = 'python';

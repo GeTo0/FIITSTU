@@ -1,0 +1,33 @@
+1. select Players.Firstname, Players.Lastname from Players
+
+2. select Name from Teams where Salary > 70000
+
+3. select Name from Teams where Salary > 70000 or Owner = 'Dusan'
+
+4. select Firstname, Lastname, Games from Players as Pl join Player_Statistics as Pls on Pl.ID=Pls.Player_ID
+
+5. select Firstname, Lastname, Name from Players as Pl join Player_Statistics as Pls on Pl.ID = Pls.Player_ID join Seasons as S on S.ID = Pls.Season_ID where Games > 0
+
+6. select Firstname, Lastname, Name, (Goals + Assists) as Points from Players as Pl join Player_Statistics as Pls on Pl.ID = Pls.Player_ID join Seasons as S on S.ID = Pls.Season_ID
+
+7. select Firstname, Lastname, Coalesce(Name, 'no season') as Season_Name, Coalesce((Goals + Assists), 0) as Points from Players as P left join Player_Statistics as PS on P.ID=PS.Player_ID left join Seasons as S on S.ID=PS.Season_ID
+
+8. select Firstname, Lastname, Name from Players as Pl join Player_Statistics as Pls on Pl.ID=Pls.Player_ID
+join Teams as Tm on Tm.ID=Pls.Team_ID
+
+9. select Firstname, Lastname, Name from Players as Pl join Player_Statistics as Pls on Pl.ID=Pls.Player_ID
+join Teams as Tm on Tm.ID=Pls.Team_ID order by Name
+
+10. select Firstname, Lastname, Coalesce(Games, 0) from Players as Pl left join Player_Statistics as Pls on Pl.ID=Pls.Player_ID where Games is null
+
+11. select Firstname, Lastname, Name, Games, (Goals + Assists) as Points, Goals, Assists, Plus_Minus, ((Goals+Assists)*1.0/Games) as PPG from Players as P join Player_Statistics as PS on P.ID=PS.Player_ID join Seasons as S on S.ID=PS.Season_ID where Name='2019-2020' order by PPG desc
+
+12. select Firstname, Lastname, Name from Players as P join Player_Statistics as PS on P.ID=PS.Player_ID join Teams as T on T.ID=PS.Team_ID where Name like '%Arizona%'
+
+13. insert into Players (Firstname, Lastname, Day_of_Birth) values ('Peter', 'Forsberg', '1973-7-20 00:00:00')
+insert into Player_Statistics (Player_ID, Season_ID, Games, Goals, Assists, Plus_Minus, Penalty_Minutes, Team_ID) values (9, 5, 73, 27, 62, 0, 54, 6)
+
+14.update Player_Statistics set Plus_Minus = 23 where Player_ID = 9
+
+15. delete from Player_Statistics where Player_ID = 9
+delete from Players where Lastname = 'Forsberg'

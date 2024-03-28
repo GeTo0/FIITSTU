@@ -1,0 +1,11 @@
+tcp-ethereal-trace-1 stiahnuty
+
+1) IP address of source is:  192.168.1.102 and port: 1161
+2) 128.119.245.12:00
+3) nic
+4) 0, 47 bytes = 00000010 pre SYN
+5) 0, 1, je to odpoved na prvy SYN, 47 byte = 00010010 - SYN ACK
+6) 1
+
+9) 1460 - pravdepodobne nie
+10) tcp_analysis_retransmission, nie

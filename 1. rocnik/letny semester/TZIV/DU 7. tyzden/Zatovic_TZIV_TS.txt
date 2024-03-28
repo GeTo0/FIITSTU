@@ -1,0 +1,71 @@
+#Uloha2
+input: 'aababb'
+blank: ' '
+start state: start
+table:
+  start: 
+    'A': R
+    'B': R
+    'a': {write: A, R: find_b}
+    'b': {write: B, R: find_a}
+    ' ': {L: end}
+  find_a:
+    'a': {write: A, L: find_start}
+    'b': R
+    'A': R
+    'B': R
+  find_b:
+    'a': R
+    'b': {write: B, L: find_start}
+    'A': R
+    'B': R
+  find_start:
+    'a': L
+    'b': L
+    'A': L
+    'B': L
+    ' ': {R: start}
+  end:
+
+
+#Uloha1 / V tejto ulohe som sa extremne zamotal a nevedel som sa už najst a preto som ju nedokončil, moj mozog jednoducho nestihal. Moj plan bol vsak taky
+#ze vsetky pismena budem zvonka zvacsovat na velke, az kym nedojdem k poslednym dvom v strede. Tam ked sa posledne zmeni na velke, a zisti ze nalavo od neho
+#je dalsie velke pismeno, tak sa on sam zmeni na male pismeno naspat, co bude indikovat moje druhe "w" v slove "ww" a vrati sa na zaciatok, kde zmeni prve pismenko na male.
+#Dalej uz budu iba medzi sebou chodit a kontrolovat, ci sa Velke pismenka zhoduju v poradi oboch w a menit sa z velkych na male.
+input: 'abbabb'
+blank: ' '
+start state: start
+table:
+  start: 
+    'a' : {write: A, R: find_last}
+    'b' : {write: B, R: find_last}
+  find_last:
+    'a': R
+    'b' : R
+    ' ': {L: makeupper}
+    'A': {L: makeupper}
+    'B':  {L: makeupper}
+  makeupper:
+    'A' : {R: makesmallerP}
+    'B': {R: makesmallerP}
+    'a': {write: A, L: find_first}
+    'b': {write: B, L: find_first}
+  makesmallerP:
+    'A': {write: a, L: findfirstL}
+    'B': {write: b, L: findfirstL}
+  makesmallerL:
+    'A': {write: a, L: findfirstP}
+    'B': {write: b, L: findfirstP}
+  findfirstL:
+    'A': L
+    'B': L
+    ' ': L
+  findfirstP:
+    'A': L
+    'B': L
+    ' ': L
+  find_first:
+    'a': L
+    'b': L
+    'A': {R: start}
+    'B': {R: start}
