@@ -8,6 +8,7 @@
 #include <time.h>
 #include <pwd.h>
 #include "test.h"
+#include <ctype.h>
 
 
 #define MAX_LINE_LENGTH 100
@@ -46,7 +47,6 @@ int send_message(int sockfd, char *message) {
         perror("Send failed");
         return -1; // Return -1 on failure
     } else {
-        printf("Message sent to server: %s\n", message);
         return 0; // Return 0 on success
     }
 }
@@ -101,17 +101,13 @@ char **lsh_split_line(char *line) {
 
 int lsh_execute(char **args, char **port, int *sockfd) {
     int i = 0;
+    /*While loop to iterate through all args*/
     while (args[i] != NULL) {
-        printf("%s\n", args[i]);
-        if (strcmp(args[i], "-h") == 0) {
-            print_help();
-            return 1;
-        } else if (strcmp(args[i], "-quit") == 0) {
+        if (strcmp(args[i], "-quit") == 0) {
             if (*sockfd != -1) {
                 close(*sockfd); // Close the socket if it's open
             }
             return 0;
-
         } else {
             if (strcmp(args[i], "-p") == 0) {
                 if (args[i + 1] != NULL) {
@@ -130,29 +126,24 @@ int lsh_execute(char **args, char **port, int *sockfd) {
                     return 1;
                 } else {
                     fprintf(stderr, "Missing port number after -p option\n");
-                    return 1; // Return 1 to continue loop even if port is missing
+                    return 1;
                 }
-            } else if (strcmp(args[i], "-send") == 0) {
-                if (args[i + 1] != NULL) {
-                    if (*sockfd != -1) {
-                        char message[MAX_LINE_LENGTH] = "";
-                        int j = i + 1;
-                        while (args[j] != NULL) {
-                            strcat(message, args[j]);
-                            strcat(message, " ");
-                            j++;
-                        }
-                        if (send_message(*sockfd, message) == -1) {
-                            return 1; // Return 1 to continue loop on failure
-                        }
-                        return 1; // Return 1 to continue loop on success
-                    } else {
-                        fprintf(stderr, "No connection to server\n");
-                        return 1; // Return 1 to continue loop
+            } else {
+                if (*sockfd != -1) {
+                    char mess[MAX_LINE_LENGTH];
+                    strcpy(mess, args[i]);
+                    strcat(mess, " ");
+                    send_message(*sockfd, mess);
+
+                    //Listen for incoming message from server
+                    char help_message[MAX_PROMPT_LENGTH];
+                    ssize_t num_bytes = recv(*sockfd, help_message, sizeof(help_message), 0);
+                    if (num_bytes > 0) {// Print the help message received from the server
+                        printf("%s\n", help_message);
                     }
                 } else {
-                    fprintf(stderr, "Missing message to send after -send option\n");
-                    return 1; // Return 1 to continue loop
+                    fprintf(stderr, "No connection to server\n");
+                    return 1;
                 }
             }
         }
@@ -165,7 +156,7 @@ void client_side(char **port, int *sockfd) {
     char *line;
     char **args;
     int status;
-    printf("PORT IS %s\n", *port);
+    //printf("PORT IS %s\n", *port);
 
     do {
         /* FOR LOOP TO READ LINE, SPLIT IT INTO ARGUMENTS AND PUT THEM IN LIST, EXECUTE THEM*/
@@ -173,7 +164,6 @@ void client_side(char **port, int *sockfd) {
         line = lsh_read_line();
         args = lsh_split_line(line);
         status = lsh_execute(args, port, sockfd);
-        printf("PORT IS %s\n", *port);
 
 
         /* FREE MEMORY*/

@@ -8,9 +8,11 @@
 #include <time.h>
 #include <pwd.h>
 #include "test.h"
+#include <ctype.h>
 
 #define MAX_LINE_LENGTH 100
 #define MAX_PROMPT_LENGTH 1024
+#define MAX_HELP_MESSAGE_SIZE 4096
 
 int connect_to_client(char **port) {
     int server_fd, new_socket;
@@ -66,8 +68,31 @@ void server_side(char **port, char *socket_path) {
         } else {
             // Null-terminate the received data to treat it as a string
             buffer[num_bytes] = '\0';
-            // Print the received message
-            printf("Received message from user: %s\n", buffer);
+
+            char *token = strtok(buffer, " ");
+            while (token != NULL) {
+                // Trim leading whitespace characters
+                while (isspace(*token)) {
+                    token++;
+                }
+                // Trim trailing whitespace characters
+                char *end = token + strlen(token) - 1;
+                while (end > token && isspace(*end)) {
+                    *end-- = '\0';
+                }
+                // Allocate memory for the word and copy it from the token
+                char *word = strdup(token);
+
+
+                if(strcmp(word, "-help")==0){
+                    char *help_message = arg_help();
+                    send(new_socket, help_message, strlen(help_message), 0);
+                }
+                else{
+                    send(new_socket, "Wrong input, try again", 30, 0);
+                }
+                token = strtok(NULL, " ");
+            }
         }
     }
 

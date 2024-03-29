@@ -46,6 +46,10 @@ int main(int argc, char **argv) {
                 return EXIT_FAILURE;
             }
         }
+        else if (strcmp(argv[i], "-h")==0){
+            print_help();
+            return 1;
+        }
     }
 
     /*ERROR HANDLING*/

@@ -8,6 +8,7 @@
 #include <time.h>
 #include <pwd.h>
 #include "test.h"
+#include <ctype.h>
 
 
 #define MAX_LINE_LENGTH 100
@@ -22,16 +23,27 @@ void create_prompt() {
     struct passwd *pw = getpwuid(uid);
     printf("%02d:%02d %s@%s>\n",tm.tm_hour, tm.tm_min, pw->pw_name,hostname);
 }
-
 void print_help() {
     printf("Author: Dominik Zaťovič\n");
     printf("Subject: SPAASM, 2. Assignment\n");
-    printf("Usage: ./zadanie2 [-s | -c ] [-p port | -u socket_path]\n");
-    printf("Usage Client: [ -h | -quit ]");
+    printf("Usage: ./zadanie2 [-s | -c] [-p port | -u socket_path]\n");
+    printf("Usage Client: [-h | -quit]\n");
     printf("Options:\n");
     printf("  -h                Display this help message\n");
     printf("  -s                Run as server\n");
     printf("  -c                Run as client\n");
     printf("  -p port           Specify port number\n");
+}
 
+char *arg_help(){
+    char *help_message="Author: Dominik Zaťovič\n"
+                       "Subject: SPAASM, 2. Assignment\n"
+                       "Usage: ./zadanie2 [-s | -c] [-p port | -u socket_path]\n"
+                       "Usage Client: [-h | -quit]\n"
+                       "Options:\n"
+                       "  -h                Display this help message\n"
+                       "  -s                Run as server\n"
+                       "  -c                Run as client\n"
+                       "  -p port           Specify port number\n";
+    return help_message;
 }
