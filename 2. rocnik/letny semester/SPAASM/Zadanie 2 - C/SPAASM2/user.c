@@ -137,9 +137,11 @@ int lsh_execute(char **args, char **port, int *sockfd) {
 
                     //Listen for incoming message from server
                     char help_message[MAX_PROMPT_LENGTH];
+                    memset(help_message, 0, sizeof(help_message));
                     ssize_t num_bytes = recv(*sockfd, help_message, sizeof(help_message), 0);
                     if (num_bytes > 0) {// Print the help message received from the server
                         printf("%s\n", help_message);
+
                     }
                 } else {
                     fprintf(stderr, "No connection to server\n");
