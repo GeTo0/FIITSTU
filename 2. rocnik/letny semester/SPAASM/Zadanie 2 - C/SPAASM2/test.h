@@ -1,6 +1,7 @@
 #ifndef TEST_H
 #define TEST_H
 
+#include <pthread.h>
 
 struct Node {
     char *word;
@@ -19,8 +20,8 @@ int send_message(int sockfd, char *message);
 int connect_to_client(char **port);
 void server_side(char **port, char *socket_path);
 void *handle_client(void *arg);
-void handle_interrupt(int signum);
 char *arg_help();
+void send_halt_to_clients(int *active_clients, int *num_active_clients, int *halt_signal_sent, pthread_mutex_t *active_clients_mutex);
 
 /* Functions */
 void create_prompt();

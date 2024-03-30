@@ -11,7 +11,7 @@
 #include "test.h"
 
 int main(int argc, char **argv) {
-    create_prompt();
+    //create_prompt();
 
     char *port = NULL;
     char *mode = NULL;

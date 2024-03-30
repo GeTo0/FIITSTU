@@ -173,7 +173,8 @@ void client_side(char **port, int *sockfd) {
 
     do {
         /* FOR LOOP TO READ LINE, SPLIT IT INTO ARGUMENTS AND PUT THEM IN LIST, EXECUTE THEM*/
-        printf("> ");
+        //printf("> ");
+        create_prompt();
         line = lsh_read_line();
         args = lsh_split_line(line);
         status = lsh_execute(args, port, sockfd);

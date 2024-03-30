@@ -26,19 +26,9 @@ typedef struct {
 
 pthread_t server_thread;
 
-void send_halt_to_clients() {
-    for (int i = 0; i < num_active_clients; ++i) {
-        send(active_clients[i], "-halt", strlen("-halt"), 0);
-        close(active_clients[i]);
-    }
-    num_active_clients = 0; // Reset the number of active clients
-    halt_signal_sent = 1;
-    pthread_mutex_unlock(&active_clients_mutex);
-}
-
 void handle_interrupt(int signum) {
     if (signum == SIGINT) {
-        send_halt_to_clients();
+        send_halt_to_clients(active_clients, &num_active_clients, &halt_signal_sent, &active_clients_mutex);
         printf("Sent halt command to all clients.\n");
         exit(EXIT_SUCCESS); // Exit the program after sending halt command
     }
@@ -51,7 +41,7 @@ void *server_task(void *arg) {
         fgets(command, sizeof(command), stdin);
         command[strcspn(command, "\n")] = '\0'; // Remove newline character
         if (strcmp(command, "-halt") == 0) {
-            send_halt_to_clients();
+            send_halt_to_clients(active_clients, &num_active_clients, &halt_signal_sent, &active_clients_mutex);
             printf("Sent halt command to all clients.\n");
             break;
         }
