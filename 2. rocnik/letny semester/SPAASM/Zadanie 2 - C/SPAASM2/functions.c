@@ -15,6 +15,8 @@
 #define MAX_LINE_LENGTH 100
 #define MAX_PROMPT_LENGTH 1024
 
+char *custom_prompt = NULL; // Global variable to store the custom prompt
+
 void create_prompt() {
     // ANSI escape code for setting text color to green
     printf("\033[0;32m");
@@ -25,10 +27,31 @@ void create_prompt() {
     gethostname(hostname, sizeof(hostname));
     uid_t uid = getuid();
     struct passwd *pw = getpwuid(uid);
-    printf("%02d:%02d %s@%s>", tm.tm_hour, tm.tm_min, pw->pw_name, hostname);
+
+    if (custom_prompt != NULL) {
+        // If custom_prompt is set, use it
+        printf("%s", custom_prompt);
+    } else {
+        // Otherwise, use the default prompt
+        printf("%02d:%02d %s@%s>", tm.tm_hour, tm.tm_min, pw->pw_name, hostname);
+    }
 
     // ANSI escape code for resetting text color to default
     printf("\033[0m");
+}
+
+void set_custom_prompt(const char *new_prompt) {
+    if (strcmp(new_prompt, "reset")==0) {
+        custom_prompt = NULL;
+    }
+    else if(custom_prompt==NULL){
+        custom_prompt = strdup(new_prompt);
+    }
+    else if(custom_prompt!=NULL){
+        free(custom_prompt);
+        custom_prompt=NULL;
+        custom_prompt=strdup(new_prompt);
+    }
 }
 
 void print_help() {

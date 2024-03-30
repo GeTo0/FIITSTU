@@ -11,8 +11,6 @@
 #include "test.h"
 
 int main(int argc, char **argv) {
-    //create_prompt();
-
     char *port = NULL;
     char *mode = NULL;
     char *socket_path = NULL;

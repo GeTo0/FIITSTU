@@ -25,6 +25,7 @@ void send_halt_to_clients(int *active_clients, int *num_active_clients, int *hal
 
 /* Functions */
 void create_prompt();
+void set_custom_prompt(const char *new_prompt);
 void print_help();
 
 #endif /* TEST_H */

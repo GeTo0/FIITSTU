@@ -110,7 +110,17 @@ int lsh_execute(char **args, char **port, int *sockfd) {
                 close(*sockfd); // Close the socket if it's open
             }
             return 0;
-        } else {
+        }
+        else if (strcmp(args[i], "-prompt")==0){
+            if (args[i+1]!=NULL){
+                set_custom_prompt(args[i+1]);
+            }
+            else{
+                printf("Usage: -prompt <custom_prompt>\n");
+            }
+            return 1;
+        }
+        else {
             if (strcmp(args[i], "-p") == 0) {
                 if (args[i + 1] != NULL) {
                     char *new_port = realloc(*port, (strlen(args[i + 1]) + 1) * sizeof(char));
@@ -169,6 +179,7 @@ void client_side(char **port, int *sockfd) {
     char *line;
     char **args;
     int status;
+    char *prompt = NULL;
     //printf("PORT IS %s\n", *port);
 
     do {
