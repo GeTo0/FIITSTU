@@ -14,6 +14,8 @@
 #define MAX_LINE_LENGTH 100
 #define MAX_PROMPT_LENGTH 1024
 
+int halt_flag = 0;
+
 int connect_to_server(char **port) {
     int sockfd;
     struct sockaddr_in serv_addr;
@@ -136,12 +138,21 @@ int lsh_execute(char **args, char **port, int *sockfd) {
                     send_message(*sockfd, mess);
 
                     //Listen for incoming message from server
-                    char help_message[MAX_PROMPT_LENGTH];
-                    memset(help_message, 0, sizeof(help_message));
-                    ssize_t num_bytes = recv(*sockfd, help_message, sizeof(help_message), 0);
-                    if (num_bytes > 0) {// Print the help message received from the server
-                        printf("%s\n", help_message);
-
+                    char message[MAX_PROMPT_LENGTH];
+                    memset(message, 0, sizeof(message));
+                    ssize_t num_bytes = recv(*sockfd, message, sizeof(message), 0);
+                    if (num_bytes > 0) {
+                        message[num_bytes] = '\0';
+                        if (strcmp(message, "-halt") == 0) {
+                            printf("Server sent halt command. Disconnecting...\n");
+                            close(*sockfd);
+                            *sockfd = -1;
+                            halt_flag=1;
+                            break;
+                        }
+                        else{
+                            printf("%s\n", message);
+                        }
                     }
                 } else {
                     fprintf(stderr, "No connection to server\n");
@@ -166,6 +177,7 @@ void client_side(char **port, int *sockfd) {
         line = lsh_read_line();
         args = lsh_split_line(line);
         status = lsh_execute(args, port, sockfd);
+        if (halt_flag) break;
 
 
         /* FREE MEMORY*/

@@ -19,6 +19,7 @@ int send_message(int sockfd, char *message);
 int connect_to_client(char **port);
 void server_side(char **port, char *socket_path);
 void *handle_client(void *arg);
+void handle_interrupt(int signum);
 char *arg_help();
 
 /* Functions */
