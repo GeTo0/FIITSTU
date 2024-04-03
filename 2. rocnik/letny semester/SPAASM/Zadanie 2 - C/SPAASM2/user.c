@@ -10,6 +10,7 @@
 #include "test.h"
 #include <ctype.h>
 #include <sys/wait.h>
+#include <fcntl.h>
 
 #define MAX_LINE_LENGTH 100
 #define MAX_PROMPT_LENGTH 1024
@@ -168,28 +169,83 @@ char **lsh_split_args(char *argument) {
     return subargs;
 }
 
-int lsh_execute_external(char **args) {
-    pid_t pid, wpid;
-    int status;
+char *lsh_execute_external(char **args) {
+    pid_t pid;
+    int fd[2];
+    pipe(fd);
 
     pid = fork();
     if (pid == 0) {
         // Child process
+        dup2(fd[1], STDOUT_FILENO); // Redirect stdout to the pipe
+        close(fd[0]); // Close the read end of the pipe
+
+        // Execute the command
         if (execvp(args[0], args) == -1) {
             perror("lsh");
+            exit(EXIT_FAILURE);
         }
-        exit(EXIT_FAILURE);
     } else if (pid < 0) {
         // Error forking
         perror("lsh");
     } else {
         // Parent process
-        do {
-            wpid = waitpid(pid, &status, WUNTRACED);
-        } while (!WIFEXITED(status) && !WIFSIGNALED(status));
+        close(fd[1]); // Close the write end of the pipe
+
+        // Read the output from the pipe
+        char *output = malloc(MAX_LINE_LENGTH * sizeof(char));
+        read(fd[0], output, MAX_LINE_LENGTH);
+
+        return output;
     }
 
-    return 1;
+    return NULL;
+}
+
+void redirect_output(char *args) {
+    char **subargs = lsh_split_args(args);
+    int pos = 0;
+
+    // Find the position of ">"
+    while (subargs[pos] != NULL && strcmp(subargs[pos], ">") != 0) {
+        pos++;
+    }
+
+    if (subargs[pos] != NULL) {
+        // Check if ">" was found
+        if (subargs[pos + 1] != NULL) {
+            // Extract the output file name
+            char *output_file = subargs[pos + 1];
+
+            // Extract the command before ">"
+            char *command_args[pos + 1];
+            for (int i = 0; i < pos; i++) {
+                command_args[i] = subargs[i];
+            }
+            command_args[pos] = NULL; // Null-terminate the command arguments
+
+            // Execute the command
+            char *output = lsh_execute_external(command_args);
+            if (output != NULL) {
+                // Write the output to the file
+                FILE *file = fopen(output_file, "w");
+                if (file == NULL) {
+                    perror("Error opening file");
+                } else {
+                    fprintf(file, "%s", output);
+                    fclose(file);
+                }
+                free(output);
+            }
+        } else {
+            printf("Missing output file after \">\n");
+        }
+    } else {
+        printf("No output redirection found\n");
+    }
+
+    // Free the memory allocated for subargs
+    free(subargs);
 }
 
 int lsh_execute(char **args, char **port, int *sockfd) {
@@ -259,11 +315,21 @@ int lsh_execute(char **args, char **port, int *sockfd) {
             }
             free(subargs);
         } else {
-            char **cmd_args = lsh_split_args(args[i]);
-            // Execute the command with its arguments
-            lsh_execute_external(cmd_args);
-            free(cmd_args); // Free the memory allocated for arguments
-            return 1;
+            //send_message(*sockfd, args[i]);
+            if (strstr(args[i], ">")!= NULL){
+                redirect_output(args[i]);
+            }
+            else{
+                // Execute the command with its arguments (Nechat tu len send_message a ostatne parsovat az na serveri)!!!!!//
+                char **cmd_args = lsh_split_args(args[i]);
+                char *output = lsh_execute_external(cmd_args);
+                if (output != NULL) {
+                    // Print the command's output to the console
+                    printf("%s\n", output);
+                    free(output);
+                }
+                free(cmd_args);
+            }
         }
     i++;
 }
