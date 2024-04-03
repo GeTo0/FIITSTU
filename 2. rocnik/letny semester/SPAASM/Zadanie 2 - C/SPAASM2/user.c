@@ -15,6 +15,7 @@
 #define MAX_PROMPT_LENGTH 1024
 
 int halt_flag = 0;
+pthread_t receive_thread;
 
 int connect_to_server(char **port) {
     int sockfd;
@@ -42,6 +43,33 @@ int connect_to_server(char **port) {
     // Now you can send and receive messages using sockfd
     printf("CONNECTION SUCCESS\n");
     return sockfd;
+}
+
+void *check_halt(void *arg) {
+    int sockfd = *((int *) arg);
+    char buffer[MAX_LINE_LENGTH];
+    ssize_t num_bytes;
+
+    while ((num_bytes = recv(sockfd, buffer, sizeof(buffer), 0)) > 0) {
+        buffer[num_bytes] = '\0';
+        if (strcmp(buffer, "halt") == 0) {
+            printf("\rReceived halt signal from server. Disconnecting from the server.\n");
+            halt_flag = 1;
+            close(sockfd);
+            pthread_exit(NULL);
+        } else {
+            printf("%s\n", buffer);
+        }
+    }
+
+    if (num_bytes == 0) {
+        printf("Server closed the connection unexpectedly.\n");
+    } else {
+        perror("Receive failed");
+    }
+
+    close(sockfd);
+    pthread_exit(NULL);
 }
 
 int send_message(int sockfd, char *message) {
@@ -247,24 +275,48 @@ return 1;
 void client_side(char **port, int *sockfd) {
     char *line;
     char **args;
-    char **testing;
     int status;
-    char *prompt = NULL;
-    //printf("PORT IS %s\n", *port);
+    // Create a buffer for receiving messages from the server
+    char buffer[MAX_LINE_LENGTH];
+
+    // Create and initialize a pthread attribute object
+    pthread_attr_t attr;
+    pthread_attr_init(&attr);
+    pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
+
+    if ((*sockfd)!=-1) pthread_create(&receive_thread, &attr, check_halt, (void *) sockfd);
 
     do {
-        /* FOR LOOP TO READ LINE, SPLIT IT INTO ARGUMENTS AND PUT THEM IN LIST, EXECUTE THEM*/
-        //printf("> ");
+        // Read user input
         create_prompt();
         line = lsh_read_line();
+        if (halt_flag) {
+            break;
+        }
         args = lsh_split_line(line);
+
+        // Execute user command
         status = lsh_execute(args, port, sockfd);
 
-        if (halt_flag) break;
+        // Check if sockfd has been updated in lsh_execute
+        if (*sockfd != -1 && pthread_equal(receive_thread, pthread_self()) == 0) {
+            // If sockfd is not -1 and the current thread is not the receive thread,
+            // create the receive thread.
+            pthread_create(&receive_thread, &attr, check_halt, (void *) sockfd);
+        }
 
+        // Free allocated memory
         free(line);
         free(args);
+
+        // Check if halt signal received from server
     } while (status);
+
+    // Wait for the receive thread to finish
+    pthread_join(receive_thread, NULL);
+
+    // Destroy the pthread attribute object
+    pthread_attr_destroy(&attr);
 
     // Close the socket if it's open before exiting
     if (*sockfd != -1) {
