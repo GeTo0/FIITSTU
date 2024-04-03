@@ -11,11 +11,13 @@
 #include <ctype.h>
 #include <sys/wait.h>
 #include <fcntl.h>
+#include <stdbool.h>
 
 #define MAX_LINE_LENGTH 100
 #define MAX_PROMPT_LENGTH 1024
 
 int halt_flag = 0;
+bool client_quit = false;
 pthread_t receive_thread;
 
 int connect_to_server(char **port) {
@@ -51,7 +53,7 @@ void *check_halt(void *arg) {
     char buffer[MAX_LINE_LENGTH];
     ssize_t num_bytes;
 
-    while ((num_bytes = recv(sockfd, buffer, sizeof(buffer), 0)) > 0) {
+    while (!client_quit && (num_bytes = recv(sockfd, buffer, sizeof(buffer), 0)) > 0) {
         buffer[num_bytes] = '\0';
         if (strcmp(buffer, "halt") == 0) {
             printf("\rReceived halt signal from server. Disconnecting from the server.\n");
@@ -63,9 +65,9 @@ void *check_halt(void *arg) {
         }
     }
 
-    if (num_bytes == 0) {
+    if (!client_quit && num_bytes == 0) { // Check if client hasn't quit and connection closed
         printf("Server closed the connection unexpectedly.\n");
-    } else {
+    } else if (!client_quit) { // Check if client hasn't quit to avoid printing error if quit
         perror("Receive failed");
     }
 
@@ -170,6 +172,7 @@ char **lsh_split_args(char *argument) {
 }
 
 char *lsh_execute_external(char **args) {
+    //executes command and returns it//
     pid_t pid;
     int fd[2];
     pipe(fd);
@@ -255,39 +258,13 @@ int lsh_execute(char **args, char **port, int *sockfd) {
             if (*sockfd != -1) {
                 close(*sockfd);
             }
+            client_quit = true;
             return 0;
         } else if (strcmp(args[i], "prompt") == 0) {
             if (args[i + 1] != NULL) {
                 set_custom_prompt(args[i + 1]);
             } else {
                 printf("Usage: prompt <custom_prompt>\n");
-            }
-        } else if (strcmp(args[i], "help") == 0) {
-            if (*sockfd != -1) {
-                char mess[MAX_LINE_LENGTH];
-                strcpy(mess, args[i]);
-                strcat(mess, " ");
-                send_message(*sockfd, mess);
-                char message[MAX_PROMPT_LENGTH];
-                memset(message, 0, sizeof(message));
-                ssize_t num_bytes = recv(*sockfd, message, sizeof(message), 0);
-                if (num_bytes > 0) {
-                    message[num_bytes] = '\0';
-                    printf("%s\n", message);
-                }
-            } else {
-                fprintf(stderr, "No connection to server\n");
-                return 1;
-            }
-        } else if (strcmp(args[i], "fork") == 0) {
-            pid_t pid = fork();
-            if (pid == 0) {
-                printf("This is the child process.\n");
-                exit(EXIT_SUCCESS);
-            } else if (pid > 0) {
-                printf("This is the parent process.\n");
-            } else {
-                perror("lsh");
             }
         } else if (strstr(args[i], "-p") != NULL) {
             char **subargs = lsh_split_args(args[i]);
@@ -315,26 +292,26 @@ int lsh_execute(char **args, char **port, int *sockfd) {
             }
             free(subargs);
         } else {
-            //send_message(*sockfd, args[i]);
-            if (strstr(args[i], ">")!= NULL){
-                redirect_output(args[i]);
-            }
-            else{
-                // Execute the command with its arguments (Nechat tu len send_message a ostatne parsovat az na serveri)!!!!!//
-                char **cmd_args = lsh_split_args(args[i]);
-                char *output = lsh_execute_external(cmd_args);
-                if (output != NULL) {
-                    // Print the command's output to the console
-                    printf("%s\n", output);
-                    free(output);
+            if (*sockfd != -1) {
+                char mess[MAX_LINE_LENGTH];
+                strcpy(mess, args[i]);
+                strcat(mess, " ");
+                send_message(*sockfd, mess);
+                char message[MAX_PROMPT_LENGTH];
+                memset(message, 0, sizeof(message));
+                ssize_t num_bytes = recv(*sockfd, message, sizeof(message), 0);
+                if (num_bytes > 0) {
+                    message[num_bytes] = '\0';
+                    printf("%s\n", message);
                 }
-                free(cmd_args);
+            } else {
+                printf("No connection to the server");
+                return 1;
             }
         }
-    i++;
-}
-
-return 1;
+        i++;
+    }
+    return 1;
 }
 
 
@@ -350,7 +327,7 @@ void client_side(char **port, int *sockfd) {
     pthread_attr_init(&attr);
     pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
 
-    if ((*sockfd)!=-1) pthread_create(&receive_thread, &attr, check_halt, (void *) sockfd);
+    if ((*sockfd) != -1) pthread_create(&receive_thread, &attr, check_halt, (void *) sockfd);
 
     do {
         // Read user input
