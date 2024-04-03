@@ -30,10 +30,10 @@ void create_prompt() {
 
     if (custom_prompt != NULL) {
         // If custom_prompt is set, use it
-        printf("%s", custom_prompt);
+        printf("\n%s", custom_prompt);
     } else {
         // Otherwise, use the default prompt
-        printf("%02d:%02d %s@%s>", tm.tm_hour, tm.tm_min, pw->pw_name, hostname);
+        printf("\n%02d:%02d %s@%s>", tm.tm_hour, tm.tm_min, pw->pw_name, hostname);
     }
 
     // ANSI escape code for resetting text color to default
@@ -63,7 +63,7 @@ void print_help() {
     printf("  -h                Display this help message\n");
     printf("  -s                Run as server\n");
     printf("  -c                Run as client\n");
-    printf("  -p port           Specify port number\n");
+    printf("  -p port           Specify port number");
 }
 
 char *arg_help(){
@@ -75,14 +75,14 @@ char *arg_help(){
                        "  -h                Display this help message\n"
                        "  -s                Run as server\n"
                        "  -c                Run as client\n"
-                       "  -p port           Specify port number\n";
+                       "  -p port           Specify port number";
     return help_message;
 }
 
 void send_halt_to_clients(int *active_clients, int *num_active_clients, int *halt_signal_sent, pthread_mutex_t *active_clients_mutex) {
     pthread_mutex_lock(active_clients_mutex);
     for (int i = 0; i < *num_active_clients; ++i) {
-        send(active_clients[i], "-halt", strlen("-halt"), 0);
+        send(active_clients[i], "halt", strlen("halt"), 0);
         close(active_clients[i]);
     }
     *num_active_clients = 0; // Reset the number of active clients

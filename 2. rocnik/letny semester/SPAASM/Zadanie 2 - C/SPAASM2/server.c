@@ -40,7 +40,7 @@ void *server_task(void *arg) {
         char command[MAX_LINE_LENGTH];
         fgets(command, sizeof(command), stdin);
         command[strcspn(command, "\n")] = '\0'; // Remove newline character
-        if (strcmp(command, "-halt") == 0) {
+        if (strcmp(command, "halt") == 0) {
             send_halt_to_clients(active_clients, &num_active_clients, &halt_signal_sent, &active_clients_mutex);
             printf("Sent halt command to all clients.\n");
             break;
@@ -91,7 +91,7 @@ void *handle_client(void *arg) {
                 // Allocate memory for the word and copy it from the token
                 char *word = strdup(token);
 
-                if (strcmp(word, "-help") == 0) {
+                if (strcmp(word, "help") == 0) {
                     char *help_message = arg_help();
                     send(client_socket, help_message, strlen(help_message), 0);
                 } else {

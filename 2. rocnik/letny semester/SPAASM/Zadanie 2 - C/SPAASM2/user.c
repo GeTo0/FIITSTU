@@ -9,7 +9,7 @@
 #include <pwd.h>
 #include "test.h"
 #include <ctype.h>
-
+#include <sys/wait.h>
 
 #define MAX_LINE_LENGTH 100
 #define MAX_PROMPT_LENGTH 1024
@@ -51,6 +51,30 @@ int send_message(int sockfd, char *message) {
     } else {
         return 0; // Return 0 on success
     }
+}
+
+int lsh_execute_external(char **args) {
+    pid_t pid, wpid;
+    int status;
+
+    pid = fork();
+    if (pid == 0) {
+        // Child process
+        if (execvp(args[0], args) == -1) {
+            perror("lsh");
+        }
+        exit(EXIT_FAILURE);
+    } else if (pid < 0) {
+        // Error forking
+        perror("lsh");
+    } else {
+        // Parent process
+        do {
+            wpid = waitpid(pid, &status, WUNTRACED);
+        } while (!WIFEXITED(status) && !WIFSIGNALED(status));
+    }
+
+    return 1;
 }
 
 char *lsh_read_line(void) {
@@ -105,20 +129,34 @@ int lsh_execute(char **args, char **port, int *sockfd) {
     int i = 0;
     /*While loop to iterate through all args*/
     while (args[i] != NULL) {
-        if (strcmp(args[i], "-quit") == 0) {
+        if (strcmp(args[i], "quit") == 0) {
             if (*sockfd != -1) {
                 close(*sockfd); // Close the socket if it's open
             }
             return 0;
         }
-        else if (strcmp(args[i], "-prompt")==0){
+        else if (strcmp(args[i], "prompt")==0){
             if (args[i+1]!=NULL){
                 set_custom_prompt(args[i+1]);
             }
             else{
-                printf("Usage: -prompt <custom_prompt>\n");
+                printf("Usage: prompt <custom_prompt>\n");
             }
-            return 1;
+        }
+        else if (strcmp(args[i], "fork") == 0) {
+            // Example of using the fork command
+            pid_t pid = fork();
+            if (pid == 0) {
+                // Child process
+                printf("This is the child process.\n");
+                exit(EXIT_SUCCESS);
+            } else if (pid > 0) {
+                // Parent process
+                printf("This is the parent process.\n");
+            } else {
+                // Error forking
+                perror("lsh");
+            }
         }
         else {
             if (strcmp(args[i], "-p") == 0) {
@@ -134,8 +172,8 @@ int lsh_execute(char **args, char **port, int *sockfd) {
                             close(*sockfd); // Close the socket if it's open
                         }
                         *sockfd = connect_to_server(port);
+                        i++;
                     }
-                    return 1;
                 } else {
                     fprintf(stderr, "Missing port number after -p option\n");
                     return 1;
@@ -153,7 +191,7 @@ int lsh_execute(char **args, char **port, int *sockfd) {
                     ssize_t num_bytes = recv(*sockfd, message, sizeof(message), 0);
                     if (num_bytes > 0) {
                         message[num_bytes] = '\0';
-                        if (strcmp(message, "-halt") == 0) {
+                        if (strcmp(message, "halt") == 0) {
                             printf("Server sent halt command. Disconnecting...\n");
                             close(*sockfd);
                             *sockfd = -1;
@@ -165,8 +203,9 @@ int lsh_execute(char **args, char **port, int *sockfd) {
                         }
                     }
                 } else {
-                    fprintf(stderr, "No connection to server\n");
-                    return 1;
+                    //fprintf(stderr, "No connection to server\n");
+                    //return 1;
+                    return lsh_execute_external(args);
                 }
             }
         }
