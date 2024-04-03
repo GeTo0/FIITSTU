@@ -65,7 +65,7 @@ void *check_halt(void *arg) {
         }
     }
 
-    if (!client_quit && num_bytes == 0) { // Check if client hasn't quit and connection closed
+    if (!client_quit && num_bytes == 0 && halt_flag==0) { // Check if client hasn't quit and connection closed
         printf("Server closed the connection unexpectedly.\n");
     } else if (!client_quit) { // Check if client hasn't quit to avoid printing error if quit
         perror("Receive failed");
