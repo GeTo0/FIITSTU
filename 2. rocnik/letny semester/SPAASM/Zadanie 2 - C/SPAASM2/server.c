@@ -97,7 +97,6 @@ RedirectArgs redirect_argument(char *arg) {
 }
 
 char *lsh_execute_external(char **args) {
-    //executes command and returns it//
     pid_t pid;
     int fd[2];
     pipe(fd);
@@ -121,8 +120,27 @@ char *lsh_execute_external(char **args) {
         close(fd[1]); // Close the write end of the pipe
 
         // Read the output from the pipe
-        char *output = malloc(MAX_LINE_LENGTH * sizeof(char));
-        read(fd[0], output, MAX_LINE_LENGTH);
+        char *output = NULL;
+        char buffer[MAX_LINE_LENGTH];
+        size_t output_size = 0;
+        ssize_t bytes_read;
+
+        while ((bytes_read = read(fd[0], buffer, sizeof(buffer))) > 0) {
+            output = realloc(output, output_size + bytes_read + 1);
+            if (output == NULL) {
+                perror("Memory allocation error");
+                exit(EXIT_FAILURE);
+            }
+            memcpy(output + output_size, buffer, bytes_read);
+            output_size += bytes_read;
+        }
+
+        if (bytes_read < 0) {
+            perror("Error reading from pipe");
+            exit(EXIT_FAILURE);
+        }
+
+        output[output_size] = '\0'; // Null-terminate the output
 
         return output;
     }
@@ -142,8 +160,13 @@ void handle_arguments(char *argument, int client_socket) {
         }
         send(client_socket, "1", 3, 0);
     } else {
-        printf("Sending message: %s\n", argument);
-        send(client_socket, argument, strlen(argument), 0);
+        char **command = lsh_split_args(argument);
+        char *output = lsh_execute_external(command);
+        if (output != NULL) {
+            send(client_socket, output, strlen(output), 0);
+        } else {
+            send(client_socket, "Wrong command", strlen("Wrong command"), 0);
+        }
     }
 }
 

@@ -30,7 +30,7 @@ void create_prompt() {
 
     if (custom_prompt != NULL) {
         // If custom_prompt is set, use it
-        printf("\n%s", custom_prompt);
+        printf("%s", custom_prompt);
     } else {
         // Otherwise, use the default prompt
         printf("\n%02d:%02d %s@%s>", tm.tm_hour, tm.tm_min, pw->pw_name, hostname);
