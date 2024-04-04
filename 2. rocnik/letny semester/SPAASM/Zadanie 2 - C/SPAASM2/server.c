@@ -24,6 +24,11 @@ typedef struct {
     char **port;
 } ClientData;
 
+typedef struct {
+    char *command;
+    char *output_file;
+} RedirectArgs;
+
 pthread_t server_thread;
 
 void handle_interrupt(int signum) {
@@ -47,6 +52,99 @@ void *server_task(void *arg) {
         }
     }
     return NULL;
+}
+
+RedirectArgs redirect_argument(char *arg) {
+    RedirectArgs args;
+
+    // Initialize the fields to NULL
+    args.command = NULL;
+    args.output_file = NULL;
+
+    // Find the position of '>'
+    char *pos = strchr(arg, '>');
+    if (pos == NULL) {
+        // No output redirection, set command only
+        args.command = strdup(arg);
+    } else {
+        // Output redirection found, split the argument
+        *pos = '\0'; // Null-terminate the command
+        args.command = strdup(arg);
+        args.output_file = strdup(pos + 1); // Set the output file
+    }
+
+    // Trim leading and trailing whitespace from filenames
+    if (args.command != NULL) {
+        while (*args.command && isspace(*args.command)) {
+            args.command++;
+        }
+        char *end = args.command + strlen(args.command) - 1;
+        while (end > args.command && isspace(*end)) {
+            *end-- = '\0';
+        }
+    }
+    if (args.output_file != NULL) {
+        while (*args.output_file && isspace(*args.output_file)) {
+            args.output_file++;
+        }
+        char *end = args.output_file + strlen(args.output_file) - 1;
+        while (end > args.output_file && isspace(*end)) {
+            *end-- = '\0';
+        }
+    }
+
+    return args;
+}
+
+char *lsh_execute_external(char **args) {
+    //executes command and returns it//
+    pid_t pid;
+    int fd[2];
+    pipe(fd);
+
+    pid = fork();
+    if (pid == 0) {
+        // Child process
+        dup2(fd[1], STDOUT_FILENO); // Redirect stdout to the pipe
+        close(fd[0]); // Close the read end of the pipe
+
+        // Execute the command
+        if (execvp(args[0], args) == -1) {
+            perror("lsh");
+            exit(EXIT_FAILURE);
+        }
+    } else if (pid < 0) {
+        // Error forking
+        perror("lsh");
+    } else {
+        // Parent process
+        close(fd[1]); // Close the write end of the pipe
+
+        // Read the output from the pipe
+        char *output = malloc(MAX_LINE_LENGTH * sizeof(char));
+        read(fd[0], output, MAX_LINE_LENGTH);
+
+        return output;
+    }
+
+    return NULL;
+}
+
+void handle_arguments(char *argument, int client_socket) {
+    if (strstr(argument, ">") != NULL) {
+        RedirectArgs args = redirect_argument(argument);
+        if (strcmp(args.command, "help") == 0) {
+            print_to_file(help_message(), args.output_file);
+        } else {
+            char **command = lsh_split_args(args.command);
+            char *output = lsh_execute_external(command);
+            print_to_file(output, args.output_file);
+        }
+        send(client_socket, "1", 3, 0);
+    } else {
+        printf("Sending message: %s\n", argument);
+        send(client_socket, argument, strlen(argument), 0);
+    }
 }
 
 void *handle_client(void *arg) {
@@ -77,9 +175,8 @@ void *handle_client(void *arg) {
             buffer[num_bytes] = '\0';
 
             // Allocate memory for the word and copy it from the buffer
-            char *message = strdup(buffer);
-            printf("Sending message: %s\n", message);
-            send(client_socket, message, strlen(message), 0);
+            char *argument = strdup(buffer);
+            handle_arguments(argument, client_socket);
         }
     }
 

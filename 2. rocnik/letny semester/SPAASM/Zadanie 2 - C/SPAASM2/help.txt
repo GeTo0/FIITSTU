@@ -1,0 +1,9 @@
+Author: Dominik Zaťovič
+Subject: SPAASM, 2. Assignment
+Usage: ./zadanie2 [-s | -c] [-p port | -u socket_path]
+Usage Client: [-h | -quit]
+Options:
+  -h                Display this help message
+  -s                Run as server
+  -c                Run as client
+  -p port           Specify port number

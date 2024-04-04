@@ -63,7 +63,20 @@ void print_help() {
     printf("  -h                Display this help message\n");
     printf("  -s                Run as server\n");
     printf("  -c                Run as client\n");
-    printf("  -p port           Specify port number");
+    printf("  -p port           Specify port number\n");
+}
+
+char* help_message(){
+    char* help_mes= ("Author: Dominik Zaťovič\n"
+     "Subject: SPAASM, 2. Assignment\n"
+     "Usage: ./zadanie2 [-s | -c] [-p port | -u socket_path]\n"
+     "Usage Client: [-h | -quit]\n"
+     "Options:\n"
+     "  -h                Display this help message\n"
+     "  -s                Run as server\n"
+     "  -c                Run as client\n"
+     "  -p port           Specify port number\n");
+    return help_mes;
 }
 
 void send_halt_to_clients(int *active_clients, int *num_active_clients, int *halt_signal_sent, pthread_mutex_t *active_clients_mutex) {
@@ -77,3 +90,49 @@ void send_halt_to_clients(int *active_clients, int *num_active_clients, int *hal
     pthread_mutex_unlock(active_clients_mutex);
 }
 
+char **lsh_split_args(char *argument) {
+    int bufsize = MAX_LINE_LENGTH, position = 0;
+    char **subargs = malloc(bufsize * sizeof(char *));
+    char *subarg;
+
+    if (!subargs) {
+        fprintf(stderr, "lsh: allocation error\n");
+        exit(EXIT_FAILURE);
+    }
+
+    // Split the line based on semicolon
+    subarg = strtok(argument, " \t\n");
+    while (subarg != NULL) {
+        // Add the token to the list
+        subargs[position] = subarg;
+        position++;
+
+        // Resize the buffer if necessary
+        if (position >= bufsize) {
+            bufsize += MAX_LINE_LENGTH;
+            subargs = realloc(subargs, bufsize * sizeof(char *));
+            if (!subargs) {
+                fprintf(stderr, "lsh: allocation error\n");
+                exit(EXIT_FAILURE);
+            }
+        }
+
+        // Get the next token
+        subarg = strtok(NULL, " \t\n");
+    }
+    subargs[position] = NULL; // Null-terminate the list
+    return subargs;
+}
+
+void print_to_file(const char *output, const char *filename) {
+    FILE *file = fopen(filename, "w"); // Open the file for writing
+    if (file == NULL) {
+        perror("Error opening file");
+        return;
+    }
+
+    // Write the output to the file
+    fprintf(file, "%s", output);
+
+    fclose(file); // Close the file
+}

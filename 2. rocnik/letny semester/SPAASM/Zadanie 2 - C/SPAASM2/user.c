@@ -105,40 +105,6 @@ char **lsh_split_line(char *line) {
     return tokens;
 }
 
-char **lsh_split_args(char *argument) {
-    int bufsize = MAX_LINE_LENGTH, position = 0;
-    char **subargs = malloc(bufsize * sizeof(char *));
-    char *subarg;
-
-    if (!subargs) {
-        fprintf(stderr, "lsh: allocation error\n");
-        exit(EXIT_FAILURE);
-    }
-
-    // Split the line based on semicolon
-    subarg = strtok(argument, " \t\n");
-    while (subarg != NULL) {
-        // Add the token to the list
-        subargs[position] = subarg;
-        position++;
-
-        // Resize the buffer if necessary
-        if (position >= bufsize) {
-            bufsize += MAX_LINE_LENGTH;
-            subargs = realloc(subargs, bufsize * sizeof(char *));
-            if (!subargs) {
-                fprintf(stderr, "lsh: allocation error\n");
-                exit(EXIT_FAILURE);
-            }
-        }
-
-        // Get the next token
-        subarg = strtok(NULL, " \t\n");
-    }
-    subargs[position] = NULL; // Null-terminate the list
-    return subargs;
-}
-
 int lsh_execute(char **args, char **port, int *sockfd) {
     int i = 0;
     while (args[i] != NULL) {
@@ -148,8 +114,7 @@ int lsh_execute(char **args, char **port, int *sockfd) {
             }
             return 0;
         } else if (strcmp(args[i], "help")==0){
-            print_help();
-            return 1;
+            printf("%s",help_message());
         }
         else if (strcmp(args[i], "prompt") == 0) {
             if (args[i + 1] != NULL) {
@@ -190,7 +155,7 @@ int lsh_execute(char **args, char **port, int *sockfd) {
                 char message[MAX_PROMPT_LENGTH];
                 memset(message, 0, sizeof(message));
                 ssize_t num_bytes = recv(*sockfd, message, sizeof(message), 0);
-                if (num_bytes > 0) {
+                if (num_bytes > 5) {
                     message[num_bytes] = '\0';
                     printf("%s\n", message);
                 }
