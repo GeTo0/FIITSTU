@@ -54,28 +54,37 @@ void set_custom_prompt(const char *new_prompt) {
     }
 }
 
-void print_help() {
-    printf("Author: Dominik Zaťovič\n");
-    printf("Subject: SPAASM, 2. Assignment\n");
-    printf("Usage: ./zadanie2 [-s | -c] [-p port | -u socket_path]\n");
-    printf("Usage Client: [-h | -quit]\n");
-    printf("Options:\n");
-    printf("  -h                Display this help message\n");
-    printf("  -s                Run as server\n");
-    printf("  -c                Run as client\n");
-    printf("  -p port           Specify port number\n");
-}
-
 char* help_message(){
     char* help_mes= ("Author: Dominik Zaťovič\n"
      "Subject: SPAASM, 2. Assignment\n"
-     "Usage: ./zadanie2 [-s | -c] [-p port | -u socket_path]\n"
-     "Usage Client: [-h | -quit]\n"
-     "Options:\n"
-     "  -h                Display this help message\n"
-     "  -s                Run as server\n"
-     "  -c                Run as client\n"
-     "  -p port           Specify port number\n");
+     "Compile: gcc -o zadanie2 main.c user.c server.c functions.c"
+     "Help message: ./zadanie2 -h\n"
+     "Start as Server: ./zadanie2 -s -p <port>\n"
+     "Start as Client: ./zadanie2 -c [-p <port>]\n"
+     "--------------------------------------------\n"
+     "Internal Commands:\n"
+     "help                      Display this help message\n"
+     "port <port>               Connect to new port\n"
+     "quit                      Terminate client side program\n"
+     "halt                      Terminate server side program\n"
+     "prompt [<prompt> | reset] Create custom prompt/reset to default\n"
+     "<command> > <file>        Redirect output to file\n"
+     "<command> #<commentary>   Ability to write commentary\n"
+     "<command>;<command>       More commands at once\n"
+     "--------------------------------------------\n"
+     "External Commands:\n"
+     "date                      Prints current date\n"
+     "ls                        Prints files in dir\n"
+     "cat <file>                Prints file content\n"
+     "--------------------------------------------\n"
+     "IMPORTANT:\n"
+     "Don´t use command 'cd', as it would get us away from working dir, making program unusable\n"
+     "Beware of spaces, as it matter where you put them\n"
+     "Right command: cat subor.txt>output.txt\n"
+     "Wrong command: cat subor.txt > output.txt\n"
+     "Right use-cases are written above in this help message\n"
+     "Test this command (./zadanie2 -c): 'port <port>;help;cat subor.txt>output.txt;help>help.txt;quit'\n"
+    );
     return help_mes;
 }
 

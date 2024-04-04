@@ -109,12 +109,11 @@ char *lsh_execute_external(char **args) {
 
         // Execute the command
         if (execvp(args[0], args) == -1) {
-            perror("lsh");
-            exit(EXIT_FAILURE);
+            return NULL;
         }
     } else if (pid < 0) {
+        return NULL;
         // Error forking
-        perror("lsh");
     } else {
         // Parent process
         close(fd[1]); // Close the write end of the pipe
@@ -160,6 +159,7 @@ void handle_arguments(char *argument, int client_socket) {
         }
         send(client_socket, "1", 3, 0);
     } else {
+        printf("SEM 1");
         char **command = lsh_split_args(argument);
         char *output = lsh_execute_external(command);
         if (output != NULL) {

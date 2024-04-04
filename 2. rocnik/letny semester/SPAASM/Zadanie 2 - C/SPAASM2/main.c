@@ -45,7 +45,7 @@ int main(int argc, char **argv) {
             }
         }
         else if (strcmp(argv[i], "-h")==0){
-            print_help();
+            printf("%s", help_message());
             return 1;
         }
     }

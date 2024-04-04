@@ -71,10 +71,41 @@ char *lsh_read_line(void) {
     return line;
 }
 
+char *hashtag_argument(char *token) {
+    // Find the position of #
+    char *hash_pos = strchr(token, '#');
+    if (hash_pos != NULL) {
+        // Calculate the length of the token before #
+        int length_before_hash = hash_pos - token;
+
+        // Allocate memory for the processed token
+        char *processed_token = malloc((length_before_hash + 1) * sizeof(char));
+        if (processed_token == NULL) {
+            fprintf(stderr, "Memory allocation error\n");
+            exit(EXIT_FAILURE);
+        }
+
+        // Copy characters before # to the processed token
+        strncpy(processed_token, token, length_before_hash);
+        processed_token[length_before_hash] = '\0'; // Null-terminate the processed token
+
+        // Trim trailing whitespace from the processed token
+        char *end = processed_token + length_before_hash - 1;
+        while (end > processed_token && isspace(*end)) {
+            *end-- = '\0';
+        }
+
+        return processed_token;
+    }
+
+    // If # is not found, return NULL
+    return NULL;
+}
+
 char **lsh_split_line(char *line) {
     int bufsize = MAX_LINE_LENGTH, position = 0;
     char **tokens = malloc(bufsize * sizeof(char *));
-    char *token, *saveptr;
+    char *token;
 
     if (!tokens) {
         fprintf(stderr, "lsh: allocation error\n");
@@ -84,10 +115,20 @@ char **lsh_split_line(char *line) {
     // Split the line based on semicolon
     token = strtok(line, ";\n");
     while (token != NULL) {
-        // Add the token to the list
-        tokens[position] = token;
-        position++;
-
+        //Check if contains #//
+        char *hash_pos = strchr(token, '#');
+        if (hash_pos != NULL) {
+            char *processed_token = hashtag_argument(token);
+            if (processed_token != NULL) {
+                // Add the processed token to the list
+                tokens[position] = processed_token;
+                position++;
+            }
+        } else {
+            // Add the token to the list
+            tokens[position] = token;
+            position++;
+        }
         // Resize the buffer if necessary
         if (position >= bufsize) {
             bufsize += MAX_LINE_LENGTH;
@@ -113,20 +154,19 @@ int lsh_execute(char **args, char **port, int *sockfd) {
                 close(*sockfd);
             }
             return 0;
-        } else if (strcmp(args[i], "help")==0){
-            printf("%s",help_message());
-        }
-        else if (strcmp(args[i], "prompt") == 0) {
+        } else if (strcmp(args[i], "help") == 0) {
+            printf("%s", help_message());
+        } else if (strcmp(args[i], "prompt") == 0) {
             if (args[i + 1] != NULL) {
                 set_custom_prompt(args[i + 1]);
             } else {
                 printf("Usage: prompt <custom_prompt>\n");
             }
-        } else if (strstr(args[i], "-p") != NULL) {
+        } else if (strstr(args[i], "port") != NULL) {
             char **subargs = lsh_split_args(args[i]);
             int j = 0;
             while (subargs[j] != NULL) {
-                if (strcmp(subargs[j], "-p") == 0) {
+                if (strcmp(subargs[j], "port") == 0) {
                     if (subargs[j + 1] != NULL) {
                         char *new_port = realloc(*port, (strlen(subargs[j + 1]) + 1) * sizeof(char));
                         if (new_port == NULL) {
@@ -140,7 +180,7 @@ int lsh_execute(char **args, char **port, int *sockfd) {
                         }
                         *sockfd = connect_to_server(port);
                     } else {
-                        fprintf(stderr, "Missing port number after -p option\n");
+                        fprintf(stderr, "Missing port number after port option\n");
                         return 1;
                     }
                 }
@@ -155,7 +195,7 @@ int lsh_execute(char **args, char **port, int *sockfd) {
                 char message[MAX_PROMPT_LENGTH];
                 memset(message, 0, sizeof(message));
                 ssize_t num_bytes = recv(*sockfd, message, sizeof(message), 0);
-                if (num_bytes > 5) {
+                if (num_bytes > 3) {
                     message[num_bytes] = '\0';
                     printf("%s\n", message);
                 }
