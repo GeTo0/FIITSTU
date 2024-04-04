@@ -66,19 +66,6 @@ void print_help() {
     printf("  -p port           Specify port number");
 }
 
-char *arg_help(){
-    char *help_message="Author: Dominik Zaťovič\n"
-                       "Subject: SPAASM, 2. Assignment\n"
-                       "Usage: ./zadanie2 [-s | -c] [-p port | -u socket_path]\n"
-                       "Usage Client: [-h | -quit]\n"
-                       "Options:\n"
-                       "  -h                Display this help message\n"
-                       "  -s                Run as server\n"
-                       "  -c                Run as client\n"
-                       "  -p port           Specify port number";
-    return help_message;
-}
-
 void send_halt_to_clients(int *active_clients, int *num_active_clients, int *halt_signal_sent, pthread_mutex_t *active_clients_mutex) {
     pthread_mutex_lock(active_clients_mutex);
     for (int i = 0; i < *num_active_clients; ++i) {

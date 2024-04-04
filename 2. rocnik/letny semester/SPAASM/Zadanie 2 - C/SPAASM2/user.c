@@ -16,10 +16,6 @@
 #define MAX_LINE_LENGTH 100
 #define MAX_PROMPT_LENGTH 1024
 
-int halt_flag = 0;
-bool client_quit = false;
-pthread_t receive_thread;
-
 int connect_to_server(char **port) {
     int sockfd;
     struct sockaddr_in serv_addr;
@@ -46,33 +42,6 @@ int connect_to_server(char **port) {
     // Now you can send and receive messages using sockfd
     printf("CONNECTION SUCCESS\n");
     return sockfd;
-}
-
-void *check_halt(void *arg) {
-    int sockfd = *((int *) arg);
-    char buffer[MAX_LINE_LENGTH];
-    ssize_t num_bytes;
-
-    while (!client_quit && (num_bytes = recv(sockfd, buffer, sizeof(buffer), 0)) > 0) {
-        buffer[num_bytes] = '\0';
-        if (strcmp(buffer, "halt") == 0) {
-            printf("\rReceived halt signal from server. Disconnecting from the server.\n");
-            halt_flag = 1;
-            close(sockfd);
-            pthread_exit(NULL);
-        } else {
-            printf("%s\n", buffer);
-        }
-    }
-
-    if (!client_quit && num_bytes == 0 && halt_flag==0) { // Check if client hasn't quit and connection closed
-        printf("Server closed the connection unexpectedly.\n");
-    } else if (!client_quit) { // Check if client hasn't quit to avoid printing error if quit
-        perror("Receive failed");
-    }
-
-    close(sockfd);
-    pthread_exit(NULL);
 }
 
 int send_message(int sockfd, char *message) {
@@ -113,9 +82,8 @@ char **lsh_split_line(char *line) {
     }
 
     // Split the line based on semicolon
-    token = strtok_r(line, ";\n", &saveptr);
+    token = strtok(line, ";\n");
     while (token != NULL) {
-
         // Add the token to the list
         tokens[position] = token;
         position++;
@@ -131,7 +99,7 @@ char **lsh_split_line(char *line) {
         }
 
         // Get the next token
-        token = strtok_r(NULL, ";\n", &saveptr);
+        token = strtok(NULL, ";\n");
     }
     tokens[position] = NULL; // Null-terminate the list
     return tokens;
@@ -171,86 +139,6 @@ char **lsh_split_args(char *argument) {
     return subargs;
 }
 
-char *lsh_execute_external(char **args) {
-    //executes command and returns it//
-    pid_t pid;
-    int fd[2];
-    pipe(fd);
-
-    pid = fork();
-    if (pid == 0) {
-        // Child process
-        dup2(fd[1], STDOUT_FILENO); // Redirect stdout to the pipe
-        close(fd[0]); // Close the read end of the pipe
-
-        // Execute the command
-        if (execvp(args[0], args) == -1) {
-            perror("lsh");
-            exit(EXIT_FAILURE);
-        }
-    } else if (pid < 0) {
-        // Error forking
-        perror("lsh");
-    } else {
-        // Parent process
-        close(fd[1]); // Close the write end of the pipe
-
-        // Read the output from the pipe
-        char *output = malloc(MAX_LINE_LENGTH * sizeof(char));
-        read(fd[0], output, MAX_LINE_LENGTH);
-
-        return output;
-    }
-
-    return NULL;
-}
-
-void redirect_output(char *args) {
-    char **subargs = lsh_split_args(args);
-    int pos = 0;
-
-    // Find the position of ">"
-    while (subargs[pos] != NULL && strcmp(subargs[pos], ">") != 0) {
-        pos++;
-    }
-
-    if (subargs[pos] != NULL) {
-        // Check if ">" was found
-        if (subargs[pos + 1] != NULL) {
-            // Extract the output file name
-            char *output_file = subargs[pos + 1];
-
-            // Extract the command before ">"
-            char *command_args[pos + 1];
-            for (int i = 0; i < pos; i++) {
-                command_args[i] = subargs[i];
-            }
-            command_args[pos] = NULL; // Null-terminate the command arguments
-
-            // Execute the command
-            char *output = lsh_execute_external(command_args);
-            if (output != NULL) {
-                // Write the output to the file
-                FILE *file = fopen(output_file, "w");
-                if (file == NULL) {
-                    perror("Error opening file");
-                } else {
-                    fprintf(file, "%s", output);
-                    fclose(file);
-                }
-                free(output);
-            }
-        } else {
-            printf("Missing output file after \">\n");
-        }
-    } else {
-        printf("No output redirection found\n");
-    }
-
-    // Free the memory allocated for subargs
-    free(subargs);
-}
-
 int lsh_execute(char **args, char **port, int *sockfd) {
     int i = 0;
     while (args[i] != NULL) {
@@ -258,9 +146,12 @@ int lsh_execute(char **args, char **port, int *sockfd) {
             if (*sockfd != -1) {
                 close(*sockfd);
             }
-            client_quit = true;
             return 0;
-        } else if (strcmp(args[i], "prompt") == 0) {
+        } else if (strcmp(args[i], "help")==0){
+            print_help();
+            return 1;
+        }
+        else if (strcmp(args[i], "prompt") == 0) {
             if (args[i + 1] != NULL) {
                 set_custom_prompt(args[i + 1]);
             } else {
@@ -295,7 +186,6 @@ int lsh_execute(char **args, char **port, int *sockfd) {
             if (*sockfd != -1) {
                 char mess[MAX_LINE_LENGTH];
                 strcpy(mess, args[i]);
-                strcat(mess, " ");
                 send_message(*sockfd, mess);
                 char message[MAX_PROMPT_LENGTH];
                 memset(message, 0, sizeof(message));
@@ -322,31 +212,25 @@ void client_side(char **port, int *sockfd) {
     // Create a buffer for receiving messages from the server
     char buffer[MAX_LINE_LENGTH];
 
-    // Create and initialize a pthread attribute object
-    pthread_attr_t attr;
-    pthread_attr_init(&attr);
-    pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
-
-    if ((*sockfd) != -1) pthread_create(&receive_thread, &attr, check_halt, (void *) sockfd);
-
     do {
         // Read user input
         create_prompt();
         line = lsh_read_line();
-        if (halt_flag) {
-            break;
+
+        if (*sockfd != -1) {
+            ssize_t num_bytes = recv(*sockfd, buffer, sizeof(buffer), MSG_DONTWAIT);
+            if (num_bytes > 0) {
+                buffer[num_bytes] = '\0';
+                if (strcmp(buffer, "halt") == 0) {
+                    printf("\rReceived halt signal from server. Disconnecting from the server.\n");
+                    break;
+                }
+            }
         }
         args = lsh_split_line(line);
 
         // Execute user command
         status = lsh_execute(args, port, sockfd);
-
-        // Check if sockfd has been updated in lsh_execute
-        if (*sockfd != -1 && pthread_equal(receive_thread, pthread_self()) == 0) {
-            // If sockfd is not -1 and the current thread is not the receive thread,
-            // create the receive thread.
-            pthread_create(&receive_thread, &attr, check_halt, (void *) sockfd);
-        }
 
         // Free allocated memory
         free(line);
@@ -354,12 +238,6 @@ void client_side(char **port, int *sockfd) {
 
         // Check if halt signal received from server
     } while (status);
-
-    // Wait for the receive thread to finish
-    pthread_join(receive_thread, NULL);
-
-    // Destroy the pthread attribute object
-    pthread_attr_destroy(&attr);
 
     // Close the socket if it's open before exiting
     if (*sockfd != -1) {

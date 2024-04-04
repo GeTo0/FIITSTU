@@ -76,30 +76,10 @@ void *handle_client(void *arg) {
             // Null-terminate the received data to treat it as a string
             buffer[num_bytes] = '\0';
 
-            char *token = strtok(buffer, " ");
-            while (token != NULL) {
-                // Trim leading whitespace characters
-                while (isspace(*token)) {
-                    token++;
-                }
-                // Trim trailing whitespace characters
-                char *end = token + strlen(token) - 1;
-                while (end > token && isspace(*end)) {
-                    *end-- = '\0';
-                }
-
-                // Allocate memory for the word and copy it from the token
-                char *word = strdup(token);
-
-                if (strcmp(word, "help") == 0) {
-                    char *help_message = arg_help();
-                    send(client_socket, help_message, strlen(help_message), 0);
-                } else {
-                    printf("Sending message: %s\n", word);
-                    send(client_socket, word, strlen(word), 0);
-                }
-                token = strtok(NULL, " ");
-            }
+            // Allocate memory for the word and copy it from the buffer
+            char *message = strdup(buffer);
+            printf("Sending message: %s\n", message);
+            send(client_socket, message, strlen(message), 0);
         }
     }
 
@@ -199,73 +179,3 @@ void server_side(char **port, char *socket_path) {
 }
 
 
-/*
- * else if (strcmp(args[i], "help") == 0) {
-            if (*sockfd != -1) {
-                char mess[MAX_LINE_LENGTH];
-                strcpy(mess, args[i]);
-                strcat(mess, " ");
-                send_message(*sockfd, mess);
-                char message[MAX_PROMPT_LENGTH];
-                memset(message, 0, sizeof(message));
-                ssize_t num_bytes = recv(*sockfd, message, sizeof(message), 0);
-                if (num_bytes > 0) {
-                    message[num_bytes] = '\0';
-                    printf("%s\n", message);
-                }
-            } else {
-                fprintf(stderr, "No connection to server\n");
-                return 1;
-            }
-        } else if (strcmp(args[i], "fork") == 0) {
-            pid_t pid = fork();
-            if (pid == 0) {
-                printf("This is the child process.\n");
-                exit(EXIT_SUCCESS);
-            } else if (pid > 0) {
-                printf("This is the parent process.\n");
-            } else {
-                perror("lsh");
-            }
-        } else if (strstr(args[i], "-p") != NULL) {
-            char **subargs = lsh_split_args(args[i]);
-            int j = 0;
-            while (subargs[j] != NULL) {
-                if (strcmp(subargs[j], "-p") == 0) {
-                    if (subargs[j + 1] != NULL) {
-                        char *new_port = realloc(*port, (strlen(subargs[j + 1]) + 1) * sizeof(char));
-                        if (new_port == NULL) {
-                            fprintf(stderr, "Memory allocation failed\n");
-                            exit(EXIT_FAILURE);
-                        }
-                        *port = new_port;
-                        strcpy(*port, subargs[j + 1]);
-                        if (*sockfd != -1) {
-                            close(*sockfd);
-                        }
-                        *sockfd = connect_to_server(port);
-                    } else {
-                        fprintf(stderr, "Missing port number after -p option\n");
-                        return 1;
-                    }
-                }
-                j++;
-            }
-            free(subargs);
-        } else {
-            //send_message(*sockfd, args[i]);
-            if (strstr(args[i], ">") != NULL) {
-                redirect_output(args[i]);
-            } else {
-                // Execute the command with its arguments (Nechat tu len send_message a ostatne parsovat az na serveri)!!!!!//
-                char **cmd_args = lsh_split_args(args[i]);
-                char *output = lsh_execute_external(cmd_args);
-                if (output != NULL) {
-                    // Print the command's output to the console
-                    printf("%s\n", output);
-                    free(output);
-                }
-                free(cmd_args);
-            }
-        }
- */
