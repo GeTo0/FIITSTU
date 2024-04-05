@@ -156,9 +156,11 @@ int lsh_execute(char **args, char **port, int *sockfd) {
             return 0;
         } else if (strcmp(args[i], "help") == 0) {
             printf("%s", help_message());
-        } else if (strcmp(args[i], "prompt") == 0) {
-            if (args[i + 1] != NULL) {
-                set_custom_prompt(args[i + 1]);
+        } else if (strstr(args[i], "prompt") != NULL) {
+            char **subargs = lsh_split_args(args[i]);
+            int j = 0;
+            if ((strcmp(subargs[j], "prompt") == 0) && (subargs[j + 1] != NULL)) {
+                set_custom_prompt(subargs[j + 1]);
             } else {
                 printf("Usage: prompt <custom_prompt>\n");
             }
@@ -195,7 +197,7 @@ int lsh_execute(char **args, char **port, int *sockfd) {
                 char message[MAX_PROMPT_LENGTH];
                 memset(message, 0, sizeof(message));
                 ssize_t num_bytes = recv(*sockfd, message, sizeof(message), 0);
-                if (num_bytes > 3) {
+                if (num_bytes > 2) {
                     message[num_bytes] = '\0';
                     printf("%s\n", message);
                 }

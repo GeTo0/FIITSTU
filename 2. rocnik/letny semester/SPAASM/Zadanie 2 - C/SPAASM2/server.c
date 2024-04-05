@@ -18,10 +18,12 @@ pthread_mutex_t active_clients_mutex = PTHREAD_MUTEX_INITIALIZER;
 int active_clients[MAX_CLIENTS];
 int num_active_clients = 0;
 int halt_signal_sent = 0;
+int next_user_number = 1; // Initial user number
 
 typedef struct {
     int client_socket;
     char **port;
+    int user_number;
 } ClientData;
 
 typedef struct {
@@ -157,9 +159,10 @@ void handle_arguments(char *argument, int client_socket) {
             char *output = lsh_execute_external(command);
             print_to_file(output, args.output_file);
         }
-        send(client_socket, "1", 3, 0);
+        send(client_socket, "1", 2, 0);
+    } else if (strstr(argument, "|") != NULL) {
+        send(client_socket, argument, strlen(argument), 0);
     } else {
-        printf("SEM 1");
         char **command = lsh_split_args(argument);
         char *output = lsh_execute_external(command);
         if (output != NULL) {
@@ -174,12 +177,16 @@ void *handle_client(void *arg) {
     ClientData *data = (ClientData *) arg;
     int client_socket = data->client_socket;
     char **port = data->port;
+    int user_number = data->user_number; // Assign user number from data
 
     pthread_mutex_lock(&active_clients_mutex);
     active_clients[num_active_clients++] = client_socket;
     pthread_mutex_unlock(&active_clients_mutex);
 
     char buffer[MAX_LINE_LENGTH];
+
+    // Print user connected message
+    printf("User %d connected.\n", user_number);
 
     // Receive messages from the client
     while (!halt_signal_sent) {
@@ -189,7 +196,7 @@ void *handle_client(void *arg) {
             break;
         } else if (num_bytes == 0) {
             // Connection closed by client
-            printf("User disconnected\n");
+            printf("User %d disconnected\n", user_number);
             // Close the connection with the client
             close(client_socket);
             break;
@@ -227,7 +234,6 @@ void *handle_client(void *arg) {
     }
     return NULL;
 }
-
 
 void server_side(char **port, char *socket_path) {
     int server_fd;
@@ -271,7 +277,6 @@ void server_side(char **port, char *socket_path) {
             continue;
         }
 
-        printf("CONNECTION SUCCESS\n");
         // Create a thread to handle the client
         pthread_t tid;
         ClientData *data = malloc(sizeof(ClientData));
@@ -282,6 +287,7 @@ void server_side(char **port, char *socket_path) {
         }
         data->client_socket = client_socket;
         data->port = port;
+        data->user_number = next_user_number++; // Assign user number and increment for next user
 
         if (pthread_create(&tid, NULL, handle_client, data) != 0) {
             perror("Failed to create thread");
