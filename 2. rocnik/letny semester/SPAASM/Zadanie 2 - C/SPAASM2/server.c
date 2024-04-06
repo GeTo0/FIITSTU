@@ -9,6 +9,7 @@
 #include "test.h"
 #include <ctype.h>
 #include <signal.h>
+#include <fcntl.h>
 
 #define MAX_LINE_LENGTH 100
 #define MAX_PROMPT_LENGTH 1024
@@ -151,6 +152,7 @@ char *lsh_execute_external(char **args) {
 
 void handle_arguments(char *argument, int client_socket) {
     if (strstr(argument, ">") != NULL) {
+        printf("%s\n", argument);
         RedirectArgs args = redirect_argument(argument);
         if (strcmp(args.command, "help") == 0) {
             print_to_file(help_message(), args.output_file);
@@ -160,9 +162,7 @@ void handle_arguments(char *argument, int client_socket) {
             print_to_file(output, args.output_file);
         }
         send(client_socket, "1", 2, 0);
-    } else if (strstr(argument, "|") != NULL) {
-        send(client_socket, argument, strlen(argument), 0);
-    } else {
+    }  else {
         char **command = lsh_split_args(argument);
         char *output = lsh_execute_external(command);
         if (output != NULL) {

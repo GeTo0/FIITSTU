@@ -1,0 +1,1 @@
+help;cat subor.txt>pomocny.txt;date;quit

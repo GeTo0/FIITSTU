@@ -13,7 +13,7 @@
 #include <fcntl.h>
 #include <stdbool.h>
 
-#define MAX_LINE_LENGTH 100
+#define MAX_LINE_LENGTH 1024
 #define MAX_PROMPT_LENGTH 1024
 
 int connect_to_server(char **port) {
@@ -69,6 +69,58 @@ char *lsh_read_line(void) {
     }
 
     return line;
+}
+
+
+char *read_command_from_file(char *filename) {
+    FILE *file = fopen(filename, "r");
+    if (file == NULL) {
+        perror("Error opening file");
+        return NULL;
+    }
+
+    char *buffer = NULL;
+    size_t buffer_size = 0;
+    ssize_t bytes_read;
+
+    // Read the contents of the file into buffer
+    bytes_read = getline(&buffer, &buffer_size, file);
+
+    fclose(file);
+
+    if (bytes_read == -1) {
+        if (feof(file)) {
+            // End of file reached
+            printf("End of file reached\n");
+        } else {
+            perror("Error reading from file");
+        }
+        free(buffer);
+        return NULL;
+    }
+
+    // Trim newline character
+    if (bytes_read > 0 && buffer[bytes_read - 1] == '\n') {
+        buffer[bytes_read - 1] = '\0';
+    }
+
+    return buffer;
+}
+
+void remove_input_redirection(char *argument) {
+    if (argument == NULL || argument[0] == '\0') {
+        return; // Nothing to remove
+    }
+
+    // Find the position of the first non-whitespace character after '<'
+    char *start = argument;
+    while (*start != '\0' && isspace((unsigned char)*start)) {
+        start++;
+    }
+
+    // Shift characters to the left to remove '<' and following whitespace
+    size_t len = strlen(start);
+    memmove(argument, start, len + 1); // Include null terminator
 }
 
 char *hashtag_argument(char *token) {
@@ -149,7 +201,20 @@ char **lsh_split_line(char *line) {
 int lsh_execute(char **args, char **port, int *sockfd) {
     int i = 0;
     while (args[i] != NULL) {
-        if (strcmp(args[i], "quit") == 0) {
+        if (strstr(args[i], "<")!=NULL){
+            char *filename = strtok(args[i], "<");
+                remove_input_redirection(args[i]);
+                char *end = filename + strlen(filename) - 1;
+                while (end > filename && isspace((unsigned char)*end)) end--;
+                *(end + 1) = '\0';
+                char *line = read_command_from_file(filename);
+                if (line != NULL) {
+                    char **arguments = lsh_split_line(line);
+                    lsh_execute(arguments, port, sockfd);
+                    EXIT_SUCCESS;
+                }
+            }
+        else if (strcmp(args[i], "quit") == 0) {
             if (*sockfd != -1) {
                 close(*sockfd);
             }
@@ -210,7 +275,6 @@ int lsh_execute(char **args, char **port, int *sockfd) {
     }
     return 1;
 }
-
 
 void client_side(char **port, int *sockfd) {
     char *line;
