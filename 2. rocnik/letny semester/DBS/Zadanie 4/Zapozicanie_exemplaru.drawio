@@ -1,0 +1,132 @@
+<mxfile host="app.diagrams.net" modified="2024-04-06T14:11:22.477Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36" etag="TTdQOTWi0a2lWTYpUzrW" version="24.2.2" type="device">
+  <diagram name="Page-1" id="13e1069c-82ec-6db2-03f1-153e76fe0fe0">
+    <mxGraphModel dx="1221" dy="725" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" background="none" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="eJXHW5s5-G3WXWrC1lpJ-27" value="Stránka" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;rounded=1;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fontFamily=Verdana;fontSize=12;align=center;" parent="1" vertex="1">
+          <mxGeometry x="420" y="80" width="100" height="600" as="geometry" />
+        </mxCell>
+        <mxCell id="eJXHW5s5-G3WXWrC1lpJ-28" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fontFamily=Verdana;fontSize=12;align=center;" parent="eJXHW5s5-G3WXWrC1lpJ-27" vertex="1">
+          <mxGeometry x="45" y="100" width="10" height="500" as="geometry" />
+        </mxCell>
+        <mxCell id="eJXHW5s5-G3WXWrC1lpJ-29" value="4. Zobrazí page pre požiciavanie" style="html=1;verticalAlign=bottom;endArrow=block;labelBackgroundColor=none;fontFamily=Verdana;fontSize=12;" parent="eJXHW5s5-G3WXWrC1lpJ-27" target="eJXHW5s5-G3WXWrC1lpJ-38" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="45" y="170.5" as="sourcePoint" />
+            <mxPoint x="215" y="170" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="eJXHW5s5-G3WXWrC1lpJ-30" value="Server" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;rounded=1;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fontFamily=Verdana;fontSize=12;align=center;" parent="1" vertex="1">
+          <mxGeometry x="720" y="80" width="100" height="630" as="geometry" />
+        </mxCell>
+        <mxCell id="eJXHW5s5-G3WXWrC1lpJ-31" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fontFamily=Verdana;fontSize=12;align=center;" parent="eJXHW5s5-G3WXWrC1lpJ-30" vertex="1">
+          <mxGeometry x="45" y="120" width="10" height="510" as="geometry" />
+        </mxCell>
+        <mxCell id="eJXHW5s5-G3WXWrC1lpJ-36" value="Databáza" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;rounded=1;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fontFamily=Verdana;fontSize=12;align=center;" parent="1" vertex="1">
+          <mxGeometry x="1000" y="85" width="100" height="655" as="geometry" />
+        </mxCell>
+        <mxCell id="eJXHW5s5-G3WXWrC1lpJ-37" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fontFamily=Verdana;fontSize=12;align=center;" parent="eJXHW5s5-G3WXWrC1lpJ-36" vertex="1">
+          <mxGeometry x="45" y="130" width="10" height="520" as="geometry" />
+        </mxCell>
+        <mxCell id="eJXHW5s5-G3WXWrC1lpJ-38" value="Zamestnanec" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;rounded=1;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fontFamily=Verdana;fontSize=12;align=center;" parent="1" vertex="1">
+          <mxGeometry x="100" y="80" width="100" height="560" as="geometry" />
+        </mxCell>
+        <mxCell id="eJXHW5s5-G3WXWrC1lpJ-39" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fontFamily=Verdana;fontSize=12;align=center;" parent="eJXHW5s5-G3WXWrC1lpJ-38" vertex="1">
+          <mxGeometry x="45" y="100" width="10" height="460" as="geometry" />
+        </mxCell>
+        <mxCell id="eJXHW5s5-G3WXWrC1lpJ-40" value="1. Klikne na &quot;požičaný exemplár&quot;" style="html=1;verticalAlign=bottom;endArrow=block;entryX=0;entryY=0;labelBackgroundColor=none;fontFamily=Verdana;fontSize=12;edgeStyle=elbowEdgeStyle;elbow=vertical;" parent="1" source="eJXHW5s5-G3WXWrC1lpJ-39" target="eJXHW5s5-G3WXWrC1lpJ-28" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="220" y="190" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="eJXHW5s5-G3WXWrC1lpJ-41" value="2. Vypýta page pre požičiavanie" style="html=1;verticalAlign=bottom;endArrow=block;entryX=0;entryY=0;labelBackgroundColor=none;fontFamily=Verdana;fontSize=12;edgeStyle=elbowEdgeStyle;elbow=vertical;" parent="1" source="eJXHW5s5-G3WXWrC1lpJ-28" target="eJXHW5s5-G3WXWrC1lpJ-31" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="550" y="200" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="eJXHW5s5-G3WXWrC1lpJ-42" value="3. Vráti page pre požičiavanie" style="html=1;verticalAlign=bottom;endArrow=block;labelBackgroundColor=none;fontFamily=Verdana;fontSize=12;" parent="1" source="eJXHW5s5-G3WXWrC1lpJ-30" target="eJXHW5s5-G3WXWrC1lpJ-27" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="760" y="230" as="sourcePoint" />
+            <mxPoint x="520" y="230" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="610" y="230" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="eJXHW5s5-G3WXWrC1lpJ-43" value="6. Vypýta zoznam kategórií" style="html=1;verticalAlign=bottom;endArrow=block;labelBackgroundColor=none;fontFamily=Verdana;fontSize=12;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="471" y="330" as="sourcePoint" />
+            <mxPoint x="766" y="330" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="eJXHW5s5-G3WXWrC1lpJ-44" value="9. Vráti zoznam kategórií" style="html=1;verticalAlign=bottom;endArrow=block;labelBackgroundColor=none;fontFamily=Verdana;fontSize=12;exitX=0.133;exitY=0.049;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="761" y="429" as="sourcePoint" />
+            <mxPoint x="465" y="429" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="605" y="429" />
+            </Array>
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="eJXHW5s5-G3WXWrC1lpJ-45" value="7. Zisti zoznam kategórií" style="html=1;verticalAlign=bottom;endArrow=block;labelBackgroundColor=none;fontFamily=Verdana;fontSize=12;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="770" y="350.5" as="sourcePoint" />
+            <mxPoint x="1035" y="350.5" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="eJXHW5s5-G3WXWrC1lpJ-46" value="8. Vráti zoznam kategórií" style="html=1;verticalAlign=bottom;endArrow=block;labelBackgroundColor=none;fontFamily=Verdana;fontSize=12;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1035" y="390" as="sourcePoint" />
+            <mxPoint x="770" y="390" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="eJXHW5s5-G3WXWrC1lpJ-47" value="10. Zobrazí zoznam kategórií" style="html=1;verticalAlign=bottom;endArrow=block;labelBackgroundColor=none;fontFamily=Verdana;fontSize=12;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="460" y="460" as="sourcePoint" />
+            <mxPoint x="145" y="460" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="300" y="460" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="eJXHW5s5-G3WXWrC1lpJ-48" value="5. Klikne na vybrať kategóriu" style="html=1;verticalAlign=bottom;endArrow=block;labelBackgroundColor=none;fontFamily=Verdana;fontSize=12;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="145" y="320" as="sourcePoint" />
+            <mxPoint x="470" y="320.5" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="eJXHW5s5-G3WXWrC1lpJ-49" value="11. Pridá informácie o exemplári" style="html=1;verticalAlign=bottom;endArrow=block;labelBackgroundColor=none;fontFamily=Verdana;fontSize=12;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="150" y="510" as="sourcePoint" />
+            <mxPoint x="470" y="511" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="eJXHW5s5-G3WXWrC1lpJ-33" value="13. Klikne na uložiť exemplár" style="html=1;verticalAlign=bottom;endArrow=block;labelBackgroundColor=none;fontFamily=Verdana;fontSize=12;" parent="1" edge="1" target="eJXHW5s5-G3WXWrC1lpJ-28">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="150" y="620" as="sourcePoint" />
+            <mxPoint x="460" y="620" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="eJXHW5s5-G3WXWrC1lpJ-50" value="12. Vyberie inštitúciu, z ktorej bol požičaný" style="html=1;verticalAlign=bottom;endArrow=block;labelBackgroundColor=none;fontFamily=Verdana;fontSize=12;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="150" y="560" as="sourcePoint" />
+            <mxPoint x="470" y="561" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="eJXHW5s5-G3WXWrC1lpJ-34" value="15. Pošle údaje o požičanom exemplári" style="html=1;verticalAlign=bottom;endArrow=block;labelBackgroundColor=none;fontFamily=Verdana;fontSize=12;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="470" y="660" as="sourcePoint" />
+            <mxPoint x="765" y="660" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="eJXHW5s5-G3WXWrC1lpJ-35" value="16. Uloží exemplár do databázy" style="html=1;verticalAlign=bottom;endArrow=block;labelBackgroundColor=none;fontFamily=Verdana;fontSize=12;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="770" y="690" as="sourcePoint" />
+            <mxPoint x="1050" y="690" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -109,12 +109,44 @@ char **lsh_split_args(char *argument) {
         exit(EXIT_FAILURE);
     }
 
-    // Split the line based on semicolon
-    subarg = strtok(argument, " \t\n");
-    while (subarg != NULL) {
-        // Add the token to the list
-        subargs[position] = subarg;
-        position++;
+    while (*argument != '\0') {
+        // Skip leading spaces
+        while (*argument == ' ' || *argument == '\t' || *argument == '\n')
+            argument++;
+
+        if (*argument == '\0')
+            break;
+
+        // Check if the token starts with a quote
+        if (*argument == '"') {
+            // Move to the next character (after the opening quote)
+            argument++;
+            subarg = argument;
+            // Find the closing quote
+            argument = strchr(argument, '"');
+            if (!argument) {
+                fprintf(stderr, "lsh: unterminated quoted string\n");
+                exit(EXIT_FAILURE);
+            }
+            // Null-terminate the quoted string
+            *argument = '\0';
+            // Add the token to the list
+            subargs[position++] = subarg;
+            // Move to the next character (after the closing quote)
+            argument++;
+        } else {
+            // Find the next space or end of string
+            subarg = argument;
+            while (*argument != ' ' && *argument != '\t' && *argument != '\n' && *argument != '\0')
+                argument++;
+            // Null-terminate the token
+            if (*argument != '\0') {
+                *argument = '\0';
+                argument++;
+            }
+            // Add the token to the list
+            subargs[position++] = subarg;
+        }
 
         // Resize the buffer if necessary
         if (position >= bufsize) {
@@ -125,11 +157,13 @@ char **lsh_split_args(char *argument) {
                 exit(EXIT_FAILURE);
             }
         }
-
-        // Get the next token
-        subarg = strtok(NULL, " \t\n");
     }
     subargs[position] = NULL; // Null-terminate the list
+    int k = 0;
+    while (subargs[k] != NULL) {
+        printf("%d %s\n", k, subargs[k]);
+        k++;
+    }
     return subargs;
 }
 
