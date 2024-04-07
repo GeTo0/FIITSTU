@@ -1,1 +1,1 @@
-cat subor.txt;quit;date
+cat subor.txt;date>temp.txt;quit

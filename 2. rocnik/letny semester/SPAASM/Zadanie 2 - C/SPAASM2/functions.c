@@ -1,19 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <time.h>
-#include <pwd.h>
 #include "test.h"
-#include <ctype.h>
-#include <signal.h>
-
-
-#define MAX_LINE_LENGTH 100
-#define MAX_PROMPT_LENGTH 1024
 
 char *custom_prompt = NULL; // Global variable to store the custom prompt
 
@@ -162,7 +147,6 @@ char **lsh_split_args(char *argument) {
     subargs[position] = NULL; // Null-terminate the list
     int k = 0;
     while (subargs[k] != NULL) {
-        printf("%d %s\n", k, subargs[k]);
         k++;
     }
     return subargs;
@@ -195,4 +179,8 @@ void remove_input_redirection(char *argument) {
     // Shift characters to the left to remove '<' and following whitespace
     size_t len = strlen(start);
     memmove(argument, start, len + 1); // Include null terminator
+}
+
+time_t current_timestamp() {
+    return time(NULL);
 }

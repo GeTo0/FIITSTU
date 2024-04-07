@@ -1,20 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <time.h>
-#include <pwd.h>
 #include "test.h"
-#include <ctype.h>
-#include <sys/wait.h>
-#include <fcntl.h>
-#include <stdbool.h>
-
-#define MAX_LINE_LENGTH 1024
-#define MAX_PROMPT_LENGTH 1024
 
 int connect_to_server(char **port) {
     int sockfd;
@@ -51,24 +35,6 @@ int send_message(int sockfd, char *message) {
     } else {
         return 0; // Return 0 on success
     }
-}
-
-char *lsh_read_line(void) {
-    char *line = malloc(MAX_LINE_LENGTH * sizeof(char));
-    if (!line) {
-        fprintf(stderr, "lsh: allocation error\n");
-        exit(EXIT_FAILURE);
-    }
-
-    if (!fgets(line, MAX_LINE_LENGTH, stdin)) {
-        free(line);
-        if (!feof(stdin)) {
-            perror("lsh: fgets");
-        }
-        exit(EXIT_FAILURE);
-    }
-
-    return line;
 }
 
 char *read_command_from_file(char *filename) {
@@ -137,6 +103,24 @@ char *hashtag_argument(char *token) {
     return NULL;
 }
 
+char *lsh_read_line(void) {
+    char *line = malloc(MAX_LINE_LENGTH * sizeof(char));
+    if (!line) {
+        fprintf(stderr, "lsh: allocation error\n");
+        exit(EXIT_FAILURE);
+    }
+
+    if (!fgets(line, MAX_LINE_LENGTH, stdin)) {
+        free(line);
+        if (!feof(stdin)) {
+            perror("lsh: fgets");
+        }
+        exit(EXIT_FAILURE);
+    }
+
+    return line;
+}
+
 char **lsh_split_line(char *line) {
     int bufsize = MAX_LINE_LENGTH, position = 0;
     char **tokens = malloc(bufsize * sizeof(char *));
@@ -184,26 +168,24 @@ char **lsh_split_line(char *line) {
 int lsh_execute(char **args, char **port, int *sockfd) {
     int i = 0;
     while (args[i] != NULL) {
-        if (strstr(args[i], "<")!=NULL){
+        if (strstr(args[i], "<") != NULL) {
             char *filename = strtok(args[i], "<");
-                remove_input_redirection(args[i]);
-                char *end = filename + strlen(filename) - 1;
-                while (end > filename && isspace((unsigned char)*end)) end--;
-                *(end + 1) = '\0';
-                char *line = read_command_from_file(filename);
-                if (line != NULL) {
-                    char **arguments = lsh_split_line(line);
-                    lsh_execute(arguments, port, sockfd);
-
-                    while(arguments[i] != NULL){
-                        if (strcmp(arguments[i],"quit")==0){
-                            return 0;
-                        }
-                        i++;
+            remove_input_redirection(args[i]);
+            char *end = filename + strlen(filename) - 1;
+            while (end > filename && isspace((unsigned char) *end)) end--;
+            *(end + 1) = '\0';
+            char *line = read_command_from_file(filename);
+            if (line != NULL) {
+                char **arguments = lsh_split_line(line);
+                lsh_execute(arguments, port, sockfd);
+                while (arguments[i] != NULL) {
+                    if (strcmp(arguments[i], "quit") == 0) {
+                        return 0;
                     }
+                    i++;
                 }
             }
-        else if (strcmp(args[i], "quit") == 0) {
+        } else if (strcmp(args[i], "quit") == 0) {
             if (*sockfd != -1) {
                 close(*sockfd);
             }

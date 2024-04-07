@@ -1,25 +1,6 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <pthread.h>
 #include "test.h"
-#include <ctype.h>
-#include <signal.h>
-#include <fcntl.h>
 
-#define MAX_LINE_LENGTH 100
-#define MAX_PROMPT_LENGTH 1024
-#define MAX_CLIENTS 10
 pthread_mutex_t active_clients_mutex = PTHREAD_MUTEX_INITIALIZER;
-
-int active_clients[MAX_CLIENTS];
-int num_active_clients = 0;
-int halt_signal_sent = 0;
-int next_user_number = 1; // Initial user number
 
 typedef struct {
     int client_socket;
@@ -32,16 +13,58 @@ typedef struct {
     char client_address[INET_ADDRSTRLEN]; // Store client address
     int client_port; // Store client port
     int user_number; // Store user number
+    time_t last_activity_time;
 } ClientInfo;
-
-ClientInfo active_connections[MAX_CLIENTS];
 
 typedef struct {
     char *command;
     char *output_file;
 } RedirectArgs;
 
+int active_clients[MAX_CLIENTS];
+int num_active_clients = 0;
+int halt_signal_sent = 0;
+int next_user_number = 1; // Initial user number
+
+ClientInfo active_connections[MAX_CLIENTS];
 pthread_t server_thread;
+
+void send_halt_to_client(int client_socket) {
+    // Send "halt" message to the client socket
+    send(client_socket, "halt", strlen("halt"), 0);
+}
+
+void check_inactive_clients() {
+    while (!halt_signal_sent) {
+        // Sleep for 1 second
+        sleep(1);
+
+        // Get the current timestamp
+        time_t current_time = current_timestamp();
+
+        pthread_mutex_lock(&active_clients_mutex);
+        for (int i = 0; i < num_active_clients; ++i) {
+            // Calculate time difference in seconds
+            time_t time_diff = current_time - active_connections[i].last_activity_time;
+
+            // Check if the client is inactive for more than 1 minute
+            if (time_diff >= INACTIVE_TIMEOUT) {
+                // Send halt signal to the client
+                send_halt_to_client(active_clients[i]);
+                printf("User %d was disconnected due to inactivity\n", active_connections[i].user_number);
+
+                // Remove the client from the list of active clients
+                // Shift remaining elements to the left
+                for (int j = i; j < num_active_clients - 1; ++j) {
+                    active_clients[j] = active_clients[j + 1];
+                    active_connections[j] = active_connections[j + 1];
+                }
+                num_active_clients--;
+            }
+        }
+        pthread_mutex_unlock(&active_clients_mutex);
+    }
+}
 
 void handle_interrupt(int signum) {
     if (signum == SIGINT) {
@@ -175,7 +198,6 @@ char *lsh_execute_external(char **args) {
 
 void handle_arguments(char *argument, int client_socket) {
     if (strstr(argument, ">") != NULL) {
-        printf("%s\n", argument);
         RedirectArgs args = redirect_argument(argument);
         if (strcmp(args.command, "help") == 0) {
             print_to_file(help_message(), args.output_file);
@@ -208,19 +230,19 @@ void *handle_client(void *arg) {
     char client_ip[INET_ADDRSTRLEN];
     inet_ntop(AF_INET, &client_addr.sin_addr, client_ip, INET_ADDRSTRLEN);
 
-
     pthread_mutex_lock(&active_clients_mutex);
 
     active_connections[num_active_clients].client_socket = client_socket;
     strncpy(active_connections[num_active_clients].client_address, client_ip, INET_ADDRSTRLEN);
     active_connections[num_active_clients].client_port = ntohs(client_addr.sin_port);
     active_connections[num_active_clients].user_number = user_number;
+    active_connections[num_active_clients].last_activity_time = current_timestamp();
 
     active_clients[num_active_clients++] = client_socket;
     pthread_mutex_unlock(&active_clients_mutex);
 
     char buffer[MAX_LINE_LENGTH];
-
+    time_t last_activity_time = current_timestamp();
     // Print user connected message
     printf("User %d connected.\n", user_number);
 
@@ -239,6 +261,7 @@ void *handle_client(void *arg) {
         } else {
             // Null-terminate the received data to treat it as a string
             buffer[num_bytes] = '\0';
+            active_connections[num_active_clients - 1].last_activity_time = current_timestamp();
 
             // Allocate memory for the word and copy it from the buffer
             char *argument = strdup(buffer);
@@ -305,6 +328,13 @@ void server_side(char **port, char *socket_path) {
 
     signal(SIGINT, handle_interrupt);
 
+    // Create a thread to check inactive clients
+    pthread_t inactive_clients_thread;
+    if (pthread_create(&inactive_clients_thread, NULL, (void *(*)(void *)) check_inactive_clients, NULL) != 0) {
+        perror("Failed to create thread for checking inactive clients");
+        exit(EXIT_FAILURE);
+    }
+
     // Accept incoming connections and handle them in separate threads
     while (1) {
         int client_socket;
@@ -339,5 +369,3 @@ void server_side(char **port, char *socket_path) {
     // Close the server socket
     close(server_fd);
 }
-
-
