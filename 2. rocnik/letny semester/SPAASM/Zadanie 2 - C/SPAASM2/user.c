@@ -71,7 +71,6 @@ char *lsh_read_line(void) {
     return line;
 }
 
-
 char *read_command_from_file(char *filename) {
     FILE *file = fopen(filename, "r");
     if (file == NULL) {
@@ -105,22 +104,6 @@ char *read_command_from_file(char *filename) {
     }
 
     return buffer;
-}
-
-void remove_input_redirection(char *argument) {
-    if (argument == NULL || argument[0] == '\0') {
-        return; // Nothing to remove
-    }
-
-    // Find the position of the first non-whitespace character after '<'
-    char *start = argument;
-    while (*start != '\0' && isspace((unsigned char)*start)) {
-        start++;
-    }
-
-    // Shift characters to the left to remove '<' and following whitespace
-    size_t len = strlen(start);
-    memmove(argument, start, len + 1); // Include null terminator
 }
 
 char *hashtag_argument(char *token) {
@@ -211,7 +194,13 @@ int lsh_execute(char **args, char **port, int *sockfd) {
                 if (line != NULL) {
                     char **arguments = lsh_split_line(line);
                     lsh_execute(arguments, port, sockfd);
-                    EXIT_SUCCESS;
+
+                    while(arguments[i] != NULL){
+                        if (strcmp(arguments[i],"quit")==0){
+                            return 0;
+                        }
+                        i++;
+                    }
                 }
             }
         else if (strcmp(args[i], "quit") == 0) {

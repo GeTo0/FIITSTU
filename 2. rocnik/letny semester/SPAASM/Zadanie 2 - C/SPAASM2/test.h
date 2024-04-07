@@ -29,5 +29,6 @@ void set_custom_prompt(const char *new_prompt);
 char* help_message();
 char **lsh_split_args(char *argument);
 void print_to_file(const char *output, const char *filename);
+void remove_input_redirection(char *argument);
 
 #endif /* TEST_H */

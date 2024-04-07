@@ -28,6 +28,15 @@ typedef struct {
 } ClientData;
 
 typedef struct {
+    int client_socket;
+    char client_address[INET_ADDRSTRLEN]; // Store client address
+    int client_port; // Store client port
+    int user_number; // Store user number
+} ClientInfo;
+
+ClientInfo active_connections[MAX_CLIENTS];
+
+typedef struct {
     char *command;
     char *output_file;
 } RedirectArgs;
@@ -42,6 +51,17 @@ void handle_interrupt(int signum) {
     }
 }
 
+void stat_argument() {
+    printf("Active Connections:\n");
+    for (int i = 0; i < num_active_clients; i++) {
+        printf("User %d: Socket: %d, IP: %s, Port: %d\n",
+               active_connections[i].user_number,
+               active_connections[i].client_socket,
+               active_connections[i].client_address,
+               active_connections[i].client_port);
+    }
+}
+
 void *server_task(void *arg) {
     // Example of a server task, such as sending the halt message
     while (1) {
@@ -52,6 +72,9 @@ void *server_task(void *arg) {
             send_halt_to_clients(active_clients, &num_active_clients, &halt_signal_sent, &active_clients_mutex);
             printf("Sent halt command to all clients.\n");
             break;
+        }
+        else if(strcmp(command, "stat")==0){
+            stat_argument();
         }
     }
     return NULL;
@@ -179,7 +202,20 @@ void *handle_client(void *arg) {
     char **port = data->port;
     int user_number = data->user_number; // Assign user number from data
 
+    struct sockaddr_in client_addr;
+    socklen_t client_addr_len = sizeof(client_addr);
+    getpeername(client_socket, (struct sockaddr *) &client_addr, &client_addr_len);
+    char client_ip[INET_ADDRSTRLEN];
+    inet_ntop(AF_INET, &client_addr.sin_addr, client_ip, INET_ADDRSTRLEN);
+
+
     pthread_mutex_lock(&active_clients_mutex);
+
+    active_connections[num_active_clients].client_socket = client_socket;
+    strncpy(active_connections[num_active_clients].client_address, client_ip, INET_ADDRSTRLEN);
+    active_connections[num_active_clients].client_port = ntohs(client_addr.sin_port);
+    active_connections[num_active_clients].user_number = user_number;
+
     active_clients[num_active_clients++] = client_socket;
     pthread_mutex_unlock(&active_clients_mutex);
 

@@ -71,6 +71,7 @@ char* help_message(){
      "<command> > <file>        Redirect output to file\n"
      "<command> #<commentary>   Ability to write commentary\n"
      "<command>;<command>       More commands at once\n"
+     "stat (only on server)     Prints all current connections\n"
      "--------------------------------------------\n"
      "External Commands:\n"
      "date                      Prints current date\n"
@@ -178,4 +179,20 @@ void print_to_file(const char *output, const char *filename) {
     fprintf(file, "%s", output);
 
     fclose(file); // Close the file
+}
+
+void remove_input_redirection(char *argument) {
+    if (argument == NULL || argument[0] == '\0') {
+        return; // Nothing to remove
+    }
+
+    // Find the position of the first non-whitespace character after '<'
+    char *start = argument;
+    while (*start != '\0' && isspace((unsigned char)*start)) {
+        start++;
+    }
+
+    // Shift characters to the left to remove '<' and following whitespace
+    size_t len = strlen(start);
+    memmove(argument, start, len + 1); // Include null terminator
 }
