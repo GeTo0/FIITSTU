@@ -34,8 +34,7 @@ int main(int argc, char **argv) {
                 fprintf(stderr, "Missing local socket path (-u <path>)\n");
                 return EXIT_FAILURE;
             }
-        }
-        else if (strcmp(argv[i], "-h")==0){
+        } else if (strcmp(argv[i], "-h") == 0) {
             printf("%s", help_message());
             return 1;
         }
@@ -43,16 +42,11 @@ int main(int argc, char **argv) {
 
     /*ERROR HANDLING*/
     if (mode == NULL) {
-        fprintf(stderr, "Missing mode argument (-s for server, -c for client)\n");
-        return EXIT_FAILURE;
-    }
-
-
-    /*DECIDE WHICH SIDE*/
-    if (strcmp(mode, "-s") == 0) {
+        client_side(&port, &sockfd);
+    } else if (strcmp(mode, "-s") == 0) {
         server_side(&port, socket_path);
     } else if (strcmp(mode, "-c") == 0) {
-        if (port != NULL){
+        if (port != NULL) {
             sockfd = connect_to_server(&port);
         }
         client_side(&port, &sockfd);

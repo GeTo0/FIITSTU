@@ -21,11 +21,6 @@
 #define MAX_CLIENTS 10
 #define INACTIVE_TIMEOUT 60
 
-struct Node {
-    char *word;
-    struct Node *next;
-};
-
 /*MAIN*/
 int connect_to_server(char **port);
 void client_side(char **port, int *sockfd);

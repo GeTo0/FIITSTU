@@ -187,7 +187,9 @@ int lsh_execute(char **args, char **port, int *sockfd) {
                 }
             }
         } else if (strcmp(args[i], "quit") == 0) {
-            if (*sockfd != -1) close(*sockfd);
+            if (*sockfd != -1) {
+                close(*sockfd);
+            }
             return 0;
         } else if (strcmp(args[i], "help") == 0) {
             printf("%s", help_message());
@@ -285,5 +287,6 @@ void client_side(char **port, int *sockfd) {
     // Close the socket if it's open before exiting
     if (*sockfd != -1) {
         close(*sockfd);
+
     }
 }
