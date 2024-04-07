@@ -1,5 +1,5 @@
-#ifndef TEST_H
-#define TEST_H
+#ifndef COMMON_H
+#define COMMON_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -34,6 +34,7 @@ void server_side(char **port, char *socket_path);
 /* Functions */
 void create_prompt();
 void set_custom_prompt(const char *new_prompt);
+char* useful_commands();
 char* help_message();
 void send_halt_to_clients(int *active_clients, int *num_active_clients, int *halt_signal_sent, pthread_mutex_t *active_clients_mutex);
 char **lsh_split_args(char *argument);
@@ -41,4 +42,4 @@ void print_to_file(const char *output, const char *filename);
 void remove_input_redirection(char *argument);
 time_t current_timestamp();
 
-#endif /* TEST_H */
+#endif /* COMMON_H */

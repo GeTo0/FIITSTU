@@ -1,4 +1,4 @@
-#include "test.h"
+#include "common.h"
 
 char *custom_prompt = NULL; // Global variable to store the custom prompt
 
@@ -38,6 +38,25 @@ void set_custom_prompt(const char *new_prompt) {
         custom_prompt=strdup(new_prompt);
     }
 }
+char* useful_commands(){
+    char *com_mes = ("Here are commands you can try running in my program to test all use-cases\n"
+                     "cat subor.txt\n"
+                     "cat subor.txt>temp.txt\n"
+                     "help\n"
+                     "help>temp.txt\n"
+                     "wc -l subor.txt\n"
+                     "wc -l < subor.txt\n"
+                     "cat < subor.txt\n"
+                     "help;cat subor.txt;date;quit\n"
+                     "!commands.txt\n"
+                     "help#print help;date #date\n"
+                     "stat (only on server side)\n"
+                     "halt (only on server side)\n"
+                     "Try being inactive on client side for 60 seconds, it will disconnect you\n"
+                     "port 50000;help;help>temp.txt#prints help to file;date;wc -l subor.txt > temp.txt;quit\n"
+            );
+    return com_mes;
+}
 
 char* help_message(){
     char* help_mes= ("Author: Dominik Zaťovič\n"
@@ -54,8 +73,10 @@ char* help_message(){
      "halt                      Terminate server side program\n"
      "prompt [<prompt> | reset] Create custom prompt/reset to default\n"
      "<command> > <file>        Redirect output to file\n"
+     "<command> < <file>        Redirect input from file into command\n"
      "<command> #<commentary>   Ability to write commentary\n"
      "<command>;<command>       More commands at once\n"
+     "!commands.txt             Run commands from file called commands.txt (you can rename it)\n"
      "stat (only on server)     Prints all current connections\n"
      "--------------------------------------------\n"
      "External Commands:\n"
@@ -64,12 +85,13 @@ char* help_message(){
      "cat <file>                Prints file content\n"
      "--------------------------------------------\n"
      "IMPORTANT:\n"
+     "You are unfortunately unable to use # in prompt. You can use it, but it wont display correctly\n"
      "Don´t use command 'cd', as it would get us away from working dir, making program unusable\n"
      "Beware of spaces, as it matter where you put them\n"
      "Right command: cat subor.txt>output.txt\n"
      "Wrong command: cat subor.txt > output.txt\n"
      "Right use-cases are written above in this help message\n"
-     "Test this command (./zadanie2 -c): 'port <port>;help;cat subor.txt>output.txt;help>help.txt;quit'\n"
+     "To list useful commands to try do '-commands'\n"
     );
     return help_mes;
 }

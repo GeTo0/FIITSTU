@@ -1,4 +1,5 @@
-#include "test.h"
+#include "common.h"
+
 
 int connect_to_server(char **port) {
     int sockfd;
@@ -168,8 +169,8 @@ char **lsh_split_line(char *line) {
 int lsh_execute(char **args, char **port, int *sockfd) {
     int i = 0;
     while (args[i] != NULL) {
-        if (strstr(args[i], "<") != NULL) {
-            char *filename = strtok(args[i], "<");
+        if (strstr(args[i], "!") != NULL) {
+            char *filename = strtok(args[i], "!");
             remove_input_redirection(args[i]);
             char *end = filename + strlen(filename) - 1;
             while (end > filename && isspace((unsigned char) *end)) end--;
@@ -186,12 +187,12 @@ int lsh_execute(char **args, char **port, int *sockfd) {
                 }
             }
         } else if (strcmp(args[i], "quit") == 0) {
-            if (*sockfd != -1) {
-                close(*sockfd);
-            }
+            if (*sockfd != -1) close(*sockfd);
             return 0;
         } else if (strcmp(args[i], "help") == 0) {
             printf("%s", help_message());
+        } else if (strcmp(args[i], "-commands")==0){
+            printf("%s", useful_commands());
         } else if (strstr(args[i], "prompt") != NULL) {
             char **subargs = lsh_split_args(args[i]);
             int j = 0;

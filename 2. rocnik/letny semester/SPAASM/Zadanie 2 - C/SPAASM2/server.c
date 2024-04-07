@@ -1,4 +1,5 @@
-#include "test.h"
+#include "common.h"
+
 
 pthread_mutex_t active_clients_mutex = PTHREAD_MUTEX_INITIALIZER;
 
@@ -20,6 +21,12 @@ typedef struct {
     char *command;
     char *output_file;
 } RedirectArgs;
+
+typedef struct {
+    char *command;
+    char *input_file;
+} RedirectInputArgs;
+
 
 int active_clients[MAX_CLIENTS];
 int num_active_clients = 0;
@@ -154,15 +161,17 @@ char *lsh_execute_external(char **args) {
     if (pid == 0) {
         // Child process
         dup2(fd[1], STDOUT_FILENO); // Redirect stdout to the pipe
+        dup2(fd[1], STDERR_FILENO); // Redirect stderr to the pipe
         close(fd[0]); // Close the read end of the pipe
 
         // Execute the command
         if (execvp(args[0], args) == -1) {
-            return NULL;
+            perror("Execution failed");
+            exit(EXIT_FAILURE);
         }
     } else if (pid < 0) {
-        return NULL;
-        // Error forking
+        perror("Fork failed");
+        exit(EXIT_FAILURE);
     } else {
         // Parent process
         close(fd[1]); // Close the write end of the pipe
@@ -196,6 +205,48 @@ char *lsh_execute_external(char **args) {
     return NULL;
 }
 
+RedirectInputArgs redirect_input_argument(char *arg){
+    RedirectInputArgs args;
+
+    // Initialize the fields to NULL
+    args.command = NULL;
+    args.input_file = NULL;
+
+    // Find the position of '>'
+    char *pos = strchr(arg, '<');
+    if (pos == NULL) {
+        // No output redirection, set command only
+        args.command = strdup(arg);
+    } else {
+        // Output redirection found, split the argument
+        *pos = '\0'; // Null-terminate the command
+        args.command = strdup(arg);
+        args.input_file = strdup(pos + 1); // Set the output file
+    }
+
+    // Trim leading and trailing whitespace from filenames
+    if (args.command != NULL) {
+        while (*args.command && isspace(*args.command)) {
+            args.command++;
+        }
+        char *end = args.command + strlen(args.command) - 1;
+        while (end > args.command && isspace(*end)) {
+            *end-- = '\0';
+        }
+    }
+    if (args.input_file != NULL) {
+        while (*args.input_file && isspace(*args.input_file)) {
+            args.input_file++;
+        }
+        char *end = args.input_file + strlen(args.input_file) - 1;
+        while (end > args.input_file && isspace(*end)) {
+            *end-- = '\0';
+        }
+    }
+
+    return args;
+}
+
 void handle_arguments(char *argument, int client_socket) {
     if (strstr(argument, ">") != NULL) {
         RedirectArgs args = redirect_argument(argument);
@@ -207,7 +258,18 @@ void handle_arguments(char *argument, int client_socket) {
             print_to_file(output, args.output_file);
         }
         send(client_socket, "1", 2, 0);
-    }  else {
+    } else if(strstr(argument, "<")!= NULL){
+        RedirectInputArgs args = redirect_input_argument(argument);
+        char **command = lsh_split_args(args.command);
+        int k=0;
+        while(command[k]!=NULL){
+            k++;
+        }
+        command[k]=args.input_file;
+        char *output = lsh_execute_external(command);
+
+        send(client_socket, output, strlen(output), 0);
+    } else {
         char **command = lsh_split_args(argument);
         char *output = lsh_execute_external(command);
         if (output != NULL) {
@@ -286,7 +348,7 @@ void *handle_client(void *arg) {
     close(client_socket);
     free(data);
 
-    if (num_active_clients == 0) {
+    if (num_active_clients == 0 && halt_signal_sent==1)  {
         printf("All clients disconnected. Exiting server.\n");
         pthread_cancel(server_thread); // Cancel the server thread
         exit(EXIT_SUCCESS);
