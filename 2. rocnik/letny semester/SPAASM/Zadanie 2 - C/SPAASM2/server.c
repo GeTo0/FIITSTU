@@ -348,7 +348,7 @@ void *handle_client(void *arg) {
     close(client_socket);
     free(data);
 
-    if (num_active_clients == 0 && halt_signal_sent==1)  {
+    if (num_active_clients == 0)  {
         printf("All clients disconnected. Exiting server.\n");
         pthread_cancel(server_thread); // Cancel the server thread
         exit(EXIT_SUCCESS);
