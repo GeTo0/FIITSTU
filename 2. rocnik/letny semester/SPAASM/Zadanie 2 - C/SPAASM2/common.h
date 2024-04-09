@@ -24,7 +24,7 @@
 /*MAIN*/
 int connect_to_server(char **port);
 void client_side(char **port, int *sockfd);
-void server_side(char **port, char *socket_path);
+void server_side(char **port);
 
 /* Functions */
 void create_prompt();
@@ -34,7 +34,7 @@ char* help_message();
 void send_halt_to_clients(int *active_clients, int *num_active_clients, int *halt_signal_sent, pthread_mutex_t *active_clients_mutex);
 char **lsh_split_args(char *argument);
 void print_to_file(const char *output, const char *filename);
-void remove_input_redirection(char *argument);
 time_t current_timestamp();
+size_t array_length(char **array);
 
 #endif /* COMMON_H */

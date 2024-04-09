@@ -23,8 +23,8 @@ typedef struct {
 } RedirectArgs;
 
 typedef struct {
-    char *command;
-    char *input_file;
+    char *command1;
+    char *command2;
 } RedirectInputArgs;
 
 
@@ -42,6 +42,7 @@ void send_halt_to_client(int client_socket) {
 }
 
 void check_inactive_clients() {
+    //Function to check if any client is inactivte for longer than they should, if so, disconnect them
     while (!halt_signal_sent) {
         // Sleep for 1 second
         sleep(1);
@@ -74,6 +75,7 @@ void check_inactive_clients() {
 }
 
 void handle_interrupt(int signum) {
+    //Handle that CTRL+C is treated as sending "halt"
     if (signum == SIGINT) {
         send_halt_to_clients(active_clients, &num_active_clients, &halt_signal_sent, &active_clients_mutex);
         printf("Sent halt command to all clients.\n");
@@ -82,6 +84,7 @@ void handle_interrupt(int signum) {
 }
 
 void stat_argument() {
+    //print statistics for each connected client
     printf("Active Connections:\n");
     for (int i = 0; i < num_active_clients; i++) {
         printf("User %d: Socket: %d, IP: %s, Port: %d\n",
@@ -93,7 +96,7 @@ void stat_argument() {
 }
 
 void *server_task(void *arg) {
-    // Example of a server task, such as sending the halt message
+    // Thread for server, good for sending commands such as halt or stat
     while (1) {
         char command[MAX_LINE_LENGTH];
         fgets(command, sizeof(command), stdin);
@@ -153,6 +156,7 @@ RedirectArgs redirect_argument(char *arg) {
 }
 
 char *lsh_execute_external(char **args) {
+    //Function to run bash built-in commands
     pid_t pid;
     int fd[2];
     pipe(fd);
@@ -209,37 +213,37 @@ RedirectInputArgs redirect_input_argument(char *arg){
     RedirectInputArgs args;
 
     // Initialize the fields to NULL
-    args.command = NULL;
-    args.input_file = NULL;
+    args.command1 = NULL;
+    args.command2 = NULL;
 
     // Find the position of '>'
     char *pos = strchr(arg, '<');
     if (pos == NULL) {
         // No output redirection, set command only
-        args.command = strdup(arg);
+        args.command1 = strdup(arg);
     } else {
         // Output redirection found, split the argument
         *pos = '\0'; // Null-terminate the command
-        args.command = strdup(arg);
-        args.input_file = strdup(pos + 1); // Set the output file
+        args.command1 = strdup(arg);
+        args.command2 = strdup(pos + 1); // Set the output file
     }
 
     // Trim leading and trailing whitespace from filenames
-    if (args.command != NULL) {
-        while (*args.command && isspace(*args.command)) {
-            args.command++;
+    if (args.command1 != NULL) {
+        while (*args.command1 && isspace(*args.command1)) {
+            args.command1++;
         }
-        char *end = args.command + strlen(args.command) - 1;
-        while (end > args.command && isspace(*end)) {
+        char *end = args.command1 + strlen(args.command1) - 1;
+        while (end > args.command1 && isspace(*end)) {
             *end-- = '\0';
         }
     }
-    if (args.input_file != NULL) {
-        while (*args.input_file && isspace(*args.input_file)) {
-            args.input_file++;
+    if (args.command2 != NULL) {
+        while (*args.command2 && isspace(*args.command2)) {
+            args.command2++;
         }
-        char *end = args.input_file + strlen(args.input_file) - 1;
-        while (end > args.input_file && isspace(*end)) {
+        char *end = args.command2 + strlen(args.command2) - 1;
+        while (end > args.command2 && isspace(*end)) {
             *end-- = '\0';
         }
     }
@@ -248,57 +252,93 @@ RedirectInputArgs redirect_input_argument(char *arg){
 }
 
 void handle_arguments(char *argument, int client_socket) {
-    if (strstr(argument, ">") != NULL) {
-        RedirectArgs args = redirect_argument(argument);
-        if (strcmp(args.command, "help") == 0) {
+    //Function to check for different characters in argument sent by client
+    if (strstr(argument, ">") != NULL) { //redirection output argument is present
+        RedirectArgs args = redirect_argument(argument); //retrieve arguments from function, in type of struct
+        if (strcmp(args.command, "help") == 0) {//special case if command is help
             print_to_file(help_message(), args.output_file);
-        } else {
-            char **command = lsh_split_args(args.command);
-            char *output = lsh_execute_external(command);
-            print_to_file(output, args.output_file);
+        } else {//any other command
+            char **command = lsh_split_args(args.command);//split argument based on spaces and append into array
+            char *output = lsh_execute_external(command); //send array to function to get output
+            print_to_file(output, args.output_file); //print output to file
+            free(output); //free dynamically allocated memory
+            free(command);
         }
-        send(client_socket, "1", 2, 0);
-    } else if(strstr(argument, "<")!= NULL){
-        RedirectInputArgs args = redirect_input_argument(argument);
-        char **command = lsh_split_args(args.command);
+        send(client_socket, "1", 2, 0); //send to client that all is done and he can continue
+    } else if(strstr(argument, "<")!= NULL){//redirection input argument is present
+        RedirectInputArgs args = redirect_input_argument(argument); //retrieve arguments from function, in type of struct
+        char **command1 = lsh_split_args(args.command1); //anything before < is command 1
+        char **command2 = lsh_split_args(args.command2); //anything after > is command 2
+        char **command = malloc((MAX_LINE_LENGTH + 1) * sizeof(char *));//represents final command
+        char filename[] = "/tmp/tempfileXXXXXX"; //name for temporary file if needed
+
+        int temp_created=0; //flag is temp file was needed
         int k=0;
-        while(command[k]!=NULL){
+        while (command1[k] != NULL) {//copy command1 to command
+            command[k] = strdup(command1[k]);
             k++;
         }
-        command[k]=args.input_file;
-        char *output = lsh_execute_external(command);
-
-        send(client_socket, output, strlen(output), 0);
-    } else {
-        char **command = lsh_split_args(argument);
-        char *output = lsh_execute_external(command);
+        if(array_length(command2)==1 && strstr(command2[0], ".txt")!= NULL){
+            //special case where after < is only name of file from which to redirect input
+            command[k]=command2[0];
+        }
+        else{
+            // Create a temporary file, write output of command2 in it, and send file to command
+            temp_created=1;
+            int temp_fd = mkstemp(filename); // Create the temporary file
+            if (strcmp(args.command2, "help") == 0) { // special case where after < is only "help"
+                print_to_file(help_message(),filename);
+            }
+            else{ //if command2 is bash command
+            char *output2 = lsh_execute_external(command2); //execute command2
+            if (output2 != NULL) {//if theres any output present
+                print_to_file(output2, filename); //print output to temporary file
+                free(output2);//free memory
+            }
+            command[k]=strdup(filename); //append name of file into final command
+            }
+        }
+        command[k+1]= NULL; //Null-terminate the final command at the end
+        char *output = lsh_execute_external(command);//send final command to function and get final output
+        send(client_socket, output, strlen(output), 0); //send final output to client
+        if(temp_created) unlink(filename); //if temp file was created, delete it
+        free(output); //free any dynamically allocated memory
+        free(command);
+        free(command1);
+        free(command2);
+    } else {//no special character present
+        char **command = lsh_split_args(argument); //split argument based on spaces and get array of commands
+        char *output = lsh_execute_external(command); //get output by sending command to function
         if (output != NULL) {
-            send(client_socket, output, strlen(output), 0);
+            send(client_socket, output, strlen(output), 0); //send output to client
+            free(output); //free memory
         } else {
-            send(client_socket, "Wrong command", strlen("Wrong command"), 0);
+            send(client_socket, "Wrong command", strlen("Wrong command"), 0); //if wrong command
         }
     }
 }
 
-void *handle_client(void *arg) {
-    ClientData *data = (ClientData *) arg;
-    int client_socket = data->client_socket;
-    char **port = data->port;
+void *handle_client(void *arg) {//function to handle each client separately
+    ClientData *data = (ClientData *) arg; //get data for client
+    int client_socket = data->client_socket; //assign socket
+    char **port = data->port; //assign port
     int user_number = data->user_number; // Assign user number from data
 
     struct sockaddr_in client_addr;
+    //Functions to get user IP in user-readable data
     socklen_t client_addr_len = sizeof(client_addr);
     getpeername(client_socket, (struct sockaddr *) &client_addr, &client_addr_len);
     char client_ip[INET_ADDRSTRLEN];
     inet_ntop(AF_INET, &client_addr.sin_addr, client_ip, INET_ADDRSTRLEN);
+    //
 
     pthread_mutex_lock(&active_clients_mutex);
-
-    active_connections[num_active_clients].client_socket = client_socket;
-    strncpy(active_connections[num_active_clients].client_address, client_ip, INET_ADDRSTRLEN);
-    active_connections[num_active_clients].client_port = ntohs(client_addr.sin_port);
-    active_connections[num_active_clients].user_number = user_number;
-    active_connections[num_active_clients].last_activity_time = current_timestamp();
+    //Assign information to each client
+    active_connections[num_active_clients].client_socket = client_socket;  //Socket
+    strncpy(active_connections[num_active_clients].client_address, client_ip, INET_ADDRSTRLEN); //Address
+    active_connections[num_active_clients].client_port = ntohs(client_addr.sin_port); //Port
+    active_connections[num_active_clients].user_number = user_number; //Number
+    active_connections[num_active_clients].last_activity_time = current_timestamp(); //Last activity time
 
     active_clients[num_active_clients++] = client_socket;
     pthread_mutex_unlock(&active_clients_mutex);
@@ -348,7 +388,7 @@ void *handle_client(void *arg) {
     close(client_socket);
     free(data);
 
-    if (num_active_clients == 0)  {
+    if (num_active_clients == 0)  {//No active clients left
         printf("All clients disconnected. Exiting server.\n");
         pthread_cancel(server_thread); // Cancel the server thread
         exit(EXIT_SUCCESS);
@@ -356,7 +396,7 @@ void *handle_client(void *arg) {
     return NULL;
 }
 
-void server_side(char **port, char *socket_path) {
+void server_side(char **port) {
     int server_fd;
     struct sockaddr_in address;
     int addrlen = sizeof(address);

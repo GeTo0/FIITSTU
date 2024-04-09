@@ -6,6 +6,7 @@ void create_prompt() {
     // ANSI escape code for setting text color to green
     printf("\033[0;32m");
 
+    //Get information for default prompt
     time_t t = time(NULL);
     struct tm tm = *localtime(&t);
     char hostname[256];
@@ -26,19 +27,21 @@ void create_prompt() {
 }
 
 void set_custom_prompt(const char *new_prompt) {
-    if (strcmp(new_prompt, "reset")==0) {
+    if (strcmp(new_prompt, "reset")==0) { //if argument after prompt is reset, reset to default
         custom_prompt = NULL;
     }
-    else if(custom_prompt==NULL){
+    else if(custom_prompt==NULL){ //else set custom prompt
         custom_prompt = strdup(new_prompt);
     }
-    else if(custom_prompt!=NULL){
+    else if(custom_prompt!=NULL){ //if custom prompt is present, remove it and set new
         free(custom_prompt);
         custom_prompt=NULL;
         custom_prompt=strdup(new_prompt);
     }
 }
+
 char* useful_commands(){
+    //Prints message of useful commands to test in my program
     char *com_mes = ("Here are commands you can try running in my program to test all use-cases\n"
                      "cat subor.txt\n"
                      "cat subor.txt>temp.txt\n"
@@ -59,6 +62,7 @@ char* useful_commands(){
 }
 
 char* help_message(){
+    //Prints help message that contains basic information about the program
     char* help_mes= ("Author: Dominik Zaťovič\n"
      "Subject: SPAASM, 2. Assignment\n"
      "Compile: gcc -o zadanie2 main.c user.c server.c functions.c"
@@ -97,22 +101,24 @@ char* help_message(){
 }
 
 void send_halt_to_clients(int *active_clients, int *num_active_clients, int *halt_signal_sent, pthread_mutex_t *active_clients_mutex) {
+    //Iterates through all clients
     pthread_mutex_lock(active_clients_mutex);
     for (int i = 0; i < *num_active_clients; ++i) {
-        send(active_clients[i], "halt", strlen("halt"), 0);
-        close(active_clients[i]);
+        send(active_clients[i], "halt", strlen("halt"), 0); //sends halt to client
+        close(active_clients[i]); //closes connection with client
     }
     *num_active_clients = 0; // Reset the number of active clients
-    *halt_signal_sent = 1;
+    *halt_signal_sent = 1; //Set flag to 1
     pthread_mutex_unlock(active_clients_mutex);
 }
 
 char **lsh_split_args(char *argument) {
+    //Function to split arguments based on space character
     int bufsize = MAX_LINE_LENGTH, position = 0;
     char **subargs = malloc(bufsize * sizeof(char *));
     char *subarg;
 
-    if (!subargs) {
+    if (!subargs) { //failed to allocate memory
         fprintf(stderr, "lsh: allocation error\n");
         exit(EXIT_FAILURE);
     }
@@ -167,10 +173,7 @@ char **lsh_split_args(char *argument) {
         }
     }
     subargs[position] = NULL; // Null-terminate the list
-    int k = 0;
-    while (subargs[k] != NULL) {
-        k++;
-    }
+
     return subargs;
 }
 
@@ -187,22 +190,16 @@ void print_to_file(const char *output, const char *filename) {
     fclose(file); // Close the file
 }
 
-void remove_input_redirection(char *argument) {
-    if (argument == NULL || argument[0] == '\0') {
-        return; // Nothing to remove
-    }
-
-    // Find the position of the first non-whitespace character after '<'
-    char *start = argument;
-    while (*start != '\0' && isspace((unsigned char)*start)) {
-        start++;
-    }
-
-    // Shift characters to the left to remove '<' and following whitespace
-    size_t len = strlen(start);
-    memmove(argument, start, len + 1); // Include null terminator
+time_t current_timestamp() {
+    //function to get current time
+    return time(NULL);
 }
 
-time_t current_timestamp() {
-    return time(NULL);
+size_t array_length(char **array) {
+    //Function to find the length of an array
+    size_t length = 0;
+    while (array[length] != NULL) {
+        length++;
+    }
+    return length;
 }

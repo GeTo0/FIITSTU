@@ -30,6 +30,7 @@ int connect_to_server(char **port) {
 }
 
 int send_message(int sockfd, char *message) {
+    //function to send message to a client
     if (send(sockfd, message, strlen(message), 0) < 0) {
         perror("Send failed");
         return -1; // Return -1 on failure
@@ -39,7 +40,8 @@ int send_message(int sockfd, char *message) {
 }
 
 char *read_command_from_file(char *filename) {
-    FILE *file = fopen(filename, "r");
+    //function to read commands from line
+    FILE *file = fopen(filename, "r"); //open file for reading
     if (file == NULL) {
         perror("Error opening file");
         return NULL;
@@ -52,7 +54,7 @@ char *read_command_from_file(char *filename) {
     // Read the contents of the file into buffer
     bytes_read = getline(&buffer, &buffer_size, file);
 
-    fclose(file);
+    fclose(file); //close the file
 
     if (bytes_read == -1) {
         if (feof(file)) {
@@ -105,13 +107,14 @@ char *hashtag_argument(char *token) {
 }
 
 char *lsh_read_line(void) {
+    //function to read line from terminal
     char *line = malloc(MAX_LINE_LENGTH * sizeof(char));
-    if (!line) {
+    if (!line) {//failed to allocate memory
         fprintf(stderr, "lsh: allocation error\n");
         exit(EXIT_FAILURE);
     }
 
-    if (!fgets(line, MAX_LINE_LENGTH, stdin)) {
+    if (!fgets(line, MAX_LINE_LENGTH, stdin)) {//reads the line from terminal, if encounters error, enters if statement
         free(line);
         if (!feof(stdin)) {
             perror("lsh: fgets");
@@ -119,10 +122,11 @@ char *lsh_read_line(void) {
         exit(EXIT_FAILURE);
     }
 
-    return line;
+    return line;//returns line read from terminal
 }
 
 char **lsh_split_line(char *line) {
+    //Function to split line based on ";" character or newline character and also removes anything followed after # with it
     int bufsize = MAX_LINE_LENGTH, position = 0;
     char **tokens = malloc(bufsize * sizeof(char *));
     char *token;
@@ -135,7 +139,7 @@ char **lsh_split_line(char *line) {
     // Split the line based on semicolon
     token = strtok(line, ";\n");
     while (token != NULL) {
-        //Check if contains #//
+        //Check if contains # (# is used for commentaries, we don´t want them in our commands
         char *hash_pos = strchr(token, '#');
         if (hash_pos != NULL) {
             char *processed_token = hashtag_argument(token);
@@ -167,61 +171,62 @@ char **lsh_split_line(char *line) {
 }
 
 int lsh_execute(char **args, char **port, int *sockfd) {
+    //function to iterate through arguments and execute functions based on argument read
     int i = 0;
-    while (args[i] != NULL) {
-        if (strstr(args[i], "!") != NULL) {
-            char *filename = strtok(args[i], "!");
-            remove_input_redirection(args[i]);
+    while (args[i] != NULL) {//iterates through arguments
+        if (args[i][0] == '!') { //checks for script argument
+            char *filename = strtok(args[i], "!"); //get name of file by removing !
             char *end = filename + strlen(filename) - 1;
-            while (end > filename && isspace((unsigned char) *end)) end--;
+            while (end > filename && isspace((unsigned char) *end)) end--; //find non-space char from end
             *(end + 1) = '\0';
-            char *line = read_command_from_file(filename);
-            if (line != NULL) {
-                char **arguments = lsh_split_line(line);
-                lsh_execute(arguments, port, sockfd);
-                while (arguments[i] != NULL) {
+            char *line = read_command_from_file(filename); //get line by reading file
+            if (line != NULL) { //if there is line present
+                char **arguments = lsh_split_line(line); //split line into arguments
+                lsh_execute(arguments, port, sockfd); //Execute arguments
+                while (arguments[i] != NULL) { //check if any arguments were "quit" to terminate program
                     if (strcmp(arguments[i], "quit") == 0) {
                         return 0;
                     }
                     i++;
                 }
             }
-        } else if (strcmp(args[i], "quit") == 0) {
+        } else if (strcmp(args[i], "quit") == 0) {//if argument is quit, close connection
             if (*sockfd != -1) {
                 close(*sockfd);
             }
             return 0;
-        } else if (strcmp(args[i], "help") == 0) {
+        } else if (strcmp(args[i], "help") == 0) {//if argument is help, print help message
             printf("%s", help_message());
-        } else if (strcmp(args[i], "-commands")==0){
+        } else if (strcmp(args[i], "-commands")==0){// if argument is -commands, print message with commands list
             printf("%s", useful_commands());
-        } else if (strstr(args[i], "prompt") != NULL) {
-            char **subargs = lsh_split_args(args[i]);
+        } else if (strstr(args[i], "prompt") != NULL) {//if argument is prompt
+            char **subargs = lsh_split_args(args[i]);//split argument into subargs
             int j = 0;
-            if ((strcmp(subargs[j], "prompt") == 0) && (subargs[j + 1] != NULL)) {
-                set_custom_prompt(subargs[j + 1]);
+            if ((strcmp(subargs[j], "prompt") == 0) && (subargs[j + 1] != NULL)) {//check if anything after "prompt"
+                set_custom_prompt(subargs[j + 1]); //set custom prompt based on user input
             } else {
                 printf("Usage: prompt <custom_prompt>\n");
             }
-        } else if (strstr(args[i], "port") != NULL) {
-            char **subargs = lsh_split_args(args[i]);
+        } else if (strstr(args[i], "-p") != NULL) {//check if argument is -p
+            char **subargs = lsh_split_args(args[i]);//split argument into subargs
             int j = 0;
             while (subargs[j] != NULL) {
-                if (strcmp(subargs[j], "port") == 0) {
-                    if (subargs[j + 1] != NULL) {
+                if (strcmp(subargs[j], "-p") == 0) {//check if first argument is -p
+                    if (subargs[j + 1] != NULL) {//check if port number is present
                         char *new_port = realloc(*port, (strlen(subargs[j + 1]) + 1) * sizeof(char));
                         if (new_port == NULL) {
                             fprintf(stderr, "Memory allocation failed\n");
                             exit(EXIT_FAILURE);
                         }
-                        *port = new_port;
-                        strcpy(*port, subargs[j + 1]);
+                        *port = new_port; //change port memory to new port memory
+                        strcpy(*port, subargs[j + 1]); //change port to new port
                         if (*sockfd != -1) {
-                            close(*sockfd);
+                            close(*sockfd); //if any connection is open, close it
                         }
-                        *sockfd = connect_to_server(port);
+                        *sockfd = connect_to_server(port); //connect to new connection
+                        free(new_port);
                     } else {
-                        fprintf(stderr, "Missing port number after port option\n");
+                        fprintf(stderr, "Missing port number after -p argument (-p <port>)\n");
                         return 1;
                     }
                 }
@@ -229,16 +234,16 @@ int lsh_execute(char **args, char **port, int *sockfd) {
             }
             free(subargs);
         } else {
-            if (*sockfd != -1) {
+            if (*sockfd != -1) {//if connection with server is present
                 char mess[MAX_LINE_LENGTH];
-                strcpy(mess, args[i]);
-                send_message(*sockfd, mess);
+                strcpy(mess, args[i]); //copy argument into mess (command to do)
+                send_message(*sockfd, mess); //send mess to server (command)
                 char message[MAX_PROMPT_LENGTH];
                 memset(message, 0, sizeof(message));
-                ssize_t num_bytes = recv(*sockfd, message, sizeof(message), 0);
-                if (num_bytes > 2) {
+                ssize_t num_bytes = recv(*sockfd, message, sizeof(message), 0); //receive message back from server
+                if (num_bytes > 2) { //ignore messages smaller than 2 (I use size of 1 to receive when commands are success)
                     message[num_bytes] = '\0';
-                    printf("%s\n", message);
+                    printf("%s\n", message); //print response from server
                 }
             } else {
                 printf("No connection to the server");
@@ -272,6 +277,7 @@ void client_side(char **port, int *sockfd) {
                 }
             }
         }
+        //split line into arguments
         args = lsh_split_line(line);
 
         // Execute user command
