@@ -109,8 +109,65 @@ void *server_task(void *arg) {
         else if(strcmp(command, "stat")==0){
             stat_argument();
         }
+        else if(strcmp(command, "help")==0){
+            printf("%s", help_message());
+        }
     }
     return NULL;
+}
+
+void handle_cd_command(char **args) {
+    printf("%s %s ", args[0], args[1]);
+    fflush(stdout);
+    if (args[1] == NULL || strcmp(args[1], "~") == 0) {
+        // If no directory argument or "~" is provided, move to the home directory
+        const char *home_dir = getenv("HOME");
+        if (home_dir == NULL) {
+            fprintf(stderr, "cd: could not retrieve home directory\n");
+            return;
+        }
+        if (chdir(home_dir) != 0) {
+            perror("cd");
+        }
+    } else if (strcmp(args[1], "-") == 0) {
+        // If "-" is provided, move to the previous directory
+        const char *prev_dir = getenv("OLDPWD");
+        if (prev_dir == NULL) {
+            fprintf(stderr, "cd: previous directory not set\n");
+            return;
+        }
+        if (chdir(prev_dir) != 0) {
+            perror("cd");
+        }
+    } else if (strcmp(args[1], "..") == 0) {
+        // If ".." is provided, move one directory up
+        if (chdir("..") != 0) {
+            perror("cd");
+        }
+    } else if (args[1][0] == '~') {
+        // If path starts with "~", use the tilde shortcut for home directory
+        const char *home_dir = getenv("HOME");
+        if (home_dir == NULL) {
+            fprintf(stderr, "cd: could not retrieve home directory\n");
+            return;
+        }
+        char *expanded_path = malloc(strlen(home_dir) + strlen(args[1]) + 1);
+        if (expanded_path == NULL) {
+            perror("cd");
+            return;
+        }
+        strcpy(expanded_path, home_dir);
+        strcat(expanded_path, args[1] + 1); // Skip the tilde character
+        if (chdir(expanded_path) != 0) {
+            perror("cd");
+        }
+        free(expanded_path);
+    } else {
+        // Otherwise, move to the specified directory
+        if (chdir(args[1]) != 0) {
+            perror("cd");
+        }
+    }
 }
 
 RedirectArgs redirect_argument(char *arg) {
@@ -306,7 +363,12 @@ void handle_arguments(char *argument, int client_socket) {
         free(command);
         free(command1);
         free(command2);
-    } else {//no special character present
+    } else if (strstr(argument, "cd")!=NULL){
+        char **command = lsh_split_args(argument);
+        handle_cd_command(command);
+        send(client_socket, "1", 2, 0);
+    }
+    else {//no special character present
         char **command = lsh_split_args(argument); //split argument based on spaces and get array of commands
         char *output = lsh_execute_external(command); //get output by sending command to function
         if (output != NULL) {

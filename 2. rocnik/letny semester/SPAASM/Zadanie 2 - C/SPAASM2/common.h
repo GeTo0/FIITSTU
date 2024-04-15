@@ -15,6 +15,7 @@
 #include <time.h>
 #include <pwd.h>
 #include <stdbool.h>
+#include <unistd.h>
 
 #define MAX_PROMPT_LENGTH 1024
 #define MAX_LINE_LENGTH 1024
