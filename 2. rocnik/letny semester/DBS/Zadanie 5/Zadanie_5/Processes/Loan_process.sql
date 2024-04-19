@@ -15,7 +15,7 @@ BEGIN
 
     -- Get the ID of the inserted specimen
     SELECT id INTO spec_id FROM Specimen WHERE specimen_name = spec_name;
-
+    -- Update status of specimen (nepritomny = neni v muzeu u nas)
     UPDATE specimen
     SET status = 'nepritomny'
     WHERE id = spec_id;

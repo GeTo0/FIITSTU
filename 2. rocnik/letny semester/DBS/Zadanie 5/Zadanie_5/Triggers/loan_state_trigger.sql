@@ -1,14 +1,14 @@
 CREATE OR REPLACE FUNCTION update_loan_state()
 RETURNS TRIGGER AS $$
 BEGIN
-    -- Check if lend_date is NOT NULL and return_date is NULL
+    -- Check if lend_date is NOT NULL and return_date is NULL (didnt arrive yet)
     IF NEW.lend_date IS NOT NULL AND NEW.arrival_date IS NULL THEN
         NEW.state = 'v doprave';
-    -- Check if return_date is NOT NULL
+    -- Check if arrival_date is NOT NULL (it arrived)
     ELSIF NEW.arrival_date IS NOT NULL THEN
         NEW.state = 'pripraveny na kontrolu';
     END IF;
-
+    -- Check if return_date is NOT NULL (we sent it back)
     IF NEW.return_date IS NOT NULL THEN
         NEW.state = 'v doprave';
         UPDATE specimen

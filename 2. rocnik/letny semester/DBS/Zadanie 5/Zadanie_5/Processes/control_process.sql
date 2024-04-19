@@ -11,7 +11,7 @@ BEGIN
         -- Insert the record into the Control table
         INSERT INTO Control (loan_id, specimen_id, checkup_time, specimen_sent_date, specimen_expected_arrival_date)
         VALUES (loan_id, specimen_id, checkup_time, specimen_sent_date, specimen_expected_arrival_date);
-
+        -- Update status of Specimen to "na kontrole"
         UPDATE Specimen
         SET status = 'na kontrole'
         WHERE id = specimen_id;
