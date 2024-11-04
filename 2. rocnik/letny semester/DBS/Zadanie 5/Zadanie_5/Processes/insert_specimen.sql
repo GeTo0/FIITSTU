@@ -15,3 +15,4 @@ BEGIN
     VALUES (specimen_name, description, cat_id, 'na sklade');
 END;
 $$ LANGUAGE plpgsql;
+

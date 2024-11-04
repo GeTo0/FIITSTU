@@ -3,7 +3,7 @@
   <component name="SqlDialectMappings">
     <file url="file://$PROJECT_DIR$/Console_commands_1_to_insert_into_database_basic_info.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/Console_commands_2_to_test_scenarios.sql" dialect="PostgreSQL" />
-    <file url="file://$PROJECT_DIR$/Database.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/DDL_Database_Maker.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/Processes/Loan_process.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/Processes/change_zone_process.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/Processes/control_process.sql" dialect="PostgreSQL" />

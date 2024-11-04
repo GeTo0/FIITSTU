@@ -25,3 +25,5 @@ CREATE TRIGGER update_loan_state_trigger
 BEFORE INSERT OR UPDATE ON Loans
 FOR EACH ROW
 EXECUTE FUNCTION update_loan_state();
+
+

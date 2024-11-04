@@ -7,3 +7,4 @@ BEGIN
     WHERE exh_id = exhibition_id AND spec_id = specimen_id;
 END;
 $$ LANGUAGE plpgsql;
+

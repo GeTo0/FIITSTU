@@ -1,0 +1,43 @@
+1) 8
+2) FIITgeek
+
+
+
+7) I4561AsEmblerySuPOhodicka2x3XzgvwpqLJfBCDnFMH90KNG78QRtTUVWjYZ 
+
+<< ZMENIT J#ki80Ys <<
+ na J#ki80Y 
+
+>> ZMENIT sub_401146 <<
+sub_401146 proc near
+
+arg_0= dword ptr  8
+arg_4= dword ptr  0Ch
+
+push    ebp
+mov     ebp, esp
+push    esi
+push    edi
+xor     eax, eax
+mov     esi, [ebp+arg_0]
+mov     edi, [ebp+arg_4]
+mov     al, [esi+28h] ;D
+mov     [edi], al
+mov     al, [esi+13h] ;o
+mov     [edi+1], al
+mov     al, [esi+8h] ;m
+mov     [edi+2], al
+mov     al, [esi+15h] ;i
+mov     [edi+3], al
+mov     al, [esi+29h] ;n
+mov     [edi+4], al
+mov     al, [esi+15h] ;i
+mov     [edi+5], al 
+mov     al, [esi+2Fh] ;k
+mov     [edi+6], al
+mov     eax, edi
+pop     edi
+pop     esi
+leave
+retn    8
+sub_401146 endp

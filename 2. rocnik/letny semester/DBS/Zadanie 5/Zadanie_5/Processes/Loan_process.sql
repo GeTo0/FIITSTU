@@ -26,3 +26,4 @@ BEGIN
     RETURNING id INTO loan_id;
 END;
 $$ LANGUAGE plpgsql;
+

@@ -1,0 +1,3035 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Wolfram 14.1' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       154,          7]
+NotebookDataLength[    128579,       3027]
+NotebookOptionsPosition[    127689,       3006]
+NotebookOutlinePosition[    128086,       3022]
+CellTagsIndexPosition[    128043,       3019]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"letterToNumber", "[", "letter_", "]"}], ":=", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"ToCharacterCode", "[", 
+     RowBox[{"ToString", "[", "letter", "]"}], "]"}], "[", 
+    RowBox[{"[", "1", "]"}], "]"}], "-", "64"}]}], "\n", 
+ RowBox[{
+  RowBox[{"numberToLetter", "[", "number_", "]"}], ":=", 
+  RowBox[{"FromCharacterCode", "[", 
+   RowBox[{"number", "+", "64"}], "]"}]}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"modifyVertexColor", "[", 
+    RowBox[{"graph_", ",", "vertices_", ",", "color_"}], "]"}], ":=", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"newGraph", "=", "graph"}], "}"}], ",", 
+     RowBox[{
+      RowBox[{"Do", "[", 
+       RowBox[{
+        RowBox[{"newGraph", "=", 
+         RowBox[{"SetProperty", "[", 
+          RowBox[{"newGraph", ",", 
+           RowBox[{"{", 
+            RowBox[{"VertexStyle", "->", 
+             RowBox[{"{", 
+              RowBox[{"vertex", "->", "color"}], "}"}]}], "}"}]}], "]"}]}], 
+        ",", 
+        RowBox[{"{", 
+         RowBox[{"vertex", ",", "vertices"}], "}"}]}], "]"}], ";", 
+      "newGraph"}]}], "]"}]}], "\[IndentingNewLine]"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"displayVertexWeights", "[", 
+    RowBox[{"graph_", ",", "vertexWeights_"}], "]"}], ":=", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"newGraph", ",", "vertexPositions"}], "}"}], ",", 
+     RowBox[{
+      RowBox[{"vertexPositions", " ", "=", " ", 
+       RowBox[{"GraphEmbedding", "[", "graph", "]"}]}], ";", 
+      RowBox[{"newGraph", "=", 
+       RowBox[{"Show", "[", 
+        RowBox[{"graph", ",", 
+         RowBox[{"Graphics", "[", 
+          RowBox[{"Table", "[", 
+           RowBox[{
+            RowBox[{"Text", "[", 
+             RowBox[{
+              RowBox[{"Style", "[", 
+               RowBox[{
+                RowBox[{"If", "[", 
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{
+                   "vertexWeights", "\[LeftDoubleBracket]", "i", 
+                    "\[RightDoubleBracket]"}], "===", "\[Infinity]"}], ",", 
+                  "\"\<\[Infinity]\>\"", ",", 
+                  RowBox[{"ToString", "[", 
+                   RowBox[{
+                   "vertexWeights", "\[LeftDoubleBracket]", "i", 
+                    "\[RightDoubleBracket]"}], "]"}]}], "]"}], ",", 
+                RowBox[{"FontSize", "\[Rule]", "16"}], ",", "Bold"}], "]"}], 
+              ",", 
+              RowBox[{
+              "vertexPositions", "\[LeftDoubleBracket]", "i", 
+               "\[RightDoubleBracket]"}]}], "]"}], ",", 
+            RowBox[{"{", 
+             RowBox[{"i", ",", "1", ",", 
+              RowBox[{"Length", "[", "vertexPositions", "]"}]}], "}"}]}], 
+           "]"}], "]"}]}], "]"}]}], ";", 
+      RowBox[{"Return", "[", "newGraph", "]"}]}]}], "]"}]}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"DijkstraUndirectedCore", "[", 
+    RowBox[{
+    "mygraph_", ",", "startVertex_", ",", "endVertex_", ",", "edges_", ",", 
+     "weights_", ",", "vertexWeights_List"}], "]"}], ":=", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "neighbors", ",", "edgeWeight2", ",", "edgeIndex", ",", 
+       "updatedvertexWeights", ",", "currentEdge", ",", "unvisited", ",", 
+       "currentVertex", ",", "smallestWeight", ",", "newWeight", ",", 
+       "visited", ",", "predecessors", ",", "paths", ",", 
+       RowBox[{"steps", "=", 
+        RowBox[{"{", "}"}]}], ",", 
+       RowBox[{"vypis", "=", 
+        RowBox[{"{", "}"}]}], ",", 
+       RowBox[{"text", "=", 
+        RowBox[{"{", "}"}]}]}], "}"}], ",", "\[IndentingNewLine]", 
+     "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"updatedvertexWeights", "=", "vertexWeights"}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"unvisited", "=", 
+       RowBox[{"DeleteCases", "[", 
+        RowBox[{
+         RowBox[{"Range", "[", 
+          RowBox[{"Length", "[", "vertexWeights", "]"}], "]"}], ",", 
+         "endVertex"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"visited", "=", 
+       RowBox[{"{", "}"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"predecessors", "=", 
+       RowBox[{"Table", "[", 
+        RowBox[{"None", ",", 
+         RowBox[{"{", 
+          RowBox[{"Length", "[", "vertexWeights", "]"}], "}"}]}], "]"}]}], 
+      ";", "\[IndentingNewLine]", 
+      RowBox[{"currentVertex", "=", "startVertex"}], ";", 
+      "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"While", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Length", "[", "unvisited", "]"}], ">", "0"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"neighbors", "=", 
+          RowBox[{
+           RowBox[{"VertexList", "[", 
+            RowBox[{"NeighborhoodGraph", "[", 
+             RowBox[{"mygraph", ",", 
+              RowBox[{"{", "currentVertex", "}"}], ",", "1"}], "]"}], "]"}], "/.",
+            " ", 
+           RowBox[{"currentVertex", "->", "Nothing"}]}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"neighbors", "=", 
+          RowBox[{"Complement", "[", 
+           RowBox[{"neighbors", ",", "visited"}], "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"For", "[", 
+          RowBox[{
+           RowBox[{"i", "=", "1"}], ",", 
+           RowBox[{"i", "<=", 
+            RowBox[{"Length", "[", "neighbors", "]"}]}], ",", 
+           RowBox[{"i", "++"}], ",", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"edgeIndex", "=", 
+             RowBox[{
+              RowBox[{"FirstPosition", "[", 
+               RowBox[{"edges", ",", 
+                RowBox[{"currentVertex", "\[UndirectedEdge]", 
+                 RowBox[{
+                 "neighbors", "\[LeftDoubleBracket]", "i", 
+                  "\[RightDoubleBracket]"}]}]}], "]"}], "/.", 
+              "\[VeryThinSpace]", 
+              RowBox[{
+               RowBox[{"Missing", "[", "\"\<NotFound\>\"", "]"}], 
+               "\[RuleDelayed]", 
+               RowBox[{"FirstPosition", "[", 
+                RowBox[{"edges", ",", 
+                 RowBox[{
+                  RowBox[{
+                  "neighbors", "\[LeftDoubleBracket]", "i", 
+                   "\[RightDoubleBracket]"}], "\[UndirectedEdge]", 
+                  "currentVertex"}]}], "]"}]}]}]}], ";", 
+            "\[IndentingNewLine]", "\[IndentingNewLine]", 
+            RowBox[{"If", "[", 
+             RowBox[{
+              RowBox[{"i", "===", "1"}], ",", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"If", "[", 
+                RowBox[{
+                 RowBox[{"currentVertex", " ", "===", " ", "startVertex"}], 
+                 ",", "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"text", "=", 
+                   RowBox[{"AppendTo", "[", 
+                    RowBox[{"text", ",", 
+                    RowBox[{"\"\<Zaciname v zvolenom vrchole \>\"", " ", "<>", 
+                    RowBox[{"ToString", "[", 
+                    RowBox[{"numberToLetter", "[", "currentVertex", "]"}], 
+                    "]"}]}]}], "]"}]}], ";"}], "\[IndentingNewLine]", ",", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"text", "=", 
+                   RowBox[{"AppendTo", "[", 
+                    RowBox[{"text", ",", 
+                    RowBox[{"\"\<Presli sme na vrchol \>\"", " ", "<>", 
+                    RowBox[{"ToString", "[", 
+                    RowBox[{"numberToLetter", "[", "currentVertex", "]"}], 
+                    "]"}], "<>", 
+                    "\"\< ke\[DHacek]\[ZHacek]e mal najni\[ZHacek]\[SHacek]iu \
+cenu zo susedov predch\[AAcute]dzaj\[UAcute]ceho vrcholu\>\""}]}], "]"}]}], 
+                  ";"}]}], "\[IndentingNewLine]", "]"}], ";"}]}], 
+             "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+            "\[IndentingNewLine]", 
+            RowBox[{"If", "[", 
+             RowBox[{
+              RowBox[{"edgeIndex", "=!=", 
+               RowBox[{"Missing", "[", "\"\<NotFound\>\"", "]"}]}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"AppendTo", "[", 
+                RowBox[{"text", ",", 
+                 RowBox[{"\"\<Teraz sme presli na hranu \>\"", "<>", " ", 
+                  RowBox[{"ToString", "[", 
+                   RowBox[{"numberToLetter", "[", "currentVertex", "]"}], 
+                   "]"}], "<>", "\"\<-\>\"", "<>", 
+                  RowBox[{"ToString", "[", 
+                   RowBox[{"numberToLetter", "[", 
+                    RowBox[{"neighbors", "[", 
+                    RowBox[{"[", "i", "]"}], "]"}], "]"}], "]"}]}]}], "]"}], 
+               ";", "\[IndentingNewLine]", 
+               RowBox[{"edgeWeight2", "=", 
+                RowBox[{"weights", "[", 
+                 RowBox[{"[", 
+                  RowBox[{"First", "[", "edgeIndex", "]"}], "]"}], "]"}]}], 
+               ";", "\[IndentingNewLine]", 
+               RowBox[{"newWeight", "=", 
+                RowBox[{
+                 RowBox[{"updatedvertexWeights", "[", 
+                  RowBox[{"[", "currentVertex", "]"}], "]"}], "+", 
+                 "edgeWeight2"}]}], ";", "\[IndentingNewLine]", 
+               "\[IndentingNewLine]", 
+               RowBox[{"If", "[", 
+                RowBox[{
+                 RowBox[{"newWeight", "<", 
+                  RowBox[{"updatedvertexWeights", "[", 
+                   RowBox[{"[", 
+                    RowBox[{"neighbors", "[", 
+                    RowBox[{"[", "i", "]"}], "]"}], "]"}], "]"}]}], ",", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"updatedvertexWeights", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"neighbors", "[", 
+                    RowBox[{"[", "i", "]"}], "]"}], "]"}], "]"}], "=", 
+                   "newWeight"}], ";", "\[IndentingNewLine]", 
+                  RowBox[{
+                   RowBox[{"predecessors", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"neighbors", "[", 
+                    RowBox[{"[", "i", "]"}], "]"}], "]"}], "]"}], "=", 
+                   "currentVertex"}], ";", "\[IndentingNewLine]", 
+                  RowBox[{"AppendTo", "[", 
+                   RowBox[{"text", ",", 
+                    RowBox[{
+                    "\"\<Vid\[IAcute]me, \[ZHacek]e cena cesty cez teraj\
+\[SHacek]\[IAcute] vrchol \>\"", "<>", 
+                    RowBox[{"ToString", "[", 
+                    RowBox[{"numberToLetter", "[", "currentVertex", "]"}], 
+                    "]"}], "<>", "\"\< do vrcholu \>\"", "<>", 
+                    RowBox[{"ToString", "[", 
+                    RowBox[{"numberToLetter", "[", 
+                    RowBox[{"neighbors", "[", 
+                    RowBox[{"[", "i", "]"}], "]"}], "]"}], "]"}], "<>", 
+                    "\"\< je lacnej\[SHacek]ia ako teraj\[SHacek]ia, tak prep\
+\[IAcute]\[SHacek]em cenu vrcholu \>\"", "<>", 
+                    RowBox[{"ToString", "[", 
+                    RowBox[{"numberToLetter", "[", 
+                    RowBox[{"neighbors", "[", 
+                    RowBox[{"[", "i", "]"}], "]"}], "]"}], "]"}], "<>", " ", 
+                    "\"\< na cenu \>\"", "<>", 
+                    RowBox[{"ToString", "[", "newWeight", "]"}]}]}], "]"}], 
+                  ";"}], "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"AppendTo", "[", 
+                   RowBox[{"text", ",", 
+                    RowBox[{
+                    "\"\<Vid\[IAcute]me, \[ZHacek]e cena cesty cez teraj\
+\[SHacek]\[IAcute] vrchol \>\"", "<>", 
+                    RowBox[{"ToString", "[", 
+                    RowBox[{"numberToLetter", "[", "currentVertex", "]"}], 
+                    "]"}], "<>", "\"\< do vrcholu \>\"", "<>", 
+                    RowBox[{"ToString", "[", 
+                    RowBox[{"numberToLetter", "[", 
+                    RowBox[{"neighbors", "[", 
+                    RowBox[{"[", "i", "]"}], "]"}], "]"}], "]"}], "<>", 
+                    "\"\< nie je lacnej\[SHacek]ia, tak\[ZHacek]e neprep\
+\[IAcute]\[SHacek]em cenu vrcholu \>\"", "<>", 
+                    RowBox[{"ToString", "[", 
+                    RowBox[{"numberToLetter", "[", 
+                    RowBox[{"neighbors", "[", 
+                    RowBox[{"[", "i", "]"}], "]"}], "]"}], "]"}]}]}], "]"}], 
+                  ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+               "\[IndentingNewLine]", 
+               RowBox[{"AppendTo", "[", 
+                RowBox[{"steps", ",", 
+                 RowBox[{"{", 
+                  RowBox[{"currentVertex", ",", 
+                   RowBox[{"neighbors", "[", 
+                    RowBox[{"[", "i", "]"}], "]"}], ",", 
+                   "updatedvertexWeights"}], "}"}]}], "]"}], ";", 
+               "\[IndentingNewLine]", 
+               RowBox[{"AppendTo", "[", 
+                RowBox[{"vypis", ",", "text"}], "]"}], ";", 
+               "\[IndentingNewLine]", 
+               RowBox[{"text", "=", 
+                RowBox[{"{", "}"}]}], ";"}]}], "\[IndentingNewLine]", "]"}], 
+            ";"}]}], "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]",
+          "\[IndentingNewLine]", 
+         RowBox[{"visited", "=", 
+          RowBox[{"Append", "[", 
+           RowBox[{"visited", ",", "currentVertex"}], "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"unvisited", "=", 
+          RowBox[{"DeleteCases", "[", 
+           RowBox[{"unvisited", ",", "currentVertex"}], "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"smallestWeight", "=", 
+          RowBox[{"Min", "[", 
+           RowBox[{"updatedvertexWeights", "[", 
+            RowBox[{"[", "unvisited", "]"}], "]"}], "]"}]}], ";", 
+         "\[IndentingNewLine]", "\[IndentingNewLine]", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{"smallestWeight", "===", "\[Infinity]"}], ",", 
+           RowBox[{"Break", "[", "]"}]}], "]"}], ";", "\[IndentingNewLine]", 
+         RowBox[{"currentVertex", "=", 
+          RowBox[{"First", "[", 
+           RowBox[{"Select", "[", 
+            RowBox[{"unvisited", ",", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"updatedvertexWeights", "[", 
+                RowBox[{"[", "#1", "]"}], "]"}], "==", "smallestWeight"}], 
+              "&"}]}], "]"}], "]"}]}], ";"}]}], "\[IndentingNewLine]", "]"}], 
+      ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"paths", "=", 
+       RowBox[{"Table", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"path", "=", 
+           RowBox[{"{", "}"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"currentVertex", "=", "i"}], ";", "\[IndentingNewLine]", 
+          RowBox[{"While", "[", 
+           RowBox[{
+            RowBox[{"currentVertex", "=!=", "None"}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"path", "=", 
+              RowBox[{"Prepend", "[", 
+               RowBox[{"path", ",", "currentVertex"}], "]"}]}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"currentVertex", "=", 
+              RowBox[{"predecessors", "[", 
+               RowBox[{"[", "currentVertex", "]"}], "]"}]}], ";"}]}], 
+           "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", "path"}],
+          ",", 
+         RowBox[{"{", 
+          RowBox[{"i", ",", "1", ",", 
+           RowBox[{"Length", "[", "vertexWeights", "]"}]}], "}"}]}], 
+        "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"{", 
+       RowBox[{
+       "updatedvertexWeights", ",", "predecessors", ",", "paths", ",", 
+        "steps", ",", "vypis"}], "}"}]}]}], "]"}]}], "\[IndentingNewLine]", 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"DijkstraDirectedCore", "[", 
+    RowBox[{
+    "mygraph_", ",", "startVertex_", ",", "endVertex_", ",", "edges_", ",", 
+     "weights_", ",", "vertexWeights_List"}], "]"}], ":=", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "neighbors", ",", "edgeWeight2", ",", "edgeIndex", ",", 
+       "updatedvertexWeights", ",", "currentEdge", ",", "unvisited", ",", 
+       "currentVertex", ",", "smallestWeight", ",", "newWeight", ",", 
+       "visited", ",", "predecessors", ",", "paths", ",", 
+       RowBox[{"steps", "=", 
+        RowBox[{"{", "}"}]}], ",", 
+       RowBox[{"vypis", "=", 
+        RowBox[{"{", "}"}]}], ",", 
+       RowBox[{"text", "=", 
+        RowBox[{"{", "}"}]}]}], "}"}], ",", "\[IndentingNewLine]", 
+     "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"updatedvertexWeights", "=", "vertexWeights"}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"unvisited", "=", 
+       RowBox[{"DeleteCases", "[", 
+        RowBox[{
+         RowBox[{"Range", "[", 
+          RowBox[{"Length", "[", "vertexWeights", "]"}], "]"}], ",", 
+         "endVertex"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"visited", "=", 
+       RowBox[{"{", "}"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"predecessors", "=", 
+       RowBox[{"Table", "[", 
+        RowBox[{"None", ",", 
+         RowBox[{"{", 
+          RowBox[{"Length", "[", "vertexWeights", "]"}], "}"}]}], "]"}]}], 
+      ";", "\[IndentingNewLine]", 
+      RowBox[{"currentVertex", "=", "startVertex"}], ";", 
+      "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"While", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Length", "[", "unvisited", "]"}], ">", "0"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"neighbors", "=", 
+          RowBox[{
+           RowBox[{"VertexList", "[", 
+            RowBox[{"NeighborhoodGraph", "[", 
+             RowBox[{"mygraph", ",", 
+              RowBox[{"{", "currentVertex", "}"}], ",", "1"}], "]"}], "]"}], "/.",
+            " ", 
+           RowBox[{"currentVertex", "->", "Nothing"}]}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"neighbors", "=", 
+          RowBox[{"Complement", "[", 
+           RowBox[{"neighbors", ",", "visited"}], "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"For", "[", 
+          RowBox[{
+           RowBox[{"i", "=", "1"}], ",", 
+           RowBox[{"i", "<=", 
+            RowBox[{"Length", "[", "neighbors", "]"}]}], ",", 
+           RowBox[{"i", "++"}], ",", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"edgeIndex", "=", 
+             RowBox[{"FirstPosition", "[", 
+              RowBox[{"edges", ",", 
+               RowBox[{"currentVertex", "\[Rule]", 
+                RowBox[{
+                "neighbors", "\[LeftDoubleBracket]", "i", 
+                 "\[RightDoubleBracket]"}]}]}], "]"}]}], ";", 
+            "\[IndentingNewLine]", "\[IndentingNewLine]", 
+            RowBox[{"If", "[", 
+             RowBox[{
+              RowBox[{"i", "===", "1"}], ",", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"If", "[", 
+                RowBox[{
+                 RowBox[{"currentVertex", " ", "===", " ", "startVertex"}], 
+                 ",", "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"text", "=", 
+                   RowBox[{"AppendTo", "[", 
+                    RowBox[{"text", ",", 
+                    RowBox[{"\"\<Zaciname v zvolenom vrchole \>\"", " ", "<>", 
+                    RowBox[{"ToString", "[", 
+                    RowBox[{"numberToLetter", "[", "currentVertex", "]"}], 
+                    "]"}]}]}], "]"}]}], ";"}], "\[IndentingNewLine]", ",", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"text", "=", 
+                   RowBox[{"AppendTo", "[", 
+                    RowBox[{"text", ",", 
+                    RowBox[{"\"\<Presli sme na vrchol \>\"", " ", "<>", 
+                    RowBox[{"ToString", "[", 
+                    RowBox[{"numberToLetter", "[", "currentVertex", "]"}], 
+                    "]"}], "<>", 
+                    "\"\< ke\[DHacek]\[ZHacek]e mal najni\[ZHacek]\[SHacek]iu \
+cenu zo susedov predch\[AAcute]dzaj\[UAcute]ceho vrcholu\>\""}]}], "]"}]}], 
+                  ";"}]}], "\[IndentingNewLine]", "]"}], ";"}]}], 
+             "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+            "\[IndentingNewLine]", 
+            RowBox[{"If", "[", 
+             RowBox[{
+              RowBox[{"edgeIndex", "=!=", 
+               RowBox[{"Missing", "[", "\"\<NotFound\>\"", "]"}]}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"AppendTo", "[", 
+                RowBox[{"text", ",", 
+                 RowBox[{"\"\<Teraz sme presli na hranu \>\"", "<>", " ", 
+                  RowBox[{"ToString", "[", 
+                   RowBox[{"numberToLetter", "[", "currentVertex", "]"}], 
+                   "]"}], "<>", "\"\<->\>\"", "<>", 
+                  RowBox[{"ToString", "[", 
+                   RowBox[{"numberToLetter", "[", 
+                    RowBox[{"neighbors", "[", 
+                    RowBox[{"[", "i", "]"}], "]"}], "]"}], "]"}]}]}], "]"}], 
+               ";", "\[IndentingNewLine]", 
+               RowBox[{"edgeWeight2", "=", 
+                RowBox[{"weights", "[", 
+                 RowBox[{"[", 
+                  RowBox[{"First", "[", "edgeIndex", "]"}], "]"}], "]"}]}], 
+               ";", "\[IndentingNewLine]", 
+               RowBox[{"newWeight", "=", 
+                RowBox[{
+                 RowBox[{"updatedvertexWeights", "[", 
+                  RowBox[{"[", "currentVertex", "]"}], "]"}], "+", 
+                 "edgeWeight2"}]}], ";", "\[IndentingNewLine]", 
+               "\[IndentingNewLine]", 
+               RowBox[{"If", "[", 
+                RowBox[{
+                 RowBox[{"newWeight", "<", 
+                  RowBox[{"updatedvertexWeights", "[", 
+                   RowBox[{"[", 
+                    RowBox[{"neighbors", "[", 
+                    RowBox[{"[", "i", "]"}], "]"}], "]"}], "]"}]}], ",", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"updatedvertexWeights", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"neighbors", "[", 
+                    RowBox[{"[", "i", "]"}], "]"}], "]"}], "]"}], "=", 
+                   "newWeight"}], ";", "\[IndentingNewLine]", 
+                  RowBox[{
+                   RowBox[{"predecessors", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"neighbors", "[", 
+                    RowBox[{"[", "i", "]"}], "]"}], "]"}], "]"}], "=", 
+                   "currentVertex"}], ";", "\[IndentingNewLine]", 
+                  RowBox[{"AppendTo", "[", 
+                   RowBox[{"text", ",", 
+                    RowBox[{
+                    "\"\<Vid\[IAcute]me, \[ZHacek]e cena cesty cez teraj\
+\[SHacek]\[IAcute] vrchol \>\"", "<>", 
+                    RowBox[{"ToString", "[", 
+                    RowBox[{"numberToLetter", "[", "currentVertex", "]"}], 
+                    "]"}], "<>", "\"\< do vrcholu \>\"", "<>", 
+                    RowBox[{"ToString", "[", 
+                    RowBox[{"numberToLetter", "[", 
+                    RowBox[{"neighbors", "[", 
+                    RowBox[{"[", "i", "]"}], "]"}], "]"}], "]"}], "<>", 
+                    "\"\< je lacnej\[SHacek]ia ako teraj\[SHacek]ia, tak prep\
+\[IAcute]\[SHacek]em cenu vrcholu \>\"", "<>", 
+                    RowBox[{"ToString", "[", 
+                    RowBox[{"numberToLetter", "[", 
+                    RowBox[{"neighbors", "[", 
+                    RowBox[{"[", "i", "]"}], "]"}], "]"}], "]"}], "<>", " ", 
+                    "\"\< na cenu \>\"", "<>", 
+                    RowBox[{"ToString", "[", "newWeight", "]"}]}]}], "]"}], 
+                  ";"}], "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"AppendTo", "[", 
+                   RowBox[{"text", ",", 
+                    RowBox[{
+                    "\"\<Vid\[IAcute]me, \[ZHacek]e cena cesty cez teraj\
+\[SHacek]\[IAcute] vrchol \>\"", "<>", 
+                    RowBox[{"ToString", "[", 
+                    RowBox[{"numberToLetter", "[", "currentVertex", "]"}], 
+                    "]"}], "<>", "\"\< do vrcholu \>\"", "<>", 
+                    RowBox[{"ToString", "[", 
+                    RowBox[{"numberToLetter", "[", 
+                    RowBox[{"neighbors", "[", 
+                    RowBox[{"[", "i", "]"}], "]"}], "]"}], "]"}], "<>", 
+                    
+                    "\"\< nie je lacnej\[SHacek]ia, tak\[ZHacek]e neprep\
+\[IAcute]\[SHacek]em cenu vrcholu \>\"", "<>", 
+                    RowBox[{"ToString", "[", 
+                    RowBox[{"numberToLetter", "[", 
+                    RowBox[{"neighbors", "[", 
+                    RowBox[{"[", "i", "]"}], "]"}], "]"}], "]"}]}]}], "]"}], 
+                  ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+               "\[IndentingNewLine]", 
+               RowBox[{"AppendTo", "[", 
+                RowBox[{"steps", ",", 
+                 RowBox[{"{", 
+                  RowBox[{"currentVertex", ",", 
+                   RowBox[{"neighbors", "[", 
+                    RowBox[{"[", "i", "]"}], "]"}], ",", 
+                   "updatedvertexWeights"}], "}"}]}], "]"}], ";", 
+               "\[IndentingNewLine]", 
+               RowBox[{"AppendTo", "[", 
+                RowBox[{"vypis", ",", "text"}], "]"}], ";", 
+               "\[IndentingNewLine]", 
+               RowBox[{"text", "=", 
+                RowBox[{"{", "}"}]}], ";"}]}], "\[IndentingNewLine]", "]"}], 
+            ";"}]}], "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]",
+          "\[IndentingNewLine]", 
+         RowBox[{"visited", "=", 
+          RowBox[{"Append", "[", 
+           RowBox[{"visited", ",", "currentVertex"}], "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"unvisited", "=", 
+          RowBox[{"DeleteCases", "[", 
+           RowBox[{"unvisited", ",", "currentVertex"}], "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"smallestWeight", "=", 
+          RowBox[{"Min", "[", 
+           RowBox[{"updatedvertexWeights", "[", 
+            RowBox[{"[", "unvisited", "]"}], "]"}], "]"}]}], ";", 
+         "\[IndentingNewLine]", "\[IndentingNewLine]", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{"smallestWeight", "===", "\[Infinity]"}], ",", 
+           RowBox[{"Break", "[", "]"}]}], "]"}], ";", "\[IndentingNewLine]", 
+         RowBox[{"currentVertex", "=", 
+          RowBox[{"First", "[", 
+           RowBox[{"Select", "[", 
+            RowBox[{"unvisited", ",", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"updatedvertexWeights", "[", 
+                RowBox[{"[", "#1", "]"}], "]"}], "==", "smallestWeight"}], 
+              "&"}]}], "]"}], "]"}]}], ";"}]}], "\[IndentingNewLine]", "]"}], 
+      ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"paths", "=", 
+       RowBox[{"Table", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"path", "=", 
+           RowBox[{"{", "}"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"currentVertex", "=", "i"}], ";", "\[IndentingNewLine]", 
+          RowBox[{"While", "[", 
+           RowBox[{
+            RowBox[{"currentVertex", "=!=", "None"}], ",", 
+            "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"path", "=", 
+              RowBox[{"Prepend", "[", 
+               RowBox[{"path", ",", "currentVertex"}], "]"}]}], ";", 
+             "\[IndentingNewLine]", 
+             RowBox[{"currentVertex", "=", 
+              RowBox[{"predecessors", "[", 
+               RowBox[{"[", "currentVertex", "]"}], "]"}]}], ";"}]}], 
+           "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", "path"}],
+          ",", 
+         RowBox[{"{", 
+          RowBox[{"i", ",", "1", ",", 
+           RowBox[{"Length", "[", "vertexWeights", "]"}]}], "}"}]}], 
+        "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"{", 
+       RowBox[{
+       "updatedvertexWeights", ",", "predecessors", ",", "paths", ",", 
+        "steps", ",", "vypis"}], "}"}]}]}], "]"}]}], "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{
+   "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**",
+     "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**",
+     "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**",
+     "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**",
+     "**", "**", "**", "**", "**", "**", "**", "**", "**"}], 
+   "*****)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"showFinalResult", "[", 
+    RowBox[{
+    "mygraph_", ",", "startVertex_", ",", "endVertex_", ",", "vertexWeights_",
+      ",", "paths_", ",", "weights_", ",", "edges_", ",", "directed_"}], 
+    "]"}], ":=", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "currentEdge", ",", "highlightedGraph", ",", "finalGraph", ",", 
+       "uniqueEdges", ",", "vertexPositions", ",", "edgeLabels", ",", 
+       "newGraph", ",", "vertexABC", ",", "uniqueWeights", ",", "path", ",", 
+       "messageText"}], "}"}], ",", "\[IndentingNewLine]", 
+     "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"directed", "===", "False"}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"uniqueEdges", "=", 
+          RowBox[{"Union", "[", 
+           RowBox[{"Flatten", "[", 
+            RowBox[{"Table", "[", 
+             RowBox[{
+              RowBox[{"Table", "[", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"paths", "[", 
+                  RowBox[{"[", 
+                   RowBox[{"i", ",", "j"}], "]"}], "]"}], "\[UndirectedEdge]", 
+                 RowBox[{"paths", "[", 
+                  RowBox[{"[", 
+                   RowBox[{"i", ",", 
+                    RowBox[{"j", "+", "1"}]}], "]"}], "]"}]}], ",", 
+                RowBox[{"{", 
+                 RowBox[{"j", ",", "1", ",", 
+                  RowBox[{
+                   RowBox[{"Length", "[", 
+                    RowBox[{"paths", "[", 
+                    RowBox[{"[", "i", "]"}], "]"}], "]"}], "-", "1"}]}], 
+                 "}"}]}], "]"}], ",", 
+              RowBox[{"{", 
+               RowBox[{"i", ",", "1", ",", 
+                RowBox[{"Length", "[", "paths", "]"}]}], "}"}]}], "]"}], 
+            "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+         RowBox[{"uniqueWeights", "=", 
+          RowBox[{"Table", "[", 
+           RowBox[{
+            RowBox[{"With", "[", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{"pos", "=", 
+                RowBox[{
+                 RowBox[{"Position", "[", 
+                  RowBox[{"edges", ",", 
+                   RowBox[{"uniqueEdges", "[", 
+                    RowBox[{"[", "i", "]"}], "]"}]}], "]"}], "~", "Join", "~", 
+                 RowBox[{"Position", "[", 
+                  RowBox[{"edges", ",", 
+                   RowBox[{"Reverse", "[", 
+                    RowBox[{"uniqueEdges", "[", 
+                    RowBox[{"[", "i", "]"}], "]"}], "]"}]}], "]"}]}]}], "}"}],
+               ",", 
+              RowBox[{"If", "[", 
+               RowBox[{
+                RowBox[{"pos", "===", 
+                 RowBox[{"{", "}"}]}], ",", "Null", ",", 
+                RowBox[{"weights", "[", 
+                 RowBox[{"[", 
+                  RowBox[{"pos", "[", 
+                   RowBox[{"[", 
+                    RowBox[{"1", ",", "1"}], "]"}], "]"}], "]"}], "]"}]}], 
+               "]"}]}], "]"}], ",", 
+            RowBox[{"{", 
+             RowBox[{"i", ",", 
+              RowBox[{"Length", "[", "uniqueEdges", "]"}]}], "}"}]}], "]"}]}],
+          ";"}], "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"uniqueEdges", "=", 
+          RowBox[{"Union", "[", 
+           RowBox[{"Flatten", "[", 
+            RowBox[{"Table", "[", 
+             RowBox[{
+              RowBox[{"Table", "[", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"paths", "[", 
+                  RowBox[{"[", 
+                   RowBox[{"i", ",", "j"}], "]"}], "]"}], "->", 
+                 RowBox[{"paths", "[", 
+                  RowBox[{"[", 
+                   RowBox[{"i", ",", 
+                    RowBox[{"j", "+", "1"}]}], "]"}], "]"}]}], ",", 
+                RowBox[{"{", 
+                 RowBox[{"j", ",", "1", ",", 
+                  RowBox[{
+                   RowBox[{"Length", "[", 
+                    RowBox[{"paths", "[", 
+                    RowBox[{"[", "i", "]"}], "]"}], "]"}], "-", "1"}]}], 
+                 "}"}]}], "]"}], ",", 
+              RowBox[{"{", 
+               RowBox[{"i", ",", "1", ",", 
+                RowBox[{"Length", "[", "paths", "]"}]}], "}"}]}], "]"}], 
+            "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+         RowBox[{"uniqueWeights", "=", 
+          RowBox[{"Table", "[", 
+           RowBox[{
+            RowBox[{"With", "[", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{"pos", "=", 
+                RowBox[{"Position", "[", 
+                 RowBox[{"edges", ",", 
+                  RowBox[{"uniqueEdges", "[", 
+                   RowBox[{"[", "i", "]"}], "]"}]}], "]"}]}], "}"}], ",", 
+              RowBox[{"If", "[", 
+               RowBox[{
+                RowBox[{"pos", "===", 
+                 RowBox[{"{", "}"}]}], ",", "Null", ",", 
+                RowBox[{"weights", "[", 
+                 RowBox[{"[", 
+                  RowBox[{"pos", "[", 
+                   RowBox[{"[", 
+                    RowBox[{"1", ",", "1"}], "]"}], "]"}], "]"}], "]"}]}], 
+               "]"}]}], "]"}], ",", 
+            RowBox[{"{", 
+             RowBox[{"i", ",", 
+              RowBox[{"Length", "[", "uniqueEdges", "]"}]}], "}"}]}], "]"}]}],
+          ";"}]}], "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
+      RowBox[{"vertexPositions", " ", "=", " ", 
+       RowBox[{"GraphEmbedding", "[", "mygraph", "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"edgeLabels", "=", 
+       RowBox[{"MapThread", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"#1", "->", 
+           RowBox[{"Placed", "[", 
+            RowBox[{"#2", ",", 
+             RowBox[{"1", "/", "6"}]}], "]"}]}], "&"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"uniqueEdges", ",", "uniqueWeights"}], "}"}]}], "]"}]}], 
+      ";", "\[IndentingNewLine]", 
+      RowBox[{"vertexABC", "=", 
+       RowBox[{"Table", "[", 
+        RowBox[{
+         RowBox[{"ToString", "[", 
+          RowBox[{"FromCharacterCode", "[", 
+           RowBox[{"i", "+", "64"}], "]"}], "]"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"i", ",", "1", ",", 
+           RowBox[{"Length", "[", "vertexWeights", "]"}]}], "}"}]}], "]"}]}], 
+      ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"newGraph", "=", 
+       RowBox[{"Graph", "[", 
+        RowBox[{
+         RowBox[{"Range", "[", 
+          RowBox[{"Length", "[", "vertexWeights", "]"}], "]"}], ",", 
+         "\[IndentingNewLine]", "uniqueEdges", ",", "\[IndentingNewLine]", 
+         RowBox[{"EdgeLabels", "->", "edgeLabels"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"EdgeWeight", "->", "uniqueWeights"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"EdgeLabelStyle", "->", 
+          RowBox[{"Directive", "[", 
+           RowBox[{
+            RowBox[{"FontSize", "->", "12"}], ",", 
+            RowBox[{"Background", "->", "White"}], ",", "Blue"}], "]"}]}], 
+         ",", "\[IndentingNewLine]", 
+         RowBox[{"EdgeStyle", "->", 
+          RowBox[{"Directive", "[", 
+           RowBox[{"Black", ",", 
+            RowBox[{"Arrowheads", "[", "0.02", "]"}]}], "]"}]}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"VertexCoordinates", "->", "vertexPositions"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"VertexStyle", "->", 
+          RowBox[{"Directive", "[", "LightBlue", "]"}]}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"VertexLabels", "->", 
+          RowBox[{"Table", "[", 
+           RowBox[{
+            RowBox[{"i", "->", 
+             RowBox[{"vertexABC", "[", 
+              RowBox[{"[", "i", "]"}], "]"}]}], ",", 
+            RowBox[{"{", 
+             RowBox[{"i", ",", 
+              RowBox[{"Length", "[", "vertexWeights", "]"}]}], "}"}]}], 
+           "]"}]}], ",", "\[IndentingNewLine]", 
+         RowBox[{"VertexLabelStyle", "->", 
+          RowBox[{"Directive", "[", 
+           RowBox[{
+            RowBox[{"FontSize", "->", "14"}], ",", "Bold"}], "]"}]}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"ImageSize", "->", "Large"}], ",", 
+         RowBox[{"GraphStyle", "->", "\"\<NameLabeled\>\""}]}], "]"}]}], ";", 
+      "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"newGraph", "=", 
+       RowBox[{"modifyVertexColor", "[", 
+        RowBox[{"newGraph", ",", 
+         RowBox[{"{", "startVertex", "}"}], ",", "Green"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"newGraph", "=", 
+       RowBox[{"modifyVertexColor", "[", 
+        RowBox[{"newGraph", ",", 
+         RowBox[{"{", "endVertex", "}"}], ",", "Magenta"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"path", "=", 
+       RowBox[{"paths", "[", 
+        RowBox[{"[", "endVertex", "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"directed", "===", "False"}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"Length", "[", "path", "]"}], ">", "1"}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"currentEdge", "=", 
+             RowBox[{"Table", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"path", "[", 
+                 RowBox[{"[", "i", "]"}], "]"}], "\[UndirectedEdge]", 
+                RowBox[{"path", "[", 
+                 RowBox[{"[", 
+                  RowBox[{"i", "+", "1"}], "]"}], "]"}]}], ",", 
+               RowBox[{"{", 
+                RowBox[{"i", ",", "1", ",", 
+                 RowBox[{
+                  RowBox[{"Length", "[", "path", "]"}], "-", "1"}]}], "}"}]}],
+               "]"}]}], ";", "\[IndentingNewLine]", 
+            RowBox[{"highlightedGraph", "=", 
+             RowBox[{"HighlightGraph", "[", 
+              RowBox[{"newGraph", ",", 
+               RowBox[{"Style", "[", 
+                RowBox[{"currentEdge", ",", "Thick", ",", "Red"}], "]"}]}], 
+              "]"}]}], ";", "\[IndentingNewLine]", 
+            RowBox[{"finalGraph", "=", 
+             RowBox[{"displayVertexWeights", "[", 
+              RowBox[{"highlightedGraph", ",", "vertexWeights"}], "]"}]}], 
+            ";", "\[IndentingNewLine]", 
+            RowBox[{"messageText", "=", 
+             RowBox[{
+             "\"\<Toto je finalna kostra celeho grafu, na ktorej s\[UAcute] \
+uk\[AAcute]zan\[EAcute] v\[SHacek]etky cesty z po\[CHacek]iato\[CHacek]n\
+\[EAcute]ho vrcholu \>\"", "<>", 
+              RowBox[{"ToString", "[", 
+               RowBox[{"numberToLetter", "[", "startVertex", "]"}], "]"}], 
+              "<>", "\"\< do v\[SHacek]etk\[YAcute]ch ostatn\[YAcute]ch \
+vrcholov, pri\[CHacek]om cesta do vrcholu \>\"", "<>", 
+              RowBox[{"ToString", "[", 
+               RowBox[{"numberToLetter", "[", "endVertex", "]"}], "]"}], 
+              "<>", "\"\< je ozna\[CHacek]en\[AAcute] \[CHacek]ervenou \
+farbou.\>\""}]}], ";"}], "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"finalGraph", "=", 
+             RowBox[{"displayVertexWeights", "[", 
+              RowBox[{"newGraph", ",", "vertexWeights"}], "]"}]}], ";", 
+            "\[IndentingNewLine]", 
+            RowBox[{"messageText", "=", 
+             RowBox[{
+             "\"\<Toto je finalna kostra celeho grafu, na ktorej s\[UAcute] \
+uk\[AAcute]zan\[EAcute] v\[SHacek]etky cesty z po\[CHacek]iato\[CHacek]n\
+\[EAcute]ho vrcholu \>\"", "<>", 
+              RowBox[{"ToString", "[", 
+               RowBox[{"numberToLetter", "[", "startVertex", "]"}], "]"}], 
+              "<>", "\"\< do v\[SHacek]etk\[YAcute]ch ostatn\[YAcute]ch \
+vrcholov, pri\[CHacek]om cesta do vrcholu \>\"", "<>", 
+              RowBox[{"ToString", "[", 
+               RowBox[{"numberToLetter", "[", "endVertex", "]"}], "]"}], 
+              "<>", "\"\< neexistuje.\>\""}]}], ";"}]}], 
+          "\[IndentingNewLine]", "]"}], ";"}]}], "\[IndentingNewLine]", "]"}],
+       ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"directed", "===", "True"}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"Length", "[", "path", "]"}], ">", "1"}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"currentEdge", "=", 
+             RowBox[{"Table", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{
+                "path", "\[LeftDoubleBracket]", "i", 
+                 "\[RightDoubleBracket]"}], "\[Rule]", 
+                RowBox[{"path", "\[LeftDoubleBracket]", 
+                 RowBox[{"i", "+", "1"}], "\[RightDoubleBracket]"}]}], ",", 
+               RowBox[{"{", 
+                RowBox[{"i", ",", "1", ",", 
+                 RowBox[{
+                  RowBox[{"Length", "[", "path", "]"}], "-", "1"}]}], "}"}]}],
+               "]"}]}], ";", 
+            RowBox[{"highlightedGraph", "=", 
+             RowBox[{"HighlightGraph", "[", 
+              RowBox[{"newGraph", ",", 
+               RowBox[{"Style", "[", 
+                RowBox[{"currentEdge", ",", "Thick", ",", "Red"}], "]"}]}], 
+              "]"}]}], ";", 
+            RowBox[{"finalGraph", "=", 
+             RowBox[{"displayVertexWeights", "[", 
+              RowBox[{"highlightedGraph", ",", "vertexWeights"}], "]"}]}], 
+            ";", "\[IndentingNewLine]", 
+            RowBox[{"messageText", "=", 
+             RowBox[{
+             "\"\<Toto je finalna kostra celeho grafu, na ktorej s\[UAcute] \
+uk\[AAcute]zan\[EAcute] v\[SHacek]etky cesty z po\[CHacek]iato\[CHacek]n\
+\[EAcute]ho vrcholu \>\"", "<>", 
+              RowBox[{"ToString", "[", 
+               RowBox[{"numberToLetter", "[", "startVertex", "]"}], "]"}], 
+              "<>", "\"\< do v\[SHacek]etk\[YAcute]ch ostatn\[YAcute]ch \
+vrcholov, pri\[CHacek]om cesta do vrcholu \>\"", "<>", 
+              RowBox[{"ToString", "[", 
+               RowBox[{"numberToLetter", "[", "endVertex", "]"}], "]"}], 
+              "<>", "\"\< je ozna\[CHacek]en\[AAcute] \[CHacek]ervenou \
+farbou.\>\""}]}], ";"}], "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"finalGraph", "=", 
+             RowBox[{"displayVertexWeights", "[", 
+              RowBox[{"newGraph", ",", "vertexWeights"}], "]"}]}], ";", 
+            "\[IndentingNewLine]", 
+            RowBox[{"messageText", "=", 
+             RowBox[{
+             "\"\<Toto je finalna kostra celeho grafu, na ktorej s\[UAcute] \
+uk\[AAcute]zan\[EAcute] v\[SHacek]etky cesty z po\[CHacek]iato\[CHacek]n\
+\[EAcute]ho vrcholu \>\"", "<>", 
+              RowBox[{"ToString", "[", 
+               RowBox[{"numberToLetter", "[", "startVertex", "]"}], "]"}], 
+              "<>", "\"\< do v\[SHacek]etk\[YAcute]ch ostatn\[YAcute]ch \
+vrcholov, pri\[CHacek]om cesta do vrcholu \>\"", "<>", 
+              RowBox[{"ToString", "[", 
+               RowBox[{"numberToLetter", "[", "endVertex", "]"}], "]"}], 
+              "<>", "\"\< neexistuje.\>\""}]}], ";"}]}], 
+          "\[IndentingNewLine]", "]"}], ";"}]}], "\[IndentingNewLine]", "]"}],
+       ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
+      RowBox[{"graphCell", "=", 
+       RowBox[{"Print", "[", 
+        RowBox[{"Grid", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"{", 
+            RowBox[{"finalGraph", ",", 
+             RowBox[{"Column", "[", 
+              RowBox[{"{", 
+               RowBox[{
+                RowBox[{"Style", "[", 
+                 RowBox[{"\"\<VYSLEDOK\>\"", ",", 
+                  RowBox[{"FontSize", "->", "16"}], ",", "Bold", ",", "Red"}],
+                  "]"}], ",", 
+                RowBox[{"Style", "[", 
+                 RowBox[{"messageText", ",", 
+                  RowBox[{"FontSize", "->", "14"}], ",", 
+                  RowBox[{"LineSpacing", "->", 
+                   RowBox[{"{", "1.5", "}"}]}]}], "]"}]}], "}"}], "]"}]}], 
+            "}"}], "}"}], ",", 
+          RowBox[{"Spacings", "->", 
+           RowBox[{"{", 
+            RowBox[{"2", ",", "1"}], "}"}]}]}], "]"}], "]"}]}], ";"}]}], 
+    "\[IndentingNewLine]", "\[IndentingNewLine]", "]"}]}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"replaySteps", "[", 
+    RowBox[{"mygraph_", ",", "steps_", ",", "directed_", ",", "vypis_"}], 
+    "]"}], ":=", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"graphCell", "=", "None"}], ",", "currentEdge", ",", 
+       "highlightedGraph", ",", "finalGraph", ",", "updatedGraph", ",", 
+       "originalGraph", ",", "currentVertex", ",", "originalVertexColor", ",",
+        "numberedText", ",", 
+       RowBox[{"visited", "=", 
+        RowBox[{"{", "}"}]}], ",", "visitedText"}], "}"}], ",", 
+     "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"originalGraph", "=", "mygraph"}], ";", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"directed", "===", "False"}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"For", "[", 
+          RowBox[{
+           RowBox[{"i", "=", "1"}], ",", 
+           RowBox[{"i", "<=", 
+            RowBox[{"Length", "[", "steps", "]"}]}], ",", 
+           RowBox[{"i", "++"}], ",", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"currentEdge", "=", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"steps", "[", 
+                RowBox[{"[", 
+                 RowBox[{"i", ",", "1"}], "]"}], "]"}], "\[UndirectedEdge]", 
+               RowBox[{"steps", "[", 
+                RowBox[{"[", 
+                 RowBox[{"i", ",", "2"}], "]"}], "]"}]}], "}"}]}], ";", 
+            "\[IndentingNewLine]", 
+            RowBox[{"currentVertex", "=", 
+             RowBox[{"steps", "[", 
+              RowBox[{"[", 
+               RowBox[{"i", ",", "1"}], "]"}], "]"}]}], ";", 
+            "\[IndentingNewLine]", "\[IndentingNewLine]", 
+            RowBox[{"If", "[", 
+             RowBox[{
+              RowBox[{"!", 
+               RowBox[{"MemberQ", "[", 
+                RowBox[{"visited", ",", "currentVertex"}], "]"}]}], ",", 
+              RowBox[{"AppendTo", "[", 
+               RowBox[{"visited", ",", "currentVertex"}], "]"}]}], "]"}], ";",
+             "\[IndentingNewLine]", "\[IndentingNewLine]", 
+            RowBox[{"originalVertexColor", "=", 
+             RowBox[{"PropertyValue", "[", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"originalGraph", ",", "currentVertex"}], "}"}], ",", 
+               "VertexStyle"}], "]"}]}], ";", "\[IndentingNewLine]", 
+            RowBox[{"updatedGraph", "=", 
+             RowBox[{"modifyVertexColor", "[", 
+              RowBox[{"originalGraph", ",", 
+               RowBox[{"{", "currentVertex", "}"}], ",", "Yellow"}], "]"}]}], 
+            ";", "\[IndentingNewLine]", 
+            RowBox[{"highlightedGraph", "=", 
+             RowBox[{"HighlightGraph", "[", 
+              RowBox[{"updatedGraph", ",", 
+               RowBox[{"Style", "[", 
+                RowBox[{"currentEdge", ",", "Thick", ",", "Red"}], "]"}]}], 
+              "]"}]}], ";", "\[IndentingNewLine]", 
+            RowBox[{"finalGraph", "=", 
+             RowBox[{"displayVertexWeights", "[", 
+              RowBox[{"highlightedGraph", ",", 
+               RowBox[{"steps", "[", 
+                RowBox[{"[", 
+                 RowBox[{"i", ",", "3"}], "]"}], "]"}]}], "]"}]}], ";", 
+            "\[IndentingNewLine]", "\[IndentingNewLine]", 
+            RowBox[{"If", "[", 
+             RowBox[{
+              RowBox[{"graphCell", "=!=", "None"}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{"NotebookDelete", "[", "graphCell", "]"}]}], 
+             "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+            RowBox[{"numberedText", "=", 
+             RowBox[{"Table", "[", 
+              RowBox[{
+               RowBox[{"Row", "[", 
+                RowBox[{"{", 
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"ToString", "[", "j", "]"}], "<>", "\"\<) \>\""}], 
+                  ",", 
+                  RowBox[{"vypis", "[", 
+                   RowBox[{"[", 
+                    RowBox[{"i", ",", "j"}], "]"}], "]"}]}], "}"}], "]"}], 
+               ",", 
+               RowBox[{"{", 
+                RowBox[{"j", ",", 
+                 RowBox[{"Length", "[", 
+                  RowBox[{"vypis", "[", 
+                   RowBox[{"[", "i", "]"}], "]"}], "]"}]}], "}"}]}], "]"}]}], 
+            ";", "\[IndentingNewLine]", 
+            RowBox[{"visitedText", "=", 
+             RowBox[{"\"\<nav\[SHacek]t\[IAcute]ven\[EAcute] vrcholy: \>\"", "<>", 
+              RowBox[{"StringJoin", "[", 
+               RowBox[{"Riffle", "[", 
+                RowBox[{
+                 RowBox[{"ToString", "/@", 
+                  RowBox[{"(", 
+                   RowBox[{"numberToLetter", "/@", "visited"}], ")"}]}], ",", 
+                 "\"\<, \>\""}], "]"}], "]"}]}]}], ";", "\[IndentingNewLine]", 
+            RowBox[{"graphCell", "=", 
+             RowBox[{"PrintTemporary", "[", 
+              RowBox[{"Grid", "[", 
+               RowBox[{
+                RowBox[{"{", 
+                 RowBox[{"{", 
+                  RowBox[{"finalGraph", ",", 
+                   RowBox[{"Column", "[", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"Style", "[", 
+                    RowBox[{"visitedText", ",", 
+                    RowBox[{"FontSize", "->", "12"}]}], "]"}], ",", 
+                    RowBox[{"Style", "[", 
+                    RowBox[{"\"\<POSTUP\>\"", ",", 
+                    RowBox[{"FontSize", "->", "16"}], ",", "Bold", ",", 
+                    "Red"}], "]"}], ",", 
+                    RowBox[{"Column", "[", "numberedText", "]"}]}], "}"}], 
+                    "]"}]}], "}"}], "}"}], ",", 
+                RowBox[{"Spacings", "->", 
+                 RowBox[{"{", 
+                  RowBox[{"2", ",", "1"}], "}"}]}]}], "]"}], "]"}]}], ";", 
+            "\[IndentingNewLine]", "\[IndentingNewLine]", 
+            RowBox[{
+            "InputString", "[", "\"\<Press ENTER to continue...\>\"", "]"}], 
+            ";", "\[IndentingNewLine]", 
+            RowBox[{"originalGraph", "=", 
+             RowBox[{"modifyVertexColor", "[", 
+              RowBox[{"updatedGraph", ",", 
+               RowBox[{"{", "currentVertex", "}"}], ",", 
+               "originalVertexColor"}], "]"}]}], ";"}]}], 
+          "\[IndentingNewLine]", "]"}], ";"}]}], "\[IndentingNewLine]", "]"}],
+       ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"directed", "===", "True"}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"For", "[", 
+          RowBox[{
+           RowBox[{"i", "=", "1"}], ",", 
+           RowBox[{"i", "<=", 
+            RowBox[{"Length", "[", "steps", "]"}]}], ",", 
+           RowBox[{"i", "++"}], ",", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"currentEdge", "=", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"steps", "[", 
+                RowBox[{"[", 
+                 RowBox[{"i", ",", "1"}], "]"}], "]"}], "->", 
+               RowBox[{"steps", "[", 
+                RowBox[{"[", 
+                 RowBox[{"i", ",", "2"}], "]"}], "]"}]}], "}"}]}], ";", 
+            "\[IndentingNewLine]", 
+            RowBox[{"currentVertex", "=", 
+             RowBox[{"steps", "[", 
+              RowBox[{"[", 
+               RowBox[{"i", ",", "1"}], "]"}], "]"}]}], ";", 
+            "\[IndentingNewLine]", "\[IndentingNewLine]", 
+            RowBox[{"If", "[", 
+             RowBox[{
+              RowBox[{"!", 
+               RowBox[{"MemberQ", "[", 
+                RowBox[{"visited", ",", "currentVertex"}], "]"}]}], ",", 
+              RowBox[{"AppendTo", "[", 
+               RowBox[{"visited", ",", "currentVertex"}], "]"}]}], "]"}], ";",
+             "\[IndentingNewLine]", "\[IndentingNewLine]", 
+            RowBox[{"originalVertexColor", "=", 
+             RowBox[{"PropertyValue", "[", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"originalGraph", ",", "currentVertex"}], "}"}], ",", 
+               "VertexStyle"}], "]"}]}], ";", "\[IndentingNewLine]", 
+            RowBox[{"updatedGraph", "=", 
+             RowBox[{"modifyVertexColor", "[", 
+              RowBox[{"originalGraph", ",", 
+               RowBox[{"{", "currentVertex", "}"}], ",", "Yellow"}], "]"}]}], 
+            ";", "\[IndentingNewLine]", 
+            RowBox[{"highlightedGraph", "=", 
+             RowBox[{"HighlightGraph", "[", 
+              RowBox[{"updatedGraph", ",", 
+               RowBox[{"Style", "[", 
+                RowBox[{"currentEdge", ",", "Thick", ",", "Red"}], "]"}]}], 
+              "]"}]}], ";", "\[IndentingNewLine]", 
+            RowBox[{"finalGraph", "=", 
+             RowBox[{"displayVertexWeights", "[", 
+              RowBox[{"highlightedGraph", ",", 
+               RowBox[{"steps", "[", 
+                RowBox[{"[", 
+                 RowBox[{"i", ",", "3"}], "]"}], "]"}]}], "]"}]}], ";", 
+            "\[IndentingNewLine]", "\[IndentingNewLine]", 
+            RowBox[{"If", "[", 
+             RowBox[{
+              RowBox[{"graphCell", "=!=", "None"}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{"NotebookDelete", "[", "graphCell", "]"}]}], 
+             "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+            RowBox[{"numberedText", "=", 
+             RowBox[{"Table", "[", 
+              RowBox[{
+               RowBox[{"Row", "[", 
+                RowBox[{"{", 
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"ToString", "[", "j", "]"}], "<>", "\"\<) \>\""}], 
+                  ",", 
+                  RowBox[{"vypis", "[", 
+                   RowBox[{"[", 
+                    RowBox[{"i", ",", "j"}], "]"}], "]"}]}], "}"}], "]"}], 
+               ",", 
+               RowBox[{"{", 
+                RowBox[{"j", ",", 
+                 RowBox[{"Length", "[", 
+                  RowBox[{"vypis", "[", 
+                   RowBox[{"[", "i", "]"}], "]"}], "]"}]}], "}"}]}], "]"}]}], 
+            ";", "\[IndentingNewLine]", 
+            RowBox[{"visitedText", "=", 
+             RowBox[{"\"\<nav\[SHacek]t\[IAcute]ven\[EAcute] vrcholy: \>\"", "<>", 
+              RowBox[{"StringJoin", "[", 
+               RowBox[{"Riffle", "[", 
+                RowBox[{
+                 RowBox[{"ToString", "/@", 
+                  RowBox[{"(", 
+                   RowBox[{"numberToLetter", "/@", "visited"}], ")"}]}], ",", 
+                 "\"\<, \>\""}], "]"}], "]"}]}]}], ";", "\[IndentingNewLine]", 
+            RowBox[{"graphCell", "=", 
+             RowBox[{"PrintTemporary", "[", 
+              RowBox[{"Grid", "[", 
+               RowBox[{
+                RowBox[{"{", 
+                 RowBox[{"{", 
+                  RowBox[{"finalGraph", ",", 
+                   RowBox[{"Column", "[", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"Style", "[", 
+                    RowBox[{"visitedText", ",", 
+                    RowBox[{"FontSize", "->", "12"}]}], "]"}], ",", 
+                    RowBox[{"Style", "[", 
+                    RowBox[{"\"\<POSTUP\>\"", ",", 
+                    RowBox[{"FontSize", "->", "16"}], ",", "Bold", ",", 
+                    "Red"}], "]"}], ",", 
+                    RowBox[{"Column", "[", "numberedText", "]"}]}], "}"}], 
+                    "]"}]}], "}"}], "}"}], ",", 
+                RowBox[{"Spacings", "->", 
+                 RowBox[{"{", 
+                  RowBox[{"2", ",", "1"}], "}"}]}]}], "]"}], "]"}]}], ";", 
+            "\[IndentingNewLine]", "\[IndentingNewLine]", 
+            RowBox[{
+            "InputString", "[", "\"\<Press ENTER to continue...\>\"", "]"}], 
+            ";", "\[IndentingNewLine]", 
+            RowBox[{"originalGraph", "=", 
+             RowBox[{"modifyVertexColor", "[", 
+              RowBox[{"updatedGraph", ",", 
+               RowBox[{"{", "currentVertex", "}"}], ",", 
+               "originalVertexColor"}], "]"}]}], ";"}]}], 
+          "\[IndentingNewLine]", "]"}], ";"}]}], "\[IndentingNewLine]", "]"}],
+       ";"}]}], "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"DijkstraAlgorithm", "[", 
+    RowBox[{
+    "mygraph_", ",", "startVertex_", ",", "endVertex_", ",", "edges_", ",", 
+     "weights_", ",", "vertexWeights_List", ",", "directed_"}], "]"}], ":=", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "updatedvertexWeights", ",", "predecessors", ",", "paths", ",", "steps",
+        ",", "input", ",", "vypis"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"directed", "===", "False"}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{
+           "updatedvertexWeights", ",", "predecessors", ",", "paths", ",", 
+            "steps", ",", "vypis"}], "}"}], "=", 
+          RowBox[{"DijkstraUndirectedCore", "[", 
+           RowBox[{
+           "mygraph", ",", "startVertex", ",", "endVertex", ",", "edges", ",",
+             "weights", ",", "vertexWeights"}], "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"input", "=", 
+          RowBox[{
+          "InputString", "[", 
+           "\"\<Enter 'vysledok' for final result or 'postup' for \
+step-by-step: \>\"", "]"}]}], ";", "\[IndentingNewLine]", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{"input", "===", "\"\<vysledok\>\""}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"NotebookDelete", "[", "graphCell", "]"}], ";", 
+            "\[IndentingNewLine]", 
+            RowBox[{"showFinalResult", "[", 
+             RowBox[{
+             "mygraph", ",", "startVertex", ",", "endVertex", ",", 
+              "updatedvertexWeights", ",", "paths", ",", "weights", ",", 
+              "edges", ",", "False"}], "]"}]}], ",", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"If", "[", 
+             RowBox[{
+              RowBox[{"input", "===", "\"\<postup\>\""}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"NotebookDelete", "[", "graphCell", "]"}], ";", 
+               "\[IndentingNewLine]", 
+               RowBox[{"replaySteps", "[", 
+                RowBox[{"mygraph", ",", "steps", ",", "False", ",", "vypis"}],
+                 "]"}], ";", "\[IndentingNewLine]", 
+               RowBox[{"showFinalResult", "[", 
+                RowBox[{
+                "mygraph", ",", "startVertex", ",", "endVertex", ",", 
+                 "updatedvertexWeights", ",", "paths", ",", "weights", ",", 
+                 "edges", ",", "False"}], "]"}], ";"}]}], 
+             "\[IndentingNewLine]", "]"}], ";"}]}], "\[IndentingNewLine]", 
+          "]"}], ";"}], "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{
+           "updatedvertexWeights", ",", "predecessors", ",", "paths", ",", 
+            "steps", ",", "vypis"}], "}"}], "=", 
+          RowBox[{"DijkstraDirectedCore", "[", 
+           RowBox[{
+           "mygraph", ",", "startVertex", ",", "endVertex", ",", "edges", ",",
+             "weights", ",", "vertexWeights"}], "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"input", "=", 
+          RowBox[{
+          "InputString", "[", 
+           "\"\<Enter 'vysledok' for final result or 'postup' for \
+step-by-step: \>\"", "]"}]}], ";", "\[IndentingNewLine]", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{"input", "===", "\"\<vysledok\>\""}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"NotebookDelete", "[", "graphCell", "]"}], ";", 
+            "\[IndentingNewLine]", 
+            RowBox[{"showFinalResult", "[", 
+             RowBox[{
+             "mygraph", ",", "startVertex", ",", "endVertex", ",", 
+              "updatedvertexWeights", ",", "paths", ",", "weights", ",", 
+              "edges", ",", "True"}], "]"}]}], ",", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"If", "[", 
+             RowBox[{
+              RowBox[{"input", "===", "\"\<postup\>\""}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"NotebookDelete", "[", "graphCell", "]"}], ";", 
+               "\[IndentingNewLine]", 
+               RowBox[{"replaySteps", "[", 
+                RowBox[{"mygraph", ",", "steps", ",", "True", ",", "vypis"}], 
+                "]"}], ";", "\[IndentingNewLine]", 
+               RowBox[{"showFinalResult", "[", 
+                RowBox[{
+                "mygraph", ",", "startVertex", ",", "endVertex", ",", 
+                 "updatedvertexWeights", ",", "paths", ",", "weights", ",", 
+                 "edges", ",", "True"}], "]"}]}]}], "\[IndentingNewLine]", 
+             "]"}], ";"}]}], "\[IndentingNewLine]", "]"}]}]}], 
+       "\[IndentingNewLine]", "]"}], ";"}]}], "\[IndentingNewLine]", "]"}]}], 
+  "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{
+   "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**",
+     "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**",
+     "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**",
+     "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**",
+     "**", "**", "**", "**", "**", "**", "**", "**", "**"}], 
+   "*****)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"makeSquareGraph", "[", 
+    RowBox[{"diff_", ",", "directed_"}], "]"}], ":=", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "mygraph", ",", "edges", ",", "weights", ",", "edgeLabels", ",", 
+       "vertexABC", ",", "n1", ",", "n2", ",", "part1Edges", ",", 
+       "part2Edges", ",", "n", ",", "edgesNumber", ",", 
+       RowBox[{"vertexCoordinates", "=", 
+        RowBox[{"{", "}"}]}], ",", "edgeList", ",", "adjacencyMatrix", ",", 
+       RowBox[{"edgeProb", "=", "0.3"}], ",", "horizontalRow", ",", 
+       "verticalRow", ",", "totalSideVertices", ",", "xRange", ",", "yRange", 
+       ",", "randomConnections1", ",", "randomConnections2"}], "}"}], ",", 
+     "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"diff", "===", "easy"}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"n", "=", "10"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";",
+       "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"diff", "===", "medium"}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"n", "=", "16"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";",
+       "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"diff", "===", "hard"}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"n", "=", "20"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";",
+       "\[IndentingNewLine]", 
+      RowBox[{"adjacencyMatrix", "=", 
+       RowBox[{"ConstantArray", "[", 
+        RowBox[{"0", ",", 
+         RowBox[{"{", 
+          RowBox[{"n", ",", "n"}], "}"}]}], "]"}]}], ";", 
+      "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"totalSideVertices", "=", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"n", "-", "2"}], ")"}], "/", "2"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"EvenQ", "[", "totalSideVertices", "]"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"horizontalRow", "=", 
+         RowBox[{"verticalRow", "=", 
+          RowBox[{
+           RowBox[{"(", 
+            RowBox[{"totalSideVertices", "/", "2"}], ")"}], "+", "1"}]}]}], 
+        ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"horizontalRow", "=", 
+          RowBox[{
+           RowBox[{"Ceiling", "[", 
+            RowBox[{"totalSideVertices", "/", "2"}], "]"}], "+", "1"}]}], ";",
+          "\[IndentingNewLine]", 
+         RowBox[{"verticalRow", "=", 
+          RowBox[{
+           RowBox[{"Floor", "[", 
+            RowBox[{"totalSideVertices", "/", "2"}], "]"}], "+", "1"}]}], 
+         ";"}]}], "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"OddQ", "[", "horizontalRow", "]"}], ",", 
+        RowBox[{"xRange", "=", 
+         RowBox[{"Range", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"-", 
+             RowBox[{"(", 
+              RowBox[{"horizontalRow", "-", "1"}], ")"}]}], "/", "2"}], ",", 
+           RowBox[{
+            RowBox[{"(", 
+             RowBox[{"horizontalRow", "-", "1"}], ")"}], "/", "2"}], ",", 
+           "1"}], "]"}]}], ",", 
+        RowBox[{"(*", 
+         RowBox[{"Odd", " ", 
+          RowBox[{"case", ":", 
+           RowBox[{"centered", " ", "at", " ", "0"}]}]}], "*)"}], 
+        RowBox[{
+         RowBox[{"xRange", "=", 
+          RowBox[{"Join", "[", 
+           RowBox[{
+            RowBox[{"Range", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"-", "horizontalRow"}], "/", "2"}], ",", 
+              RowBox[{"-", "1"}]}], "]"}], ",", 
+            RowBox[{"Range", "[", 
+             RowBox[{"1", ",", 
+              RowBox[{"horizontalRow", "/", "2"}]}], "]"}]}], "]"}]}], 
+         ";"}]}], " ", 
+       RowBox[{"(*", 
+        RowBox[{"Even", " ", 
+         RowBox[{"case", ":", 
+          RowBox[{"symmetric", " ", "around", " ", "0"}]}]}], "*)"}], "]"}], 
+      ";", "\n", "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"OddQ", "[", "verticalRow", "]"}], ",", "\[IndentingNewLine]", 
+        RowBox[{"yRange", "=", 
+         RowBox[{"Range", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"(", 
+             RowBox[{"verticalRow", "-", "1"}], ")"}], "/", "2"}], ",", 
+           RowBox[{
+            RowBox[{"-", 
+             RowBox[{"(", 
+              RowBox[{"verticalRow", "-", "1"}], ")"}]}], "/", "2"}], ",", 
+           RowBox[{"-", "1"}]}], "]"}]}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"yRange", "=", 
+          RowBox[{"Join", "[", 
+           RowBox[{
+            RowBox[{"Range", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"-", "verticalRow"}], "/", "2"}], ",", 
+              RowBox[{"-", "1"}]}], "]"}], ",", 
+            RowBox[{"Range", "[", 
+             RowBox[{"1", ",", 
+              RowBox[{"verticalRow", "/", "2"}]}], "]"}]}], "]"}]}], ";"}]}], 
+       "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
+      RowBox[{"Do", "[", 
+       RowBox[{
+        RowBox[{"AppendTo", "[", 
+         RowBox[{"vertexCoordinates", ",", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"xRange", "[", 
+             RowBox[{"[", "i", "]"}], "]"}], ",", 
+            RowBox[{"yRange", "[", 
+             RowBox[{"[", 
+              RowBox[{"-", "1"}], "]"}], "]"}]}], "}"}]}], "]"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"i", ",", "1", ",", 
+          RowBox[{"Length", "[", "xRange", "]"}]}], "}"}]}], "]"}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"Do", "[", 
+       RowBox[{
+        RowBox[{"AppendTo", "[", 
+         RowBox[{"vertexCoordinates", ",", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"xRange", "[", 
+             RowBox[{"[", 
+              RowBox[{"-", "1"}], "]"}], "]"}], ",", 
+            RowBox[{
+             RowBox[{"Reverse", "[", "yRange", "]"}], "[", 
+             RowBox[{"[", "i", "]"}], "]"}]}], "}"}]}], "]"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"i", ",", "2", ",", 
+          RowBox[{
+           RowBox[{"Length", "[", "yRange", "]"}], "-", "1"}]}], "}"}]}], 
+       "]"}], ";", "\[IndentingNewLine]", 
+      RowBox[{"Do", "[", 
+       RowBox[{
+        RowBox[{"AppendTo", "[", 
+         RowBox[{"vertexCoordinates", ",", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"xRange", "[", 
+             RowBox[{"[", "i", "]"}], "]"}], ",", 
+            RowBox[{"yRange", "[", 
+             RowBox[{"[", "1", "]"}], "]"}]}], "}"}]}], "]"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"i", ",", 
+          RowBox[{"Length", "[", "xRange", "]"}], ",", "1", ",", 
+          RowBox[{"-", "1"}]}], "}"}]}], "]"}], ";", "\[IndentingNewLine]", 
+      RowBox[{"Do", "[", 
+       RowBox[{
+        RowBox[{"AppendTo", "[", 
+         RowBox[{"vertexCoordinates", ",", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"xRange", "[", 
+             RowBox[{"[", "1", "]"}], "]"}], ",", 
+            RowBox[{
+             RowBox[{"Reverse", "[", "yRange", "]"}], "[", 
+             RowBox[{"[", "i", "]"}], "]"}]}], "}"}]}], "]"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"i", ",", 
+          RowBox[{
+           RowBox[{"Length", "[", "yRange", "]"}], "-", "1"}], ",", "2", ",", 
+          RowBox[{"-", "1"}]}], "}"}]}], "]"}], ";", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
+      RowBox[{"AppendTo", "[", 
+       RowBox[{"vertexCoordinates", ",", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"-", "0.5"}], ",", "0"}], "}"}]}], "]"}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"AppendTo", "[", 
+       RowBox[{"vertexCoordinates", ",", 
+        RowBox[{"{", 
+         RowBox[{"0.5", ",", "0"}], "}"}]}], "]"}], ";", 
+      "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"directed", "===", "False"}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"For", "[", 
+          RowBox[{
+           RowBox[{"i", "=", "1"}], ",", 
+           RowBox[{"i", "<=", 
+            RowBox[{"(", 
+             RowBox[{"n", "-", "3"}], ")"}]}], ",", 
+           RowBox[{"i", "++"}], ",", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"adjacencyMatrix", "[", 
+              RowBox[{"[", 
+               RowBox[{"i", ",", 
+                RowBox[{"i", "+", "1"}]}], "]"}], "]"}], "=", 
+             RowBox[{"RandomInteger", "[", 
+              RowBox[{"{", 
+               RowBox[{"1", ",", "10"}], "}"}], "]"}]}], ";", 
+            "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"adjacencyMatrix", "[", 
+              RowBox[{"[", 
+               RowBox[{
+                RowBox[{"i", "+", "1"}], ",", "i"}], "]"}], "]"}], "=", 
+             RowBox[{"adjacencyMatrix", "[", 
+              RowBox[{"[", 
+               RowBox[{"i", ",", 
+                RowBox[{"i", "+", "1"}]}], "]"}], "]"}]}], ";"}]}], 
+          "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"adjacencyMatrix", "[", 
+           RowBox[{"[", 
+            RowBox[{"1", ",", 
+             RowBox[{"n", "-", "2"}]}], "]"}], "]"}], "=", 
+          RowBox[{"RandomInteger", "[", 
+           RowBox[{"{", 
+            RowBox[{"1", ",", "10"}], "}"}], "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"adjacencyMatrix", "[", 
+           RowBox[{"[", 
+            RowBox[{
+             RowBox[{"n", "-", "2"}], ",", "1"}], "]"}], "]"}], "=", 
+          RowBox[{"adjacencyMatrix", "[", 
+           RowBox[{"[", 
+            RowBox[{"1", ",", 
+             RowBox[{"n", "-", "2"}]}], "]"}], "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"adjacencyMatrix", "[", 
+           RowBox[{"[", 
+            RowBox[{"n", ",", 
+             RowBox[{"n", "-", "1"}]}], "]"}], "]"}], "=", 
+          RowBox[{"RandomInteger", "[", 
+           RowBox[{"{", 
+            RowBox[{"1", ",", "10"}], "}"}], "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"adjacencyMatrix", "[", 
+           RowBox[{"[", 
+            RowBox[{
+             RowBox[{"n", "-", "1"}], ",", "n"}], "]"}], "]"}], "=", 
+          RowBox[{"adjacencyMatrix", "[", 
+           RowBox[{"[", 
+            RowBox[{"n", ",", 
+             RowBox[{"n", "-", "1"}]}], "]"}], "]"}]}], ";", 
+         "\[IndentingNewLine]", "\[IndentingNewLine]", 
+         RowBox[{"randomConnections1", "=", 
+          RowBox[{"RandomSample", "[", 
+           RowBox[{
+            RowBox[{"Range", "[", 
+             RowBox[{"n", "-", "2"}], "]"}], ",", "3"}], "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"Do", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{
+             RowBox[{"adjacencyMatrix", "[", 
+              RowBox[{"[", 
+               RowBox[{
+                RowBox[{"n", "-", "1"}], ",", 
+                RowBox[{"randomConnections1", "[", 
+                 RowBox[{"[", "i", "]"}], "]"}]}], "]"}], "]"}], "=", 
+             RowBox[{"RandomInteger", "[", 
+              RowBox[{"{", 
+               RowBox[{"1", ",", "10"}], "}"}], "]"}]}], ";", 
+            "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"adjacencyMatrix", "[", 
+              RowBox[{"[", 
+               RowBox[{
+                RowBox[{"randomConnections1", "[", 
+                 RowBox[{"[", "i", "]"}], "]"}], ",", 
+                RowBox[{"n", "-", "1"}]}], "]"}], "]"}], "=", 
+             RowBox[{"adjacencyMatrix", "[", 
+              RowBox[{"[", 
+               RowBox[{
+                RowBox[{"n", "-", "1"}], ",", 
+                RowBox[{"randomConnections1", "[", 
+                 RowBox[{"[", "i", "]"}], "]"}]}], "]"}], "]"}]}], ";"}], " ",
+            ",", 
+           RowBox[{"{", 
+            RowBox[{"i", ",", "1", ",", "3"}], "}"}]}], "]"}], ";", "\n", 
+         "\[IndentingNewLine]", 
+         RowBox[{"randomConnections2", "=", 
+          RowBox[{"RandomSample", "[", 
+           RowBox[{
+            RowBox[{"Range", "[", 
+             RowBox[{"n", "-", "2"}], "]"}], ",", "3"}], "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"Do", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{
+             RowBox[{"adjacencyMatrix", "[", 
+              RowBox[{"[", 
+               RowBox[{"n", ",", 
+                RowBox[{"randomConnections2", "[", 
+                 RowBox[{"[", "i", "]"}], "]"}]}], "]"}], "]"}], "=", 
+             RowBox[{"RandomInteger", "[", 
+              RowBox[{"{", 
+               RowBox[{"1", ",", "10"}], "}"}], "]"}]}], ";", 
+            "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"adjacencyMatrix", "[", 
+              RowBox[{"[", 
+               RowBox[{
+                RowBox[{"randomConnections2", "[", 
+                 RowBox[{"[", "i", "]"}], "]"}], ",", "n"}], "]"}], "]"}], 
+             "=", 
+             RowBox[{"adjacencyMatrix", "[", 
+              RowBox[{"[", 
+               RowBox[{"n", ",", 
+                RowBox[{"randomConnections2", "[", 
+                 RowBox[{"[", "i", "]"}], "]"}]}], "]"}], "]"}]}], ";"}], " ",
+            ",", 
+           RowBox[{"{", 
+            RowBox[{"i", ",", "1", ",", "3"}], "}"}]}], "]"}], ";", 
+         "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+         RowBox[{"edges", "=", 
+          RowBox[{"Flatten", "[", 
+           RowBox[{"Table", "[", 
+            RowBox[{
+             RowBox[{"If", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"adjacencyMatrix", "\[LeftDoubleBracket]", 
+                 RowBox[{"i", ",", "j"}], "\[RightDoubleBracket]"}], ">", 
+                "0"}], ",", 
+               RowBox[{"{", 
+                RowBox[{"i", "\[UndirectedEdge]", "j"}], "}"}], ",", 
+               "Nothing"}], "]"}], ",", 
+             RowBox[{"{", 
+              RowBox[{"i", ",", "1", ",", "n"}], "}"}], ",", 
+             RowBox[{"{", 
+              RowBox[{"j", ",", 
+               RowBox[{"i", "+", "1"}], ",", "n"}], "}"}]}], "]"}], "]"}]}], 
+         ";", 
+         RowBox[{"weights", "=", 
+          RowBox[{"Flatten", "[", 
+           RowBox[{"Table", "[", 
+            RowBox[{
+             RowBox[{"If", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"adjacencyMatrix", "\[LeftDoubleBracket]", 
+                 RowBox[{"i", ",", "j"}], "\[RightDoubleBracket]"}], ">", 
+                "0"}], ",", 
+               RowBox[{"{", 
+                RowBox[{"adjacencyMatrix", "\[LeftDoubleBracket]", 
+                 RowBox[{"i", ",", "j"}], "\[RightDoubleBracket]"}], "}"}], 
+               ",", "Nothing"}], "]"}], ",", 
+             RowBox[{"{", 
+              RowBox[{"i", ",", "1", ",", "n"}], "}"}], ",", 
+             RowBox[{"{", 
+              RowBox[{"j", ",", 
+               RowBox[{"i", "+", "1"}], ",", "n"}], "}"}]}], "]"}], "]"}]}], 
+         ";", 
+         RowBox[{"edgeLabels", "=", 
+          RowBox[{"MapThread", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"#1", "\[Rule]", 
+              RowBox[{"Placed", "[", 
+               RowBox[{"#2", ",", 
+                RowBox[{"1", "/", "3"}]}], "]"}]}], "&"}], ",", 
+            RowBox[{"{", 
+             RowBox[{"edges", ",", "weights"}], "}"}]}], "]"}]}], ";"}]}], 
+       "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"directed", "===", "True"}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"For", "[", 
+          RowBox[{
+           RowBox[{"i", "=", "1"}], ",", 
+           RowBox[{"i", "<=", 
+            RowBox[{"(", 
+             RowBox[{"n", "-", "3"}], ")"}]}], ",", 
+           RowBox[{"i", "++"}], ",", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"adjacencyMatrix", "[", 
+              RowBox[{"[", 
+               RowBox[{"i", ",", 
+                RowBox[{"i", "+", "1"}]}], "]"}], "]"}], "=", 
+             RowBox[{"RandomInteger", "[", 
+              RowBox[{"{", 
+               RowBox[{"1", ",", "10"}], "}"}], "]"}]}], ";", 
+            "\[IndentingNewLine]", 
+            RowBox[{"If", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"RandomReal", "[", "]"}], "<", "0.5"}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"adjacencyMatrix", "[", 
+                 RowBox[{"[", 
+                  RowBox[{
+                   RowBox[{"i", "+", "1"}], ",", "i"}], "]"}], "]"}], "=", 
+                RowBox[{"RandomInteger", "[", 
+                 RowBox[{"{", 
+                  RowBox[{"1", ",", "10"}], "}"}], "]"}]}], ";"}]}], 
+             "\[IndentingNewLine]", "]"}], ";"}]}], "\[IndentingNewLine]", 
+          "]"}], ";", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"adjacencyMatrix", "[", 
+           RowBox[{"[", 
+            RowBox[{"1", ",", 
+             RowBox[{"n", "-", "2"}]}], "]"}], "]"}], "=", 
+          RowBox[{"RandomInteger", "[", 
+           RowBox[{"{", 
+            RowBox[{"1", ",", "10"}], "}"}], "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"RandomReal", "[", "]"}], "<", "0.5"}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"adjacencyMatrix", "[", 
+              RowBox[{"[", 
+               RowBox[{
+                RowBox[{"n", "-", "2"}], ",", "1"}], "]"}], "]"}], "=", 
+             RowBox[{"RandomInteger", "[", 
+              RowBox[{"{", 
+               RowBox[{"1", ",", "10"}], "}"}], "]"}]}], ";"}]}], 
+          "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"adjacencyMatrix", "[", 
+           RowBox[{"[", 
+            RowBox[{"n", ",", 
+             RowBox[{"n", "-", "1"}]}], "]"}], "]"}], "=", 
+          RowBox[{"RandomInteger", "[", 
+           RowBox[{"{", 
+            RowBox[{"1", ",", "10"}], "}"}], "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"adjacencyMatrix", "[", 
+           RowBox[{"[", 
+            RowBox[{
+             RowBox[{"n", "-", "1"}], ",", "n"}], "]"}], "]"}], "=", 
+          RowBox[{"RandomInteger", "[", 
+           RowBox[{"{", 
+            RowBox[{"1", ",", "10"}], "}"}], "]"}]}], ";", 
+         "\[IndentingNewLine]", "\[IndentingNewLine]", 
+         RowBox[{"randomConnections1", "=", 
+          RowBox[{"RandomSample", "[", 
+           RowBox[{
+            RowBox[{"Range", "[", 
+             RowBox[{"n", "-", "2"}], "]"}], ",", "3"}], "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"Do", "[", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{
+            RowBox[{
+             RowBox[{"adjacencyMatrix", "[", 
+              RowBox[{"[", 
+               RowBox[{
+                RowBox[{"n", "-", "1"}], ",", 
+                RowBox[{"randomConnections1", "[", 
+                 RowBox[{"[", "i", "]"}], "]"}]}], "]"}], "]"}], "=", 
+             RowBox[{"RandomInteger", "[", 
+              RowBox[{"{", 
+               RowBox[{"1", ",", "10"}], "}"}], "]"}]}], ";", 
+            "\[IndentingNewLine]", 
+            RowBox[{"If", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"RandomReal", "[", "]"}], "<", "0.5"}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"adjacencyMatrix", "[", 
+                 RowBox[{"[", 
+                  RowBox[{
+                   RowBox[{"randomConnections1", "[", 
+                    RowBox[{"[", "i", "]"}], "]"}], ",", 
+                   RowBox[{"n", "-", "1"}]}], "]"}], "]"}], "=", 
+                RowBox[{"RandomInteger", "[", 
+                 RowBox[{"{", 
+                  RowBox[{"1", ",", "10"}], "}"}], "]"}]}], ";"}]}], 
+             "\[IndentingNewLine]", "]"}], ";"}], "\[IndentingNewLine]", ",", 
+           RowBox[{"{", 
+            RowBox[{"i", ",", "1", ",", "3"}], "}"}]}], "\[IndentingNewLine]",
+           "]"}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+         RowBox[{"randomConnections2", "=", 
+          RowBox[{"RandomSample", "[", 
+           RowBox[{
+            RowBox[{"Range", "[", 
+             RowBox[{"n", "-", "2"}], "]"}], ",", "3"}], "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"Do", "[", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{
+            RowBox[{
+             RowBox[{"adjacencyMatrix", "[", 
+              RowBox[{"[", 
+               RowBox[{"n", ",", 
+                RowBox[{"randomConnections2", "[", 
+                 RowBox[{"[", "i", "]"}], "]"}]}], "]"}], "]"}], "=", 
+             RowBox[{"RandomInteger", "[", 
+              RowBox[{"{", 
+               RowBox[{"1", ",", "10"}], "}"}], "]"}]}], ";", 
+            "\[IndentingNewLine]", 
+            RowBox[{"If", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"RandomReal", "[", "]"}], "<", "0.5"}], ",", 
+              "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"adjacencyMatrix", "[", 
+                 RowBox[{"[", 
+                  RowBox[{
+                   RowBox[{"randomConnections2", "[", 
+                    RowBox[{"[", "i", "]"}], "]"}], ",", "n"}], "]"}], "]"}], 
+                "=", 
+                RowBox[{"RandomInteger", "[", 
+                 RowBox[{"{", 
+                  RowBox[{"1", ",", "10"}], "}"}], "]"}]}], ";"}]}], 
+             "\[IndentingNewLine]", "]"}], ";"}], "\[IndentingNewLine]", ",", 
+           RowBox[{"{", 
+            RowBox[{"i", ",", "1", ",", "3"}], "}"}]}], "\[IndentingNewLine]",
+           "]"}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+         RowBox[{"edges", "=", 
+          RowBox[{"Flatten", "[", 
+           RowBox[{"Table", "[", 
+            RowBox[{
+             RowBox[{"If", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"adjacencyMatrix", "[", 
+                 RowBox[{"[", 
+                  RowBox[{"i", ",", "j"}], "]"}], "]"}], ">", "0"}], ",", 
+               RowBox[{"{", 
+                RowBox[{"i", "->", "j"}], "}"}], ",", "Nothing"}], "]"}], ",", 
+             RowBox[{"{", 
+              RowBox[{"i", ",", "1", ",", "n"}], "}"}], ",", 
+             RowBox[{"{", 
+              RowBox[{"j", ",", "1", ",", "n"}], "}"}]}], "]"}], "]"}]}], ";",
+          "\[IndentingNewLine]", 
+         RowBox[{"weights", "=", 
+          RowBox[{"Flatten", "[", 
+           RowBox[{"Table", "[", 
+            RowBox[{
+             RowBox[{"If", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"adjacencyMatrix", "[", 
+                 RowBox[{"[", 
+                  RowBox[{"i", ",", "j"}], "]"}], "]"}], ">", "0"}], ",", 
+               RowBox[{"{", 
+                RowBox[{"adjacencyMatrix", "[", 
+                 RowBox[{"[", 
+                  RowBox[{"i", ",", "j"}], "]"}], "]"}], "}"}], ",", 
+               "Nothing"}], "]"}], ",", 
+             RowBox[{"{", 
+              RowBox[{"i", ",", "1", ",", "n"}], "}"}], ",", 
+             RowBox[{"{", 
+              RowBox[{"j", ",", "1", ",", "n"}], "}"}]}], "]"}], "]"}]}], ";",
+          "\[IndentingNewLine]", 
+         RowBox[{"edgeLabels", "=", 
+          RowBox[{"MapThread", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"#1", "->", 
+              RowBox[{"Placed", "[", 
+               RowBox[{"#2", ",", 
+                RowBox[{"1", "/", "3"}]}], "]"}]}], "&"}], ",", 
+            RowBox[{"{", 
+             RowBox[{"edges", ",", "weights"}], "}"}]}], "]"}]}], ";"}]}], 
+       "]"}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"vertexABC", "=", 
+       RowBox[{"Table", "[", 
+        RowBox[{
+         RowBox[{"ToString", "[", 
+          RowBox[{"FromCharacterCode", "[", 
+           RowBox[{"i", "+", "64"}], "]"}], "]"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"i", ",", "1", ",", "n"}], "}"}]}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"mygraph", "=", 
+       RowBox[{"Graph", "[", 
+        RowBox[{
+         RowBox[{"Range", "[", "n", "]"}], ",", "\[IndentingNewLine]", 
+         "edges", ",", "\[IndentingNewLine]", 
+         RowBox[{"EdgeLabels", "\[Rule]", "edgeLabels"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"EdgeWeight", "\[Rule]", "weights"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"VertexLabels", "\[Rule]", 
+          RowBox[{"Table", "[", 
+           RowBox[{
+            RowBox[{"i", "\[Rule]", 
+             RowBox[{
+             "vertexABC", "\[LeftDoubleBracket]", "i", 
+              "\[RightDoubleBracket]"}]}], ",", 
+            RowBox[{"{", 
+             RowBox[{"i", ",", "n"}], "}"}]}], "]"}]}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"VertexStyle", "\[Rule]", 
+          RowBox[{"Directive", "[", "LightBlue", "]"}]}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"GraphStyle", "\[Rule]", "\"\<NameLabeled\>\""}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"ImageSize", "\[Rule]", "Large"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"EdgeLabelStyle", "\[Rule]", 
+          RowBox[{"Directive", "[", 
+           RowBox[{
+            RowBox[{"FontSize", "\[Rule]", "12"}], ",", 
+            RowBox[{"Background", "\[Rule]", "White"}], ",", "Blue"}], 
+           "]"}]}], ",", "\[IndentingNewLine]", 
+         RowBox[{"EdgeStyle", "\[Rule]", 
+          RowBox[{"Directive", "[", 
+           RowBox[{"Black", ",", 
+            RowBox[{"Arrowheads", "[", "0.02", "]"}]}], "]"}]}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"VertexLabelStyle", "\[Rule]", 
+          RowBox[{"Directive", "[", 
+           RowBox[{
+            RowBox[{"FontSize", "\[Rule]", "14"}], ",", "Bold"}], "]"}]}], 
+         ",", "\[IndentingNewLine]", 
+         RowBox[{"VertexCoordinates", "->", "vertexCoordinates"}]}], 
+        "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"{", 
+       RowBox[{
+       "mygraph", ",", "edges", ",", "weights", ",", "edgeLabels", ",", 
+        "vertexABC", ",", "n"}], "}"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+  "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{
+   "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**",
+     "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**",
+     "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**",
+     "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**",
+     "**", "**", "**", "**", "**", "**", "**", "**", "**"}], "*****)"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{
+   "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**",
+     "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**",
+     "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**",
+     "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**",
+     "**", "**", "**", "**", "**", "**", "**", "**", "**"}], "*****)"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{
+   "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**",
+     "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**",
+     "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**",
+     "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**",
+     "**", "**", "**", "**", "**", "**", "**", "**", "**"}], "*****)"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{"*", "SQUARE", " ", "GRAPH"}], "**)"}], "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{"DIRECTED", " ", "/", " ", "UNDIRECTED"}], "*)"}]}], "\n", 
+ RowBox[{
+  RowBox[{"directed", "=", "False"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"directed", "=", 
+    RowBox[{"Input", "[", "\"\<Directed graph? \\nTrue\\nFalse\>\"", "]"}]}], 
+   ";"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  RowBox[{"(*", "DIFFICULTY", "**)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"diff", " ", "=", " ", "None"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"diff", " ", "=", " ", 
+    RowBox[{
+    "Input", "[", " ", "\"\<Enter difficulty (easy,medium,hard)\>\"", "]"}]}],
+    ";"}], "\[IndentingNewLine]", 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{
+    "mygraph", ",", "edges", ",", "weights", ",", "edgeLabels", ",", 
+     "vertexABC", ",", "vertexCounter"}], "}"}], "=", 
+   RowBox[{"makeSquareGraph", "[", 
+    RowBox[{"diff", ",", "directed"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"n", "=", "vertexCounter"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"vertexPositions", " ", "=", " ", 
+   RowBox[{"GraphEmbedding", "[", "mygraph", "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"graphCell", "=", 
+    RowBox[{"PrintTemporary", "[", 
+     RowBox[{"Show", "[", 
+      RowBox[{"mygraph", ",", 
+       RowBox[{"Graphics", "[", 
+        RowBox[{"Table", "[", 
+         RowBox[{
+          RowBox[{"Text", "[", 
+           RowBox[{
+            RowBox[{"Style", "[", 
+             RowBox[{"\"\<\[Infinity]\>\"", ",", 
+              RowBox[{"FontSize", "->", "16"}], ",", "Bold"}], "]"}], ",", 
+            RowBox[{"vertexPositions", "[", 
+             RowBox[{"[", "i", "]"}], "]"}]}], "]"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"i", ",", "1", ",", 
+            RowBox[{"Length", "[", "vertexPositions", "]"}]}], "}"}]}], "]"}],
+         "]"}]}], "]"}], "]"}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"startVertex", "=", 
+   RowBox[{"letterToNumber", "[", 
+    RowBox[{
+    "Input", "[", "\"\<Enter the starting vertex (A, B, C, ...):\>\"", "]"}], 
+    "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"endVertex", "=", 
+   RowBox[{"letterToNumber", "[", 
+    RowBox[{
+    "Input", "[", "\"\<Enter the ending vertex (A, B, C, ...):\>\"", "]"}], 
+    "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"mygraph", "=", 
+   RowBox[{"modifyVertexColor", "[", 
+    RowBox[{"mygraph", ",", 
+     RowBox[{"{", "startVertex", "}"}], ",", "Green"}], "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"mygraph", "=", 
+   RowBox[{"modifyVertexColor", "[", 
+    RowBox[{"mygraph", ",", 
+     RowBox[{"{", "endVertex", "}"}], ",", "Magenta"}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"NotebookDelete", "[", "graphCell", "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"graphCell", "=", 
+    RowBox[{"PrintTemporary", "[", 
+     RowBox[{"Show", "[", 
+      RowBox[{"mygraph", ",", 
+       RowBox[{"Graphics", "[", 
+        RowBox[{"Table", "[", 
+         RowBox[{
+          RowBox[{"Text", "[", 
+           RowBox[{
+            RowBox[{"Style", "[", 
+             RowBox[{"\"\<\[Infinity]\>\"", ",", 
+              RowBox[{"FontSize", "->", "16"}], ",", "Bold"}], "]"}], ",", 
+            RowBox[{"vertexPositions", "[", 
+             RowBox[{"[", "i", "]"}], "]"}]}], "]"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"i", ",", "1", ",", 
+            RowBox[{"Length", "[", "vertexPositions", "]"}]}], "}"}]}], "]"}],
+         "]"}]}], "]"}], "]"}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"vertexWeights", "=", 
+   RowBox[{"ConstantArray", "[", 
+    RowBox[{"\[Infinity]", ",", "n"}], "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{
+    "vertexWeights", "\[LeftDoubleBracket]", "startVertex", 
+     "\[RightDoubleBracket]"}], "=", "0"}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"DijkstraAlgorithm", "[", 
+   RowBox[{
+   "mygraph", ",", "startVertex", ",", "endVertex", ",", "edges", ",", 
+    "weights", ",", "vertexWeights", ",", "directed"}], "]"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]"}], "Input",
+ CellChangeTimes->{{3.9387439159617386`*^9, 3.938743990400383*^9}, {
+   3.9387440383646755`*^9, 3.938744093556984*^9}, {3.93874428824844*^9, 
+   3.938744367964981*^9}, {3.938744405765148*^9, 3.9387444198851757`*^9}, {
+   3.938744569972519*^9, 3.9387445959774723`*^9}, {3.938744802789814*^9, 
+   3.9387448193373585`*^9}, {3.938744869859516*^9, 3.9387448839183407`*^9}, {
+   3.9387449547938633`*^9, 3.9387449551740665`*^9}, {3.9387450182383175`*^9, 
+   3.9387450297621403`*^9}, {3.938745306547777*^9, 3.9387453599900856`*^9}, {
+   3.9387454098611107`*^9, 3.9387454108215637`*^9}, {3.9387454588637295`*^9, 
+   3.9387455433740044`*^9}, {3.938745609258875*^9, 3.9387456289937496`*^9}, {
+   3.938745702124586*^9, 3.9387457078987465`*^9}, {3.938745740613003*^9, 
+   3.938745769596281*^9}, {3.938745820987631*^9, 3.938745916518156*^9}, {
+   3.938746074142046*^9, 3.938746110363529*^9}, {3.938746245950136*^9, 
+   3.938746264306772*^9}, {3.938746463093691*^9, 3.938746506503168*^9}, {
+   3.93874653953442*^9, 3.938746543575218*^9}, {3.9387466056405754`*^9, 
+   3.938746627851143*^9}, {3.9387466749158497`*^9, 3.9387466864067097`*^9}, {
+   3.9387468252687626`*^9, 3.938746830920538*^9}, {3.938746971647936*^9, 
+   3.938747001449108*^9}, {3.9387470358887196`*^9, 3.938747093382166*^9}, {
+   3.938747261695204*^9, 3.938747309095001*^9}, {3.9387474174380646`*^9, 
+   3.9387474256549206`*^9}, {3.938747473707529*^9, 3.938747478578718*^9}, {
+   3.9387476116326466`*^9, 3.9387476163192215`*^9}, {3.938747661445278*^9, 
+   3.93874766477643*^9}, {3.938747744765869*^9, 3.9387477531112957`*^9}, {
+   3.9387478501720905`*^9, 3.9387478538257885`*^9}, {3.9387479261118984`*^9, 
+   3.938747999414633*^9}, {3.9387480390356503`*^9, 3.9387480740546474`*^9}, {
+   3.938748130266266*^9, 3.938748154159828*^9}, 3.938748203159544*^9, 
+   3.9387482802565346`*^9, 3.9387483468160744`*^9, {3.938748515720991*^9, 
+   3.938748532131338*^9}, {3.938748584576353*^9, 3.938748645362196*^9}, {
+   3.9387487406203384`*^9, 3.9387487677528553`*^9}, 3.938748820136593*^9, {
+   3.9387488677584953`*^9, 3.9387488680820503`*^9}, {3.938748946587044*^9, 
+   3.938748982937416*^9}, {3.93874901348081*^9, 3.9387490230393276`*^9}, {
+   3.9387490741685867`*^9, 3.9387491170064297`*^9}, {3.938749156187231*^9, 
+   3.938749170840782*^9}, {3.9387493409043255`*^9, 3.938749405410263*^9}, {
+   3.9387494806298504`*^9, 3.9387494862699738`*^9}, {3.9387496256173496`*^9, 
+   3.9387497227253246`*^9}, {3.9387497914395695`*^9, 
+   3.9387497964766693`*^9}, {3.9387500713772354`*^9, 3.938750089285631*^9}, {
+   3.9387501855765743`*^9, 3.9387502844537926`*^9}, {3.9387503335320644`*^9, 
+   3.938750333679556*^9}, {3.93936346674107*^9, 3.9393634744436073`*^9}, {
+   3.9393658841991653`*^9, 
+   3.939365896928976*^9}},ExpressionUUID->"e0dd1018-64ba-5b4a-8fbc-\
+f691abcc9545"],
+
+Cell[BoxData[
+ TemplateBox[{
+  "ClearAll", "wrsym", 
+   "\"Symbol \\!\\(\\*RowBox[{\\\"GlobalClusteringCoefficient\\\"}]\\) is \
+Protected.\"", 2, 533, 389, 23280811614615894563, "Local"},
+  "MessageTemplate"]], "Message", "MSG",
+ CellChangeTimes->{
+  3.9387443776681404`*^9, 3.9387448238468533`*^9, {3.938745369905525*^9, 
+   3.938745422131233*^9}, 3.9387455459602337`*^9, 3.93874563063883*^9, 
+   3.938745709723751*^9, 3.938745775801279*^9, {3.9387458441382465`*^9, 
+   3.938745897795412*^9}, 3.938746508140253*^9, 3.938746544884493*^9, 
+   3.9387466304789124`*^9, 3.938746691716707*^9, 3.9387467354925385`*^9, 
+   3.9387468711457176`*^9, {3.938747061076742*^9, 3.9387470971680717`*^9}, 
+   3.938747311318985*^9, 3.938747627000536*^9, 3.9387481561622944`*^9, 
+   3.938748211390753*^9, 3.9387483496810474`*^9, 3.9387486706656513`*^9, 
+   3.938748770005598*^9, 3.938748830422245*^9, 3.938748872571474*^9, {
+   3.93874895542762*^9, 3.9387489843826904`*^9}, 3.938749029271515*^9, 
+   3.9387491233128815`*^9, 3.938749372435835*^9, {3.938749407601494*^9, 
+   3.9387494231245594`*^9}, {3.9387497298765945`*^9, 3.938749746679453*^9}, {
+   3.938749798069441*^9, 3.938749817938078*^9}, {3.9387502871745415`*^9, 
+   3.9387503363459606`*^9}},
+ CellLabel->
+  "During evaluation of \
+In[533]:=",ExpressionUUID->"42c122ab-8892-414b-a4d3-7e7b9fc89722"],
+
+Cell[BoxData[
+ TemplateBox[{
+  "ClearAll", "wrsym", 
+   "\"Symbol \\!\\(\\*RowBox[{\\\"GlobalPreferences\\\"}]\\) is Protected.\"",
+    2, 533, 390, 23280811614615894563, "Local"},
+  "MessageTemplate"]], "Message", "MSG",
+ CellChangeTimes->{
+  3.9387443776681404`*^9, 3.9387448238468533`*^9, {3.938745369905525*^9, 
+   3.938745422131233*^9}, 3.9387455459602337`*^9, 3.93874563063883*^9, 
+   3.938745709723751*^9, 3.938745775801279*^9, {3.9387458441382465`*^9, 
+   3.938745897795412*^9}, 3.938746508140253*^9, 3.938746544884493*^9, 
+   3.9387466304789124`*^9, 3.938746691716707*^9, 3.9387467354925385`*^9, 
+   3.9387468711457176`*^9, {3.938747061076742*^9, 3.9387470971680717`*^9}, 
+   3.938747311318985*^9, 3.938747627000536*^9, 3.9387481561622944`*^9, 
+   3.938748211390753*^9, 3.9387483496810474`*^9, 3.9387486706656513`*^9, 
+   3.938748770005598*^9, 3.938748830422245*^9, 3.938748872571474*^9, {
+   3.93874895542762*^9, 3.9387489843826904`*^9}, 3.938749029271515*^9, 
+   3.9387491233128815`*^9, 3.938749372435835*^9, {3.938749407601494*^9, 
+   3.9387494231245594`*^9}, {3.9387497298765945`*^9, 3.938749746679453*^9}, {
+   3.938749798069441*^9, 3.938749817938078*^9}, {3.9387502871745415`*^9, 
+   3.938750336356964*^9}},
+ CellLabel->
+  "During evaluation of \
+In[533]:=",ExpressionUUID->"ef07ed6e-609f-ad45-9519-052cf804fb3b"],
+
+Cell[BoxData[
+ TemplateBox[{
+  "ClearAll", "wrsym", 
+   "\"Symbol \\!\\(\\*RowBox[{\\\"GlobalSession\\\"}]\\) is Protected.\"", 2, 
+   533, 391, 23280811614615894563, "Local"},
+  "MessageTemplate"]], "Message", "MSG",
+ CellChangeTimes->{
+  3.9387443776681404`*^9, 3.9387448238468533`*^9, {3.938745369905525*^9, 
+   3.938745422131233*^9}, 3.9387455459602337`*^9, 3.93874563063883*^9, 
+   3.938745709723751*^9, 3.938745775801279*^9, {3.9387458441382465`*^9, 
+   3.938745897795412*^9}, 3.938746508140253*^9, 3.938746544884493*^9, 
+   3.9387466304789124`*^9, 3.938746691716707*^9, 3.9387467354925385`*^9, 
+   3.9387468711457176`*^9, {3.938747061076742*^9, 3.9387470971680717`*^9}, 
+   3.938747311318985*^9, 3.938747627000536*^9, 3.9387481561622944`*^9, 
+   3.938748211390753*^9, 3.9387483496810474`*^9, 3.9387486706656513`*^9, 
+   3.938748770005598*^9, 3.938748830422245*^9, 3.938748872571474*^9, {
+   3.93874895542762*^9, 3.9387489843826904`*^9}, 3.938749029271515*^9, 
+   3.9387491233128815`*^9, 3.938749372435835*^9, {3.938749407601494*^9, 
+   3.9387494231245594`*^9}, {3.9387497298765945`*^9, 3.938749746679453*^9}, {
+   3.938749798069441*^9, 3.938749817938078*^9}, {3.9387502871745415`*^9, 
+   3.938750336364626*^9}},
+ CellLabel->
+  "During evaluation of \
+In[533]:=",ExpressionUUID->"d67926e1-2492-bb48-a441-c6c6f6682034"],
+
+Cell[BoxData[
+ TemplateBox[{
+  "General", "stop", 
+   "\"Further output of \\!\\(\\*StyleBox[RowBox[{\\\"ClearAll\\\", \
+\\\"::\\\", \\\"wrsym\\\"}], \\\"MessageName\\\"]\\) will be suppressed \
+during this calculation.\"", 2, 533, 392, 23280811614615894563, "Local"},
+  "MessageTemplate"]], "Message", "MSG",
+ CellChangeTimes->{
+  3.9387443776681404`*^9, 3.9387448238468533`*^9, {3.938745369905525*^9, 
+   3.938745422131233*^9}, 3.9387455459602337`*^9, 3.93874563063883*^9, 
+   3.938745709723751*^9, 3.938745775801279*^9, {3.9387458441382465`*^9, 
+   3.938745897795412*^9}, 3.938746508140253*^9, 3.938746544884493*^9, 
+   3.9387466304789124`*^9, 3.938746691716707*^9, 3.9387467354925385`*^9, 
+   3.9387468711457176`*^9, {3.938747061076742*^9, 3.9387470971680717`*^9}, 
+   3.938747311318985*^9, 3.938747627000536*^9, 3.9387481561622944`*^9, 
+   3.938748211390753*^9, 3.9387483496810474`*^9, 3.9387486706656513`*^9, 
+   3.938748770005598*^9, 3.938748830422245*^9, 3.938748872571474*^9, {
+   3.93874895542762*^9, 3.9387489843826904`*^9}, 3.938749029271515*^9, 
+   3.9387491233128815`*^9, 3.938749372435835*^9, {3.938749407601494*^9, 
+   3.9387494231245594`*^9}, {3.9387497298765945`*^9, 3.938749746679453*^9}, {
+   3.938749798069441*^9, 3.938749817938078*^9}, {3.9387502871745415`*^9, 
+   3.9387503363731384`*^9}},
+ CellLabel->
+  "During evaluation of \
+In[533]:=",ExpressionUUID->"fc5c8a5c-4091-3442-ae85-b728a309898c"],
+
+Cell[BoxData[
+ GraphicsBox[{
+   NamespaceBox[{
+     {GrayLevel[0], Opacity[1], Arrowheads[0.02], {
+       TagBox[
+        ArrowBox[{
+         DynamicLocation["VertexID$4", Automatic, Center], DynamicLocation[
+          "VertexID$3", Automatic, Center]}],
+        "DynamicName",
+        BoxID -> "EdgeLabelID$1"], InsetBox[
+        StyleBox["2",
+         StripOnInput->False,
+         LineColor->RGBColor[0, 0, 1],
+         FrontFaceColor->RGBColor[0, 0, 1],
+         BackFaceColor->RGBColor[0, 0, 1],
+         GraphicsColor->RGBColor[0, 0, 1],
+         FontSize->12,
+         FontColor->RGBColor[0, 0, 1],
+         Background->GrayLevel[1]], 
+        Offset[{0, 2}, DynamicLocation[
+         "EdgeLabelID$1", Automatic, Scaled[Rational[1, 6]]]], ImageScaled[{0.5, 0}],
+        BaseStyle->"Graphics"]}, {
+       TagBox[
+        ArrowBox[{
+         DynamicLocation["VertexID$4", Automatic, Center], DynamicLocation[
+          "VertexID$5", Automatic, Center]}],
+        "DynamicName",
+        BoxID -> "EdgeLabelID$2"], InsetBox[
+        StyleBox["3",
+         StripOnInput->False,
+         LineColor->RGBColor[0, 0, 1],
+         FrontFaceColor->RGBColor[0, 0, 1],
+         BackFaceColor->RGBColor[0, 0, 1],
+         GraphicsColor->RGBColor[0, 0, 1],
+         FontSize->12,
+         FontColor->RGBColor[0, 0, 1],
+         Background->GrayLevel[1]], 
+        Offset[{0, 2}, DynamicLocation[
+         "EdgeLabelID$2", Automatic, Scaled[Rational[1, 6]]]], ImageScaled[{0.5, 0}],
+        BaseStyle->"Graphics"]}, {
+       TagBox[
+        {RGBColor[1, 0, 0], Thickness[Large], 
+         ArrowBox[{
+          DynamicLocation["VertexID$6", Automatic, Center], DynamicLocation[
+           "VertexID$7", Automatic, Center]}]},
+        "DynamicName",
+        BoxID -> "EdgeLabelID$3"], InsetBox[
+        StyleBox["5",
+         StripOnInput->False,
+         LineColor->RGBColor[0, 0, 1],
+         FrontFaceColor->RGBColor[0, 0, 1],
+         BackFaceColor->RGBColor[0, 0, 1],
+         GraphicsColor->RGBColor[0, 0, 1],
+         FontSize->12,
+         FontColor->RGBColor[0, 0, 1],
+         Background->GrayLevel[1]], 
+        Offset[{0, 2}, DynamicLocation[
+         "EdgeLabelID$3", Automatic, Scaled[Rational[1, 6]]]], ImageScaled[{0.5, 0}],
+        BaseStyle->"Graphics"]}, {
+       TagBox[
+        {RGBColor[1, 0, 0], Thickness[Large], 
+         ArrowBox[{
+          DynamicLocation["VertexID$7", Automatic, Center], DynamicLocation[
+           "VertexID$8", Automatic, Center]}]},
+        "DynamicName",
+        BoxID -> "EdgeLabelID$4"], InsetBox[
+        StyleBox["6",
+         StripOnInput->False,
+         LineColor->RGBColor[0, 0, 1],
+         FrontFaceColor->RGBColor[0, 0, 1],
+         BackFaceColor->RGBColor[0, 0, 1],
+         GraphicsColor->RGBColor[0, 0, 1],
+         FontSize->12,
+         FontColor->RGBColor[0, 0, 1],
+         Background->GrayLevel[1]], 
+        Offset[{0, 2}, DynamicLocation[
+         "EdgeLabelID$4", Automatic, Scaled[Rational[1, 6]]]], ImageScaled[{0.5, 0}],
+        BaseStyle->"Graphics"]}, {
+       TagBox[
+        {RGBColor[1, 0, 0], Thickness[Large], 
+         ArrowBox[{
+          DynamicLocation["VertexID$8", Automatic, Center], DynamicLocation[
+           "VertexID$9", Automatic, Center]}]},
+        "DynamicName",
+        BoxID -> "EdgeLabelID$5"], InsetBox[
+        StyleBox["4",
+         StripOnInput->False,
+         LineColor->RGBColor[0, 0, 1],
+         FrontFaceColor->RGBColor[0, 0, 1],
+         BackFaceColor->RGBColor[0, 0, 1],
+         GraphicsColor->RGBColor[0, 0, 1],
+         FontSize->12,
+         FontColor->RGBColor[0, 0, 1],
+         Background->GrayLevel[1]], 
+        Offset[{0, 2}, DynamicLocation[
+         "EdgeLabelID$5", Automatic, Scaled[Rational[1, 6]]]], ImageScaled[{0.5, 0}],
+        BaseStyle->"Graphics"]}, {
+       TagBox[
+        ArrowBox[{
+         DynamicLocation["VertexID$9", Automatic, Center], DynamicLocation[
+          "VertexID$10", Automatic, Center]}],
+        "DynamicName",
+        BoxID -> "EdgeLabelID$6"], InsetBox[
+        StyleBox["9",
+         StripOnInput->False,
+         LineColor->RGBColor[0, 0, 1],
+         FrontFaceColor->RGBColor[0, 0, 1],
+         BackFaceColor->RGBColor[0, 0, 1],
+         GraphicsColor->RGBColor[0, 0, 1],
+         FontSize->12,
+         FontColor->RGBColor[0, 0, 1],
+         Background->GrayLevel[1]], 
+        Offset[{0, 2}, DynamicLocation[
+         "EdgeLabelID$6", Automatic, Scaled[Rational[1, 6]]]], ImageScaled[{0.5, 0}],
+        BaseStyle->"Graphics"]}, {
+       TagBox[
+        {RGBColor[1, 0, 0], Thickness[Large], 
+         ArrowBox[{
+          DynamicLocation["VertexID$9", Automatic, Center], DynamicLocation[
+           "VertexID$19", Automatic, Center]}]},
+        "DynamicName",
+        BoxID -> "EdgeLabelID$7"], InsetBox[
+        StyleBox["8",
+         StripOnInput->False,
+         LineColor->RGBColor[0, 0, 1],
+         FrontFaceColor->RGBColor[0, 0, 1],
+         BackFaceColor->RGBColor[0, 0, 1],
+         GraphicsColor->RGBColor[0, 0, 1],
+         FontSize->12,
+         FontColor->RGBColor[0, 0, 1],
+         Background->GrayLevel[1]], 
+        Offset[{0, 2}, DynamicLocation[
+         "EdgeLabelID$7", Automatic, Scaled[Rational[1, 6]]]], ImageScaled[{0.5, 0}],
+        BaseStyle->"Graphics"]}, {
+       TagBox[
+        ArrowBox[{
+         DynamicLocation["VertexID$10", Automatic, Center], DynamicLocation[
+          "VertexID$11", Automatic, Center]}],
+        "DynamicName",
+        BoxID -> "EdgeLabelID$8"], InsetBox[
+        StyleBox["5",
+         StripOnInput->False,
+         LineColor->RGBColor[0, 0, 1],
+         FrontFaceColor->RGBColor[0, 0, 1],
+         BackFaceColor->RGBColor[0, 0, 1],
+         GraphicsColor->RGBColor[0, 0, 1],
+         FontSize->12,
+         FontColor->RGBColor[0, 0, 1],
+         Background->GrayLevel[1]], 
+        Offset[{0, 2}, DynamicLocation[
+         "EdgeLabelID$8", Automatic, Scaled[Rational[1, 6]]]], ImageScaled[{0.5, 0}],
+        BaseStyle->"Graphics"]}, {
+       TagBox[
+        ArrowBox[{
+         DynamicLocation["VertexID$11", Automatic, Center], DynamicLocation[
+          "VertexID$12", Automatic, Center]}],
+        "DynamicName",
+        BoxID -> "EdgeLabelID$9"], InsetBox[
+        StyleBox["7",
+         StripOnInput->False,
+         LineColor->RGBColor[0, 0, 1],
+         FrontFaceColor->RGBColor[0, 0, 1],
+         BackFaceColor->RGBColor[0, 0, 1],
+         GraphicsColor->RGBColor[0, 0, 1],
+         FontSize->12,
+         FontColor->RGBColor[0, 0, 1],
+         Background->GrayLevel[1]], 
+        Offset[{0, 2}, DynamicLocation[
+         "EdgeLabelID$9", Automatic, Scaled[Rational[1, 6]]]], ImageScaled[{0.5, 0}],
+        BaseStyle->"Graphics"]}, {
+       TagBox[
+        {RGBColor[1, 0, 0], Thickness[Large], 
+         ArrowBox[{
+          DynamicLocation["VertexID$14", Automatic, Center], DynamicLocation[
+           "VertexID$15", Automatic, Center]}]},
+        "DynamicName",
+        BoxID -> "EdgeLabelID$10"], InsetBox[
+        StyleBox["6",
+         StripOnInput->False,
+         LineColor->RGBColor[0, 0, 1],
+         FrontFaceColor->RGBColor[0, 0, 1],
+         BackFaceColor->RGBColor[0, 0, 1],
+         GraphicsColor->RGBColor[0, 0, 1],
+         FontSize->12,
+         FontColor->RGBColor[0, 0, 1],
+         Background->GrayLevel[1]], 
+        Offset[{0, 2}, DynamicLocation[
+         "EdgeLabelID$10", Automatic, Scaled[Rational[1, 6]]]], ImageScaled[{0.5, 0}],
+        BaseStyle->"Graphics"]}, {
+       TagBox[
+        ArrowBox[{
+         DynamicLocation["VertexID$19", Automatic, Center], DynamicLocation[
+          "VertexID$13", Automatic, Center]}],
+        "DynamicName",
+        BoxID -> "EdgeLabelID$11"], InsetBox[
+        StyleBox["10",
+         StripOnInput->False,
+         LineColor->RGBColor[0, 0, 1],
+         FrontFaceColor->RGBColor[0, 0, 1],
+         BackFaceColor->RGBColor[0, 0, 1],
+         GraphicsColor->RGBColor[0, 0, 1],
+         FontSize->12,
+         FontColor->RGBColor[0, 0, 1],
+         Background->GrayLevel[1]], 
+        Offset[{0, 2}, DynamicLocation[
+         "EdgeLabelID$11", Automatic, Scaled[Rational[1, 6]]]], ImageScaled[{0.5, 0}],
+        BaseStyle->"Graphics"]}, {
+       TagBox[
+        {RGBColor[1, 0, 0], Thickness[Large], 
+         ArrowBox[{
+          DynamicLocation["VertexID$19", Automatic, Center], DynamicLocation[
+           "VertexID$14", Automatic, Center]}]},
+        "DynamicName",
+        BoxID -> "EdgeLabelID$12"], InsetBox[
+        StyleBox["10",
+         StripOnInput->False,
+         LineColor->RGBColor[0, 0, 1],
+         FrontFaceColor->RGBColor[0, 0, 1],
+         BackFaceColor->RGBColor[0, 0, 1],
+         GraphicsColor->RGBColor[0, 0, 1],
+         FontSize->12,
+         FontColor->RGBColor[0, 0, 1],
+         Background->GrayLevel[1]], 
+        Offset[{0, 2}, DynamicLocation[
+         "EdgeLabelID$12", Automatic, Scaled[Rational[1, 6]]]], ImageScaled[{0.5, 0}],
+        BaseStyle->"Graphics"]}, {
+       TagBox[
+        ArrowBox[{
+         DynamicLocation["VertexID$19", Automatic, Center], DynamicLocation[
+          "VertexID$20", Automatic, Center]}],
+        "DynamicName",
+        BoxID -> "EdgeLabelID$13"], InsetBox[
+        StyleBox["6",
+         StripOnInput->False,
+         LineColor->RGBColor[0, 0, 1],
+         FrontFaceColor->RGBColor[0, 0, 1],
+         BackFaceColor->RGBColor[0, 0, 1],
+         GraphicsColor->RGBColor[0, 0, 1],
+         FontSize->12,
+         FontColor->RGBColor[0, 0, 1],
+         Background->GrayLevel[1]], 
+        Offset[{0, 2}, DynamicLocation[
+         "EdgeLabelID$13", Automatic, Scaled[Rational[1, 6]]]], ImageScaled[{0.5, 0}],
+        BaseStyle->"Graphics"]}, {
+       TagBox[
+        ArrowBox[{
+         DynamicLocation["VertexID$20", Automatic, Center], DynamicLocation[
+          "VertexID$4", Automatic, Center]}],
+        "DynamicName",
+        BoxID -> "EdgeLabelID$14"], InsetBox[
+        StyleBox["4",
+         StripOnInput->False,
+         LineColor->RGBColor[0, 0, 1],
+         FrontFaceColor->RGBColor[0, 0, 1],
+         BackFaceColor->RGBColor[0, 0, 1],
+         GraphicsColor->RGBColor[0, 0, 1],
+         FontSize->12,
+         FontColor->RGBColor[0, 0, 1],
+         Background->GrayLevel[1]], 
+        Offset[{0, 2}, DynamicLocation[
+         "EdgeLabelID$14", Automatic, Scaled[Rational[1, 6]]]], ImageScaled[{0.5, 0}],
+        BaseStyle->"Graphics"]}, {
+       TagBox[
+        ArrowBox[{
+         DynamicLocation["VertexID$20", Automatic, Center], DynamicLocation[
+          "VertexID$18", Automatic, Center]}],
+        "DynamicName",
+        BoxID -> "EdgeLabelID$15"], InsetBox[
+        StyleBox["3",
+         StripOnInput->False,
+         LineColor->RGBColor[0, 0, 1],
+         FrontFaceColor->RGBColor[0, 0, 1],
+         BackFaceColor->RGBColor[0, 0, 1],
+         GraphicsColor->RGBColor[0, 0, 1],
+         FontSize->12,
+         FontColor->RGBColor[0, 0, 1],
+         Background->GrayLevel[1]], 
+        Offset[{0, 2}, DynamicLocation[
+         "EdgeLabelID$15", Automatic, Scaled[Rational[1, 6]]]], ImageScaled[{0.5, 0}],
+        BaseStyle->"Graphics"]}}, 
+     {RGBColor[0.87, 0.94, 1], EdgeForm[GrayLevel[0]], 
+      TagBox[{
+        TagBox[DiskBox[{-3., -2.}, 0.18027756377319948],
+         "DynamicName",
+         BoxID -> "VertexID$1"], InsetBox[
+         StyleBox["\<\"A\"\>",
+          StripOnInput->False,
+          FontSize->14,
+          FontWeight->Bold], 
+         Offset[{2, 2}, DynamicLocation[
+          "VertexID$1", Automatic, {Right, Top}]], ImageScaled[{0, 0}],
+         BaseStyle->"Graphics"]},
+       "DynamicName",
+       BoxID -> "VertexLabelID$1"], 
+      TagBox[{
+        TagBox[DiskBox[{-2., -2.}, 0.18027756377319948],
+         "DynamicName",
+         BoxID -> "VertexID$2"], InsetBox[
+         StyleBox["\<\"B\"\>",
+          StripOnInput->False,
+          FontSize->14,
+          FontWeight->Bold], 
+         Offset[{2, 2}, DynamicLocation[
+          "VertexID$2", Automatic, {Right, Top}]], ImageScaled[{0, 0}],
+         BaseStyle->"Graphics"]},
+       "DynamicName",
+       BoxID -> "VertexLabelID$2"], 
+      TagBox[{
+        TagBox[DiskBox[{-1., -2.}, 0.18027756377319948],
+         "DynamicName",
+         BoxID -> "VertexID$3"], InsetBox[
+         StyleBox["\<\"C\"\>",
+          StripOnInput->False,
+          FontSize->14,
+          FontWeight->Bold], 
+         Offset[{2, 2}, DynamicLocation[
+          "VertexID$3", Automatic, {Right, Top}]], ImageScaled[{0, 0}],
+         BaseStyle->"Graphics"]},
+       "DynamicName",
+       BoxID -> "VertexLabelID$3"], 
+      TagBox[{
+        TagBox[DiskBox[{1., -2.}, 0.18027756377319948],
+         "DynamicName",
+         BoxID -> "VertexID$4"], InsetBox[
+         StyleBox["\<\"D\"\>",
+          StripOnInput->False,
+          FontSize->14,
+          FontWeight->Bold], 
+         Offset[{2, 2}, DynamicLocation[
+          "VertexID$4", Automatic, {Right, Top}]], ImageScaled[{0, 0}],
+         BaseStyle->"Graphics"]},
+       "DynamicName",
+       BoxID -> "VertexLabelID$4"], 
+      TagBox[{
+        TagBox[DiskBox[{2., -2.}, 0.18027756377319948],
+         "DynamicName",
+         BoxID -> "VertexID$5"], InsetBox[
+         StyleBox["\<\"E\"\>",
+          StripOnInput->False,
+          FontSize->14,
+          FontWeight->Bold], 
+         Offset[{2, 2}, DynamicLocation[
+          "VertexID$5", Automatic, {Right, Top}]], ImageScaled[{0, 0}],
+         BaseStyle->"Graphics"]},
+       "DynamicName",
+       BoxID -> "VertexLabelID$5"], 
+      TagBox[{
+        TagBox[
+         {RGBColor[0, 1, 0], DiskBox[{3., -2.}, 0.18027756377319948]},
+         "DynamicName",
+         BoxID -> "VertexID$6"], InsetBox[
+         StyleBox["\<\"F\"\>",
+          StripOnInput->False,
+          FontSize->14,
+          FontWeight->Bold], 
+         Offset[{2, 2}, DynamicLocation[
+          "VertexID$6", Automatic, {Right, Top}]], ImageScaled[{0, 0}],
+         BaseStyle->"Graphics"]},
+       "DynamicName",
+       BoxID -> "VertexLabelID$6"], 
+      TagBox[{
+        TagBox[DiskBox[{3., -1.}, 0.18027756377319948],
+         "DynamicName",
+         BoxID -> "VertexID$7"], InsetBox[
+         StyleBox["\<\"G\"\>",
+          StripOnInput->False,
+          FontSize->14,
+          FontWeight->Bold], 
+         Offset[{2, 2}, DynamicLocation[
+          "VertexID$7", Automatic, {Right, Top}]], ImageScaled[{0, 0}],
+         BaseStyle->"Graphics"]},
+       "DynamicName",
+       BoxID -> "VertexLabelID$7"], 
+      TagBox[{
+        TagBox[DiskBox[{3., 0.}, 0.18027756377319948],
+         "DynamicName",
+         BoxID -> "VertexID$8"], InsetBox[
+         StyleBox["\<\"H\"\>",
+          StripOnInput->False,
+          FontSize->14,
+          FontWeight->Bold], 
+         Offset[{2, 2}, DynamicLocation[
+          "VertexID$8", Automatic, {Right, Top}]], ImageScaled[{0, 0}],
+         BaseStyle->"Graphics"]},
+       "DynamicName",
+       BoxID -> "VertexLabelID$8"], 
+      TagBox[{
+        TagBox[DiskBox[{3., 1.}, 0.18027756377319948],
+         "DynamicName",
+         BoxID -> "VertexID$9"], InsetBox[
+         StyleBox["\<\"I\"\>",
+          StripOnInput->False,
+          FontSize->14,
+          FontWeight->Bold], 
+         Offset[{2, 2}, DynamicLocation[
+          "VertexID$9", Automatic, {Right, Top}]], ImageScaled[{0, 0}],
+         BaseStyle->"Graphics"]},
+       "DynamicName",
+       BoxID -> "VertexLabelID$9"], 
+      TagBox[{
+        TagBox[DiskBox[{3., 2.}, 0.18027756377319948],
+         "DynamicName",
+         BoxID -> "VertexID$10"], InsetBox[
+         StyleBox["\<\"J\"\>",
+          StripOnInput->False,
+          FontSize->14,
+          FontWeight->Bold], 
+         Offset[{2, 2}, DynamicLocation[
+          "VertexID$10", Automatic, {Right, Top}]], ImageScaled[{0, 0}],
+         BaseStyle->"Graphics"]},
+       "DynamicName",
+       BoxID -> "VertexLabelID$10"], 
+      TagBox[{
+        TagBox[DiskBox[{2., 2.}, 0.18027756377319948],
+         "DynamicName",
+         BoxID -> "VertexID$11"], InsetBox[
+         StyleBox["\<\"K\"\>",
+          StripOnInput->False,
+          FontSize->14,
+          FontWeight->Bold], 
+         Offset[{2, 2}, DynamicLocation[
+          "VertexID$11", Automatic, {Right, Top}]], ImageScaled[{0, 0}],
+         BaseStyle->"Graphics"]},
+       "DynamicName",
+       BoxID -> "VertexLabelID$11"], 
+      TagBox[{
+        TagBox[DiskBox[{1., 2.}, 0.18027756377319948],
+         "DynamicName",
+         BoxID -> "VertexID$12"], InsetBox[
+         StyleBox["\<\"L\"\>",
+          StripOnInput->False,
+          FontSize->14,
+          FontWeight->Bold], 
+         Offset[{2, 2}, DynamicLocation[
+          "VertexID$12", Automatic, {Right, Top}]], ImageScaled[{0, 0}],
+         BaseStyle->"Graphics"]},
+       "DynamicName",
+       BoxID -> "VertexLabelID$12"], 
+      TagBox[{
+        TagBox[DiskBox[{-1., 2.}, 0.18027756377319948],
+         "DynamicName",
+         BoxID -> "VertexID$13"], InsetBox[
+         StyleBox["\<\"M\"\>",
+          StripOnInput->False,
+          FontSize->14,
+          FontWeight->Bold], 
+         Offset[{2, 2}, DynamicLocation[
+          "VertexID$13", Automatic, {Right, Top}]], ImageScaled[{0, 0}],
+         BaseStyle->"Graphics"]},
+       "DynamicName",
+       BoxID -> "VertexLabelID$13"], 
+      TagBox[{
+        TagBox[DiskBox[{-2., 2.}, 0.18027756377319948],
+         "DynamicName",
+         BoxID -> "VertexID$14"], InsetBox[
+         StyleBox["\<\"N\"\>",
+          StripOnInput->False,
+          FontSize->14,
+          FontWeight->Bold], 
+         Offset[{2, 2}, DynamicLocation[
+          "VertexID$14", Automatic, {Right, Top}]], ImageScaled[{0, 0}],
+         BaseStyle->"Graphics"]},
+       "DynamicName",
+       BoxID -> "VertexLabelID$14"], 
+      TagBox[{
+        TagBox[
+         {RGBColor[1, 0, 1], DiskBox[{-3., 2.}, 0.18027756377319948]},
+         "DynamicName",
+         BoxID -> "VertexID$15"], InsetBox[
+         StyleBox["\<\"O\"\>",
+          StripOnInput->False,
+          FontSize->14,
+          FontWeight->Bold], 
+         Offset[{2, 2}, DynamicLocation[
+          "VertexID$15", Automatic, {Right, Top}]], ImageScaled[{0, 0}],
+         BaseStyle->"Graphics"]},
+       "DynamicName",
+       BoxID -> "VertexLabelID$15"], 
+      TagBox[{
+        TagBox[DiskBox[{-3., 1.}, 0.18027756377319948],
+         "DynamicName",
+         BoxID -> "VertexID$16"], InsetBox[
+         StyleBox["\<\"P\"\>",
+          StripOnInput->False,
+          FontSize->14,
+          FontWeight->Bold], 
+         Offset[{2, 2}, DynamicLocation[
+          "VertexID$16", Automatic, {Right, Top}]], ImageScaled[{0, 0}],
+         BaseStyle->"Graphics"]},
+       "DynamicName",
+       BoxID -> "VertexLabelID$16"], 
+      TagBox[{
+        TagBox[DiskBox[{-3., 0.}, 0.18027756377319948],
+         "DynamicName",
+         BoxID -> "VertexID$17"], InsetBox[
+         StyleBox["\<\"Q\"\>",
+          StripOnInput->False,
+          FontSize->14,
+          FontWeight->Bold], 
+         Offset[{2, 2}, DynamicLocation[
+          "VertexID$17", Automatic, {Right, Top}]], ImageScaled[{0, 0}],
+         BaseStyle->"Graphics"]},
+       "DynamicName",
+       BoxID -> "VertexLabelID$17"], 
+      TagBox[{
+        TagBox[DiskBox[{-3., -1.}, 0.18027756377319948],
+         "DynamicName",
+         BoxID -> "VertexID$18"], InsetBox[
+         StyleBox["\<\"R\"\>",
+          StripOnInput->False,
+          FontSize->14,
+          FontWeight->Bold], 
+         Offset[{2, 2}, DynamicLocation[
+          "VertexID$18", Automatic, {Right, Top}]], ImageScaled[{0, 0}],
+         BaseStyle->"Graphics"]},
+       "DynamicName",
+       BoxID -> "VertexLabelID$18"], 
+      TagBox[{
+        TagBox[DiskBox[{-0.5, 0.}, 0.18027756377319948],
+         "DynamicName",
+         BoxID -> "VertexID$19"], InsetBox[
+         StyleBox["\<\"S\"\>",
+          StripOnInput->False,
+          FontSize->14,
+          FontWeight->Bold], 
+         Offset[{2, 2}, DynamicLocation[
+          "VertexID$19", Automatic, {Right, Top}]], ImageScaled[{0, 0}],
+         BaseStyle->"Graphics"]},
+       "DynamicName",
+       BoxID -> "VertexLabelID$19"], 
+      TagBox[{
+        TagBox[DiskBox[{0.5, 0.}, 0.18027756377319948],
+         "DynamicName",
+         BoxID -> "VertexID$20"], InsetBox[
+         StyleBox["\<\"T\"\>",
+          StripOnInput->False,
+          FontSize->14,
+          FontWeight->Bold], 
+         Offset[{2, 2}, DynamicLocation[
+          "VertexID$20", Automatic, {Right, Top}]], ImageScaled[{0, 0}],
+         BaseStyle->"Graphics"]},
+       "DynamicName",
+       BoxID -> "VertexLabelID$20"]}}], {InsetBox[
+     StyleBox["\<\"\[Infinity]\"\>",
+      StripOnInput->False,
+      FontSize->16,
+      FontWeight->Bold], {-3, -2}], InsetBox[
+     StyleBox["\<\"\[Infinity]\"\>",
+      StripOnInput->False,
+      FontSize->16,
+      FontWeight->Bold], {-2, -2}], InsetBox[
+     StyleBox["\<\"35\"\>",
+      StripOnInput->False,
+      FontSize->16,
+      FontWeight->Bold], {-1, -2}], InsetBox[
+     StyleBox["\<\"33\"\>",
+      StripOnInput->False,
+      FontSize->16,
+      FontWeight->Bold], {1, -2}], InsetBox[
+     StyleBox["\<\"36\"\>",
+      StripOnInput->False,
+      FontSize->16,
+      FontWeight->Bold], {2, -2}], InsetBox[
+     StyleBox["\<\"0\"\>",
+      StripOnInput->False,
+      FontSize->16,
+      FontWeight->Bold], {3, -2}], InsetBox[
+     StyleBox["\<\"5\"\>",
+      StripOnInput->False,
+      FontSize->16,
+      FontWeight->Bold], {3, -1}], InsetBox[
+     StyleBox["\<\"11\"\>",
+      StripOnInput->False,
+      FontSize->16,
+      FontWeight->Bold], {3, 0}], InsetBox[
+     StyleBox["\<\"15\"\>",
+      StripOnInput->False,
+      FontSize->16,
+      FontWeight->Bold], {3, 1}], InsetBox[
+     StyleBox["\<\"24\"\>",
+      StripOnInput->False,
+      FontSize->16,
+      FontWeight->Bold], {3, 2}], InsetBox[
+     StyleBox["\<\"29\"\>",
+      StripOnInput->False,
+      FontSize->16,
+      FontWeight->Bold], {2, 2}], InsetBox[
+     StyleBox["\<\"36\"\>",
+      StripOnInput->False,
+      FontSize->16,
+      FontWeight->Bold], {1, 2}], InsetBox[
+     StyleBox["\<\"33\"\>",
+      StripOnInput->False,
+      FontSize->16,
+      FontWeight->Bold], {-1, 2}], InsetBox[
+     StyleBox["\<\"33\"\>",
+      StripOnInput->False,
+      FontSize->16,
+      FontWeight->Bold], {-2, 2}], InsetBox[
+     StyleBox["\<\"39\"\>",
+      StripOnInput->False,
+      FontSize->16,
+      FontWeight->Bold], {-3, 2}], InsetBox[
+     StyleBox["\<\"\[Infinity]\"\>",
+      StripOnInput->False,
+      FontSize->16,
+      FontWeight->Bold], {-3, 1}], InsetBox[
+     StyleBox["\<\"\[Infinity]\"\>",
+      StripOnInput->False,
+      FontSize->16,
+      FontWeight->Bold], {-3, 0}], InsetBox[
+     StyleBox["\<\"32\"\>",
+      StripOnInput->False,
+      FontSize->16,
+      FontWeight->Bold], {-3, -1}], InsetBox[
+     StyleBox["\<\"23\"\>",
+      StripOnInput->False,
+      FontSize->16,
+      FontWeight->Bold], {-0.5, 0}], InsetBox[
+     StyleBox["\<\"29\"\>",
+      StripOnInput->False,
+      FontSize->16,
+      FontWeight->Bold], {0.5, 0}]}},
+  FormatType->TraditionalForm,
+  FrameTicks->None,
+  ImageSize->Large]], "Print",
+ CellChangeTimes->{
+  3.9387454388264923`*^9, 3.938745576603138*^9, 3.938745633409275*^9, 
+   3.9387457123867683`*^9, 3.938745778657837*^9, {3.938745846402622*^9, 
+   3.9387459004300785`*^9}, 3.9387465130344696`*^9, 3.938746547351595*^9, 
+   3.938746633830591*^9, 3.938746694413786*^9, 3.9387467389425373`*^9, 
+   3.9387468745510464`*^9, {3.9387470641849957`*^9, 3.938747099136301*^9}, 
+   3.9387473139336815`*^9, 3.9387476294261417`*^9, 3.938748158482361*^9, 
+   3.938748214136757*^9, 3.938748352617733*^9, 3.9387486741508007`*^9, 
+   3.9387487725540733`*^9, 3.9387488331465244`*^9, 3.9387488750590134`*^9, {
+   3.9387489588381805`*^9, 3.9387489866882687`*^9}, 3.9387490318011208`*^9, 
+   3.9387491259353676`*^9, 3.938749374892784*^9, {3.9387494099229145`*^9, 
+   3.9387494250196743`*^9}, {3.9387497326774426`*^9, 
+   3.9387497493374825`*^9}, {3.9387498006197605`*^9, 
+   3.9387498202334785`*^9}, {3.9387502901542206`*^9, 3.938750348025522*^9}},
+ CellLabel->
+  "During evaluation of \
+In[533]:=",ExpressionUUID->"4f83a36e-f325-654a-a588-2be672873aab"]
+}, Open  ]]
+},
+WindowSize->{1269, 721},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"14.1 for Microsoft Windows (64-bit) (July 16, 2024)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"f9ea601f-897d-be47-94eb-48dfa94b3edd"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[576, 22, 97737, 2236, 8457, "Input",ExpressionUUID->"e0dd1018-64ba-5b4a-8fbc-f691abcc9545"],
+Cell[98316, 2260, 1338, 23, 26, "Message",ExpressionUUID->"42c122ab-8892-414b-a4d3-7e7b9fc89722"],
+Cell[99657, 2285, 1328, 23, 26, "Message",ExpressionUUID->"ef07ed6e-609f-ad45-9519-052cf804fb3b"],
+Cell[100988, 2310, 1324, 23, 26, "Message",ExpressionUUID->"d67926e1-2492-bb48-a441-c6c6f6682034"],
+Cell[102315, 2335, 1418, 24, 26, "Message",ExpressionUUID->"fc5c8a5c-4091-3442-ae85-b728a309898c"],
+Cell[103736, 2361, 23937, 642, 411, "Print",ExpressionUUID->"4f83a36e-f325-654a-a588-2be672873aab"]
+}, Open  ]]
+}
+]
+*)
+

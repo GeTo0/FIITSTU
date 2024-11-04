@@ -17,3 +17,5 @@ CREATE TRIGGER perform_control_and_update_status_trigger
 AFTER UPDATE ON Control
 FOR EACH ROW
 EXECUTE FUNCTION perform_control_and_update_status();
+
+

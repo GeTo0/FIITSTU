@@ -15,6 +15,12 @@ BEGIN
         NEW.length=NULL;
     END IF;
 
+    -- If the status of the exhibition is "skoncena", update the status of all specimens associated with it to "na sklade"
+    IF NEW.status = 'skoncena' THEN
+        UPDATE Specimen
+        SET status = 'na sklade'
+        WHERE id IN (SELECT specimen_id FROM ExhibitionSpecimen WHERE exhibition_id = NEW.id);
+    END IF;
 
     RETURN NEW;
 END;
@@ -24,3 +30,4 @@ CREATE TRIGGER update_exhibition_status_trigger
 BEFORE INSERT OR UPDATE ON exhibition
 FOR EACH ROW
 EXECUTE FUNCTION update_exhibition_status();
+
