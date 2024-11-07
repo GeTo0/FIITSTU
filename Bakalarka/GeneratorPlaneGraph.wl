@@ -1,7 +1,7 @@
 (* ::Package:: *)
 
-BeginPackage["GeneratorCompleteGraph`"]
-Equation::usage = "Equation[difficulty,directed] generates a Complete graph problem with solution steps and final result.";
+BeginPackage["GeneratorPlaneGraph`"]
+Equation::usage = "Equation[difficulty,directed] generates a Plane graph problem with solution steps and final result.";
 Internal`$ContextMarks = False;
 
 letterToNumber[letter_]:=ToCharacterCode[ToString[letter]][[1]]-64
@@ -151,36 +151,32 @@ VertexCoordinates->vertexPositions,
 VertexStyle->Directive[LightBlue],
 VertexLabels->Table[i->vertexABC[[i]],{i,Length[vertexWeights]}],
 VertexLabelStyle->Directive[FontSize->14,Bold],
-ImageSize -> Medium,
-GraphStyle->"NameLabeled"];
+ImageSize->Large,GraphStyle->"NameLabeled"];
 
 newGraph=modifyVertexColor[newGraph,{startVertex},Green];
 newGraph=modifyVertexColor[newGraph,{endVertex},Magenta];
 
 path=paths[[endVertex]];
-messageText="Pre\[SHacek]li sme v\[SHacek]etky vrcholy okrem koncov\[EAcute]ho a ohodnotili ich susedov. T\[YAcute]m p\[AAcute]dom sme dostali pre ka\[ZHacek]d\[YAcute] vrchol najlacnej\[SHacek]ie ohodnotenie, ak\[YAcute]m sa k nemu vieme
-dosta\[THacek] zo za\[CHacek]iato\[CHacek]n\[EAcute]ho vrcholu. Vieme tak spravi\[THacek] ak\[UAcute]si kostru grafu, ktor\[AAcute] obsahuje iba tie hrany, cez ktor\[EAcute] sa vieme najlacnej\[SHacek]ie dosta\[THacek] k nejak\[EAcute]mu vrcholu.
-Tento krok u\:013eah\[CHacek]uje vidite\:013enost pre kontrolu. 
-";
+
 If[directed===False,
 If[Length[path]>1,
 currentEdge=Table[path[[i]]\[UndirectedEdge]path[[i+1]],{i,1,Length[path]-1}];
 highlightedGraph=HighlightGraph[newGraph,Style[currentEdge,Thick,Red]];
 finalGraph=displayVertexWeights[highlightedGraph,vertexWeights];
-messageText=messageText<>" Toto je finalna kostra celeho grafu, na ktorej s\[UAcute] uk\[AAcute]zan\[EAcute] v\[SHacek]etky cesty z po\[CHacek]iato\[CHacek]n\[EAcute]ho vrcholu "<>ToString[numberToLetter[startVertex]]<>" do v\[SHacek]etk\[YAcute]ch ostatn\[YAcute]ch vrcholov, pri\[CHacek]om cesta do vrcholu "<>ToString[numberToLetter[endVertex]]<>" je ozna\[CHacek]en\[AAcute] \[CHacek]ervenou farbou.";
+messageText="Toto je finalna kostra celeho grafu, na ktorej s\[UAcute] uk\[AAcute]zan\[EAcute] v\[SHacek]etky cesty z po\[CHacek]iato\[CHacek]n\[EAcute]ho vrcholu "<>ToString[numberToLetter[startVertex]]<>" do v\[SHacek]etk\[YAcute]ch ostatn\[YAcute]ch vrcholov, pri\[CHacek]om cesta do vrcholu "<>ToString[numberToLetter[endVertex]]<>" je ozna\[CHacek]en\[AAcute] \[CHacek]ervenou farbou.";
 ,
 finalGraph=displayVertexWeights[newGraph,vertexWeights];
-messageText=messageText<>" Toto je finalna kostra celeho grafu, na ktorej s\[UAcute] uk\[AAcute]zan\[EAcute] v\[SHacek]etky cesty z po\[CHacek]iato\[CHacek]n\[EAcute]ho vrcholu "<>ToString[numberToLetter[startVertex]]<>" do v\[SHacek]etk\[YAcute]ch ostatn\[YAcute]ch vrcholov, pri\[CHacek]om cesta do vrcholu "<>ToString[numberToLetter[endVertex]]<>" neexistuje.";
+messageText="Toto je finalna kostra celeho grafu, na ktorej s\[UAcute] uk\[AAcute]zan\[EAcute] v\[SHacek]etky cesty z po\[CHacek]iato\[CHacek]n\[EAcute]ho vrcholu "<>ToString[numberToLetter[startVertex]]<>" do v\[SHacek]etk\[YAcute]ch ostatn\[YAcute]ch vrcholov, pri\[CHacek]om cesta do vrcholu "<>ToString[numberToLetter[endVertex]]<>" neexistuje.";
 ];
 ];
 
 If[directed===True,
 If[Length[path]>1,
 currentEdge=Table[path[[i]]->path[[i+1]],{i,1,Length[path]-1}];highlightedGraph=HighlightGraph[newGraph,Style[currentEdge,Thick,Red]];finalGraph=displayVertexWeights[highlightedGraph,vertexWeights];
-messageText=messageText<>" Toto je finalna kostra celeho grafu, na ktorej s\[UAcute] uk\[AAcute]zan\[EAcute] v\[SHacek]etky cesty z po\[CHacek]iato\[CHacek]n\[EAcute]ho vrcholu "<>ToString[numberToLetter[startVertex]]<>" do v\[SHacek]etk\[YAcute]ch ostatn\[YAcute]ch vrcholov, pri\[CHacek]om cesta do vrcholu "<>ToString[numberToLetter[endVertex]]<>" je ozna\[CHacek]en\[AAcute] \[CHacek]ervenou farbou.";
+messageText="Toto je finalna kostra celeho grafu, na ktorej s\[UAcute] uk\[AAcute]zan\[EAcute] v\[SHacek]etky cesty z po\[CHacek]iato\[CHacek]n\[EAcute]ho vrcholu "<>ToString[numberToLetter[startVertex]]<>" do v\[SHacek]etk\[YAcute]ch ostatn\[YAcute]ch vrcholov, pri\[CHacek]om cesta do vrcholu "<>ToString[numberToLetter[endVertex]]<>" je ozna\[CHacek]en\[AAcute] \[CHacek]ervenou farbou.";
 ,
 finalGraph=displayVertexWeights[newGraph,vertexWeights];
-messageText=messageText<>" Toto je finalna kostra celeho grafu, na ktorej s\[UAcute] uk\[AAcute]zan\[EAcute] v\[SHacek]etky cesty z po\[CHacek]iato\[CHacek]n\[EAcute]ho vrcholu "<>ToString[numberToLetter[startVertex]]<>" do v\[SHacek]etk\[YAcute]ch ostatn\[YAcute]ch vrcholov, pri\[CHacek]om cesta do vrcholu "<>ToString[numberToLetter[endVertex]]<>" neexistuje.";
+messageText="Toto je finalna kostra celeho grafu, na ktorej s\[UAcute] uk\[AAcute]zan\[EAcute] v\[SHacek]etky cesty z po\[CHacek]iato\[CHacek]n\[EAcute]ho vrcholu "<>ToString[numberToLetter[startVertex]]<>" do v\[SHacek]etk\[YAcute]ch ostatn\[YAcute]ch vrcholov, pri\[CHacek]om cesta do vrcholu "<>ToString[numberToLetter[endVertex]]<>" neexistuje.";
 ];
 ];
 
@@ -200,6 +196,7 @@ currentEdge={steps[[i,1]]\[UndirectedEdge]steps[[i,2]]};
 currentVertex=steps[[i,1]];
 
 If[!MemberQ[visited,currentVertex],AppendTo[visited,currentVertex]];
+
 originalVertexColor=PropertyValue[{originalGraph,currentVertex},VertexStyle];
 updatedGraph=modifyVertexColor[originalGraph,{currentVertex},Yellow];
 highlightedGraph=HighlightGraph[updatedGraph,Style[currentEdge,Thick,Red]];
@@ -210,7 +207,9 @@ visitedText="nav\[SHacek]t\[IAcute]ven\[EAcute] vrcholy: "<>StringJoin[Riffle[To
 
 graphCell=Grid[{{finalGraph,Column[{Style[visitedText,FontSize->12],Style["POSTUP",FontSize->16,Bold,Red],Column[numberedText]}]}},Spacings->{2,1}];
 tempOp = "<image data:image/png;base64," <> StringReplace[ExportString[graphCell, {"Base64", "PNG"}], "\n" -> ""] <> ">";
- If[i == 1, operations = tempOp, operations = operations <> ";;;" <> tempOp];
+AppendTo[operations, tempOp];
+
+(*InputString["Press ENTER to continue..."];*)
 originalGraph=modifyVertexColor[updatedGraph,{currentVertex},originalVertexColor];
 ];
 ];
@@ -221,6 +220,7 @@ currentEdge={steps[[i,1]]->steps[[i,2]]};
 currentVertex=steps[[i,1]];
 
 If[!MemberQ[visited,currentVertex],AppendTo[visited,currentVertex]];
+
 originalVertexColor=PropertyValue[{originalGraph,currentVertex},VertexStyle];
 updatedGraph=modifyVertexColor[originalGraph,{currentVertex},Yellow];
 highlightedGraph=HighlightGraph[updatedGraph,Style[currentEdge,Thick,Red]];
@@ -230,7 +230,7 @@ numberedText=Table[Row[{ToString[j]<>") ",vypis[[i,j]]}],{j,Length[vypis[[i]]]}]
 visitedText="nav\[SHacek]t\[IAcute]ven\[EAcute] vrcholy: "<>StringJoin[Riffle[ToString/@(numberToLetter/@visited),", "]];
 graphCell=Grid[{{finalGraph,Column[{Style[visitedText,FontSize->12],Style["POSTUP",FontSize->16,Bold,Red],Column[numberedText]}]}},Spacings->{2,1}];
 tempOp = "<image data:image/png;base64," <> StringReplace[ExportString[graphCell, {"Base64", "PNG"}], "\n" -> ""] <> ">";
-If[i == 1, operations = tempOp, operations = operations <> ";;;" <> tempOp];
+AppendTo[operations, tempOp];
 
 originalGraph=modifyVertexColor[updatedGraph,{currentVertex},originalVertexColor];
 ];
@@ -242,50 +242,108 @@ DijkstraAlgorithm[mygraph_,startVertex_,endVertex_,edges_,weights_,vertexWeights
 input,vypis,operations={},answer},
 If[directed===False,
 {updatedvertexWeights,predecessors,paths,steps,vypis}=DijkstraUndirectedCore[mygraph,startVertex,endVertex,edges,weights,vertexWeights];
-operations=replaySteps[mygraph,steps,False,vypis];
 answer=showFinalResult[mygraph,startVertex,endVertex,updatedvertexWeights,paths,weights,edges,False];
+operations=replaySteps[mygraph,steps,False,vypis];
 ,
 {updatedvertexWeights,predecessors,paths,steps,vypis}=DijkstraDirectedCore[mygraph,startVertex,endVertex,edges,weights,vertexWeights];
-operations=replaySteps[mygraph,steps,True,vypis];
 answer=showFinalResult[mygraph,startVertex,endVertex,updatedvertexWeights,paths,weights,edges,True];
+operations=replaySteps[mygraph,steps,True,vypis];
 ];
 {operations,answer}
 ]
 
-makeCompleteGraph[diff_,directed_]:=Module[{adjacencyMatrix,edges,weights,edgeLabels,mygraph,vertexABC,n,edgeProb=0.2},
-
+makePlaneGraph[diff_,directed_]:=Module[{mygraph,edges,weights,edgeLabels,vertexABC,n1,n2,part1Edges,part2Edges,n,edgesNumber,tempNum},
 If[diff==="EASY",
-n=6;
+n=8;
+edgesNumber=12;
 ];
 If[diff==="MEDIUM",
 n=10;
+edgesNumber=18;
 ];
 If[diff==="HARD",
-n=12;
+n=14;
+edgesNumber=25;
 ];
 adjacencyMatrix=ConstantArray[0,{n,n}];
+n1=Ceiling[n/2];
+n2=n-n1;
+part1Edges=Ceiling[(edgesNumber-1)/2];
+part2Edges=edgesNumber-part1Edges-1;
 
 If[directed===False,
 Do[
+If[part1Edges>0,
+Module[{i,j},i=RandomInteger[{1,n1}];j=RandomInteger[{1,n1}];
+While[i==j||adjacencyMatrix[[i,j]]>0,
+i=RandomInteger[{1,n1}];
+j=RandomInteger[{1,n1}]
+];
 adjacencyMatrix[[i,j]]=RandomInteger[{1,10}];
 adjacencyMatrix[[j,i]]=adjacencyMatrix[[i,j]];
-,{i,1,n},{j,i+1,n}
+part1Edges--
+];
+]
+,{part1Edges}
+];
+Do[
+If[part2Edges>0,
+Module[{i,j},i=RandomInteger[{n1+1,n}];j=RandomInteger[{n1+1,n}];
+While[i==j||adjacencyMatrix[[i,j]]>0,
+i=RandomInteger[{n1+1,n}];
+j=RandomInteger[{n1+1,n}]
+];
+adjacencyMatrix[[i,j]]=RandomInteger[{1,10}];
+adjacencyMatrix[[j,i]]=adjacencyMatrix[[i,j]];
+part2Edges--
+];
+]
+,{part2Edges}
+];
+adjacencyMatrix[[1,n1+1]]=RandomInteger[{1,10}];
+adjacencyMatrix[[n1+1,1]]=adjacencyMatrix[[1,n1+1]];
+
+edges=Flatten[Table[If[adjacencyMatrix[[i,j]]>0,{i\[UndirectedEdge]j},Nothing],{i,1,n},{j,i+1,n}]];weights=Flatten[Table[If[adjacencyMatrix[[i,j]]>0,{adjacencyMatrix[[i,j]]},Nothing],{i,1,n},{j,i+1,n}]];edgeLabels=MapThread[#1->Placed[#2,1/3]&,{edges,weights}];
 ];
 
-edges=Flatten[Table[If[adjacencyMatrix[[i,j]]>0,{i\[UndirectedEdge]j},Nothing],{i,1,n},{j,i+1,n}]];weights=Flatten[Table[If[adjacencyMatrix[[i,j]]>0,{adjacencyMatrix[[i,j]]},Nothing],{i,1,n},{j,i+1,n}]];
-edgeLabels=MapThread[#1->Placed[#2,1/6]&,{edges,weights}];
-];
 
 If[directed===True,
 Do[
+If[part1Edges>0,
+Module[{i,j},i=RandomInteger[{1,n1}];j=RandomInteger[{1,n1}];
+While[i==j||adjacencyMatrix[[i,j]]>0,
+i=RandomInteger[{1,n1}];
+j=RandomInteger[{1,n1}]
+];
 adjacencyMatrix[[i,j]]=RandomInteger[{1,10}];
-If[RandomReal[]<edgeProb,
-adjacencyMatrix[[j,i]]=RandomInteger[{1,10}];
+part1Edges--
 ];
-,{i,1,n},{j,i+1,n}
+],{part1Edges}
 ];
-
-edges=Flatten[Table[If[adjacencyMatrix[[i,j]]>0,{i->j},Nothing],{i,1,n},{j,1,n}]];weights=Flatten[Table[If[adjacencyMatrix[[i,j]]>0,{adjacencyMatrix[[i,j]]},Nothing],{i,1,n},{j,1,n}]];edgeLabels=MapThread[#1->Placed[#2,1/4]&,{edges,weights}];
+Do[
+If[part2Edges>0,
+Module[{i,j},i=RandomInteger[{n1+1,n}];j=RandomInteger[{n1+1,n}];
+While[i==j||adjacencyMatrix[[i,j]]>0,
+i=RandomInteger[{n1+1,n}];
+j=RandomInteger[{n1+1,n}]
+];
+adjacencyMatrix[[i,j]]=RandomInteger[{1,10}];
+part2Edges--
+];
+],{part2Edges}
+];
+tempNum=RandomReal[];
+If[tempNum<= 0.33,
+adjacencyMatrix[[1,n1+1]]=RandomInteger[{1,10}];
+];
+If[0.33<tempNum<=0.66,
+adjacencyMatrix[[n1+1,1]]=RandomInteger[{1,10}];
+];
+If[0.66<tempNum,
+adjacencyMatrix[[1,n1+1]]=RandomInteger[{1,10}];
+adjacencyMatrix[[n1+1,1]]=RandomInteger[{1,10}];
+];
+edges=Flatten[Table[If[adjacencyMatrix[[i,j]]>0,{i->j},Nothing],{i,1,n},{j,1,n}]];weights=Flatten[Table[If[adjacencyMatrix[[i,j]]>0,{adjacencyMatrix[[i,j]]},Nothing],{i,1,n},{j,1,n}]];edgeLabels=MapThread[#1->Placed[#2,1/3]&,{edges,weights}];
 ];
 
 vertexABC=Table[ToString[FromCharacterCode[i+64]],{i,1,n}];
@@ -296,7 +354,7 @@ EdgeWeight->weights,
 VertexLabels->Table[i->vertexABC[[i]],{i,n}],
 VertexStyle->Directive[LightBlue],
 GraphStyle->"NameLabeled",
-ImageSize -> Medium,
+ImageSize->Large,
 EdgeLabelStyle->Directive[FontSize->12,Background->White,Blue],
 EdgeStyle->Directive[Black,Arrowheads[0.02]],
 VertexLabelStyle->Directive[FontSize->14,Bold]
@@ -305,12 +363,12 @@ VertexLabelStyle->Directive[FontSize->14,Bold]
 ]
 
 Equation[difficulty_] := Module[{solution, mygraph, edges, weights, vertexABC, vertexCount,operations,
-answer, problemText,graphProblem,problem,graphCell,vertexWeights,startVertex,endVertex,directed},
+answer, problemText,graphProblem,problem,graphCell,vertexWeights,directed},
 
-(*directed=Input["Directed? True/False"];*)
 directed=False;
-{mygraph,edges,weights,edgeLabels,vertexABC,n}=makeCompleteGraph[difficulty, directed];
+{mygraph,edges,weights,edgeLabels,vertexABC,n}=makePlaneGraph[difficulty, directed];
 vertexPositions = GraphEmbedding[mygraph];
+graphCell=PrintTemporary[Show[mygraph,Graphics[Table[Text[Style["\[Infinity]",FontSize->16,Bold],vertexPositions[[i]]],{i,1,Length[vertexPositions]}]]]];
 
 startVertex = RandomInteger[{1, n}];
 endVertex = RandomChoice[DeleteCases[Range[1, n], startVertex]];
@@ -320,14 +378,9 @@ mygraph=modifyVertexColor[mygraph,{endVertex},Magenta];
 vertexWeights=ConstantArray[\[Infinity],n];
 vertexWeights[[startVertex]]=0;
 
+NotebookDelete[graphCell];
 
-problemText="Tu je zadan\[YAcute] graf. Va\[SHacek]ou \[UAcute]lohou je pomocou Dijkstrovho algoritmu n\[AAcute]js\[THacek] najkrat\[SHacek]iu cestu zo za\[CHacek]iato\[CHacek]n\[EAcute]ho vrcholu do koncov\[EAcute]ho.
-D\[OHat]le\[ZHacek]it\[EAcute] je dba\[THacek] na z\[AAcute]sady Dijkstrovho algoritmu. Funguje tak, \[ZHacek]e z vrcholu prech\[AAcute]dzate v\[SHacek]etk\[YAcute]ch NENAV\[CapitalSHacek]T\[CapitalIAcute]VEN\[CapitalYAcute]CH susedov a dop\:013a\[NHacek]ate ohodnotenia cesty do nich.
-Po prejden\[IAcute] v\[SHacek]etk\[YAcute]ch susedov vrcholu prejdete na \[DHacek]al\[SHacek]\[IAcute] vrchol, vyber\[AAcute]te iba z vrcholov, z ktor\[YAcute]ch ste neh\:013eadali susedov a zvy\[CHacek]ajne prech\[AAcute]dzate na ten,
-\[CHacek]o m\[AAcute] z nich najmen\[SHacek]ie ohodnotenie. NIKDY neh\:013ead\[AAcute]te susedov koncov\[EAcute]ho vrcholu. (Pr\[IAcute]klad: Majme vrcholy A,B,C,D,E. Za\[CHacek]\[IAcute]name v A kon\[CHacek]\[IAcute]me v E. Najprv n\[AAcute]jdete susedov
-pre A, tak\[ZHacek]e B,C,D,E. Povedzme, \[ZHacek]e vrchol C m\[AAcute] najlacnej\[SHacek]iu cestu, prejdete na\[NHacek]. Teraz n\[AAcute]jdete susedov pre C, to bud\[UAcute] B,D,E. Takto pokra\[CHacek]ujete k\[YAcute]m neprejdete
-v\[SHacek]etk\[YAcute] vrcholi okrem koncov\[EAcute]ho, teda E. V pr\[IAcute]pade \[ZHacek]e z bodu C bude cesta do nejak\[EAcute]ho vrcholu, napr. E lacnej\[SHacek]ia ako bola z vrcholu A, tak cenu vrcholu E prep\[IAcute]\[SHacek]ete
-na lacnej\[SHacek]iu.";
+problemText="Tu je zadan\[YAcute] graf. Va\[SHacek]ou \[UAcute]lohou je pomocou Dijkstrovho algoritmu n\[AAcute]js\[THacek] najkrat\[SHacek]iu cestu zo za\[CHacek]iato\[CHacek]n\[EAcute]ho vrcholu do koncov\[EAcute]ho";
 graphProblem=displayVertexWeights[mygraph,vertexWeights];
 
 graphCell=Grid[{{graphProblem,Column[{Style["ZADANIE",FontSize->16,Bold,Red],Style[problemText,FontSize->14,LineSpacing->{1.5}]}]}},Spacings->{2,1}];
@@ -341,3 +394,4 @@ Return[solution];
 ]
 
 EndPackage[];
+

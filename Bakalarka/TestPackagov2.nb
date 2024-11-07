@@ -1,0 +1,864 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Wolfram 14.1' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       154,          7]
+NotebookDataLength[     33252,        854]
+NotebookOptionsPosition[     32772,        837]
+NotebookOutlinePosition[     33169,        853]
+CellTagsIndexPosition[     33126,        850]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"Needs", "[", "\"\<GeneratorDodecahedronGraph`\>\"", "]"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{"Equation", "[", 
+  RowBox[{"EASY", ",", "False"}], "]"}]}], "Input",
+ CellChangeTimes->{{3.939885199507332*^9, 3.93988522310219*^9}},
+ CellLabel->
+  "In[338]:=",ExpressionUUID->"8a3da11a-bebe-0348-bdc4-e60f1657b4dd"],
+
+Cell[BoxData[
+ TagBox[GridBox[{
+    {
+     GraphicsBox[{
+       NamespaceBox[{
+         {GrayLevel[0], Opacity[1], Arrowheads[0.02], {
+           
+           TagBox[LineBox[{
+             DynamicLocation["VertexID$1", Automatic, Center], 
+              DynamicLocation["VertexID$2", Automatic, Center]}],
+            "DynamicName",
+            BoxID -> "EdgeLabelID$1"], InsetBox[
+            StyleBox["8",
+             StripOnInput->False,
+             LineColor->RGBColor[0, 0, 1],
+             FrontFaceColor->RGBColor[0, 0, 1],
+             BackFaceColor->RGBColor[0, 0, 1],
+             GraphicsColor->RGBColor[0, 0, 1],
+             FontSize->12,
+             FontColor->RGBColor[0, 0, 1],
+             Background->GrayLevel[1]], 
+            Offset[{0, 2}, DynamicLocation[
+             "EdgeLabelID$1", Automatic, Scaled[Rational[1, 6]]]], 
+            ImageScaled[{0.5, 0}],
+            BaseStyle->"Graphics"]}, {
+           TagBox[
+            {RGBColor[1, 0, 0], Thickness[Large], 
+             LineBox[{
+              DynamicLocation["VertexID$1", Automatic, Center], 
+               DynamicLocation["VertexID$5", Automatic, Center]}]},
+            "DynamicName",
+            BoxID -> "EdgeLabelID$2"], InsetBox[
+            StyleBox["8",
+             StripOnInput->False,
+             LineColor->RGBColor[0, 0, 1],
+             FrontFaceColor->RGBColor[0, 0, 1],
+             BackFaceColor->RGBColor[0, 0, 1],
+             GraphicsColor->RGBColor[0, 0, 1],
+             FontSize->12,
+             FontColor->RGBColor[0, 0, 1],
+             Background->GrayLevel[1]], 
+            Offset[{0, 2}, DynamicLocation[
+             "EdgeLabelID$2", Automatic, Scaled[Rational[1, 6]]]], 
+            ImageScaled[{0.5, 0}],
+            BaseStyle->"Graphics"]}, {
+           
+           TagBox[LineBox[{
+             DynamicLocation["VertexID$2", Automatic, Center], 
+              DynamicLocation["VertexID$3", Automatic, Center]}],
+            "DynamicName",
+            BoxID -> "EdgeLabelID$3"], InsetBox[
+            StyleBox["9",
+             StripOnInput->False,
+             LineColor->RGBColor[0, 0, 1],
+             FrontFaceColor->RGBColor[0, 0, 1],
+             BackFaceColor->RGBColor[0, 0, 1],
+             GraphicsColor->RGBColor[0, 0, 1],
+             FontSize->12,
+             FontColor->RGBColor[0, 0, 1],
+             Background->GrayLevel[1]], 
+            Offset[{0, 2}, DynamicLocation[
+             "EdgeLabelID$3", Automatic, Scaled[Rational[1, 6]]]], 
+            ImageScaled[{0.5, 0}],
+            BaseStyle->"Graphics"]}, {
+           
+           TagBox[LineBox[{
+             DynamicLocation["VertexID$2", Automatic, Center], 
+              DynamicLocation["VertexID$12", Automatic, Center]}],
+            "DynamicName",
+            BoxID -> "EdgeLabelID$4"], InsetBox[
+            StyleBox["10",
+             StripOnInput->False,
+             LineColor->RGBColor[0, 0, 1],
+             FrontFaceColor->RGBColor[0, 0, 1],
+             BackFaceColor->RGBColor[0, 0, 1],
+             GraphicsColor->RGBColor[0, 0, 1],
+             FontSize->12,
+             FontColor->RGBColor[0, 0, 1],
+             Background->GrayLevel[1]], 
+            Offset[{0, 2}, DynamicLocation[
+             "EdgeLabelID$4", Automatic, Scaled[Rational[1, 6]]]], 
+            ImageScaled[{0.5, 0}],
+            BaseStyle->"Graphics"]}, {
+           
+           TagBox[LineBox[{
+             DynamicLocation["VertexID$3", Automatic, Center], 
+              DynamicLocation["VertexID$10", Automatic, Center]}],
+            "DynamicName",
+            BoxID -> "EdgeLabelID$5"], InsetBox[
+            StyleBox["6",
+             StripOnInput->False,
+             LineColor->RGBColor[0, 0, 1],
+             FrontFaceColor->RGBColor[0, 0, 1],
+             BackFaceColor->RGBColor[0, 0, 1],
+             GraphicsColor->RGBColor[0, 0, 1],
+             FontSize->12,
+             FontColor->RGBColor[0, 0, 1],
+             Background->GrayLevel[1]], 
+            Offset[{0, 2}, DynamicLocation[
+             "EdgeLabelID$5", Automatic, Scaled[Rational[1, 6]]]], 
+            ImageScaled[{0.5, 0}],
+            BaseStyle->"Graphics"]}, {
+           
+           TagBox[LineBox[{
+             DynamicLocation["VertexID$4", Automatic, Center], 
+              DynamicLocation["VertexID$5", Automatic, Center]}],
+            "DynamicName",
+            BoxID -> "EdgeLabelID$6"], InsetBox[
+            StyleBox["8",
+             StripOnInput->False,
+             LineColor->RGBColor[0, 0, 1],
+             FrontFaceColor->RGBColor[0, 0, 1],
+             BackFaceColor->RGBColor[0, 0, 1],
+             GraphicsColor->RGBColor[0, 0, 1],
+             FontSize->12,
+             FontColor->RGBColor[0, 0, 1],
+             Background->GrayLevel[1]], 
+            Offset[{0, 2}, DynamicLocation[
+             "EdgeLabelID$6", Automatic, Scaled[Rational[1, 6]]]], 
+            ImageScaled[{0.5, 0}],
+            BaseStyle->"Graphics"]}, {
+           TagBox[
+            {RGBColor[1, 0, 0], Thickness[Large], 
+             LineBox[{
+              DynamicLocation["VertexID$5", Automatic, Center], 
+               DynamicLocation["VertexID$6", Automatic, Center]}]},
+            "DynamicName",
+            BoxID -> "EdgeLabelID$7"], InsetBox[
+            StyleBox["1",
+             StripOnInput->False,
+             LineColor->RGBColor[0, 0, 1],
+             FrontFaceColor->RGBColor[0, 0, 1],
+             BackFaceColor->RGBColor[0, 0, 1],
+             GraphicsColor->RGBColor[0, 0, 1],
+             FontSize->12,
+             FontColor->RGBColor[0, 0, 1],
+             Background->GrayLevel[1]], 
+            Offset[{0, 2}, DynamicLocation[
+             "EdgeLabelID$7", Automatic, Scaled[Rational[1, 6]]]], 
+            ImageScaled[{0.5, 0}],
+            BaseStyle->"Graphics"]}, {
+           TagBox[
+            {RGBColor[1, 0, 0], Thickness[Large], 
+             LineBox[{
+              DynamicLocation["VertexID$6", Automatic, Center], 
+               DynamicLocation["VertexID$19", Automatic, Center]}]},
+            "DynamicName",
+            BoxID -> "EdgeLabelID$8"], InsetBox[
+            StyleBox["2",
+             StripOnInput->False,
+             LineColor->RGBColor[0, 0, 1],
+             FrontFaceColor->RGBColor[0, 0, 1],
+             BackFaceColor->RGBColor[0, 0, 1],
+             GraphicsColor->RGBColor[0, 0, 1],
+             FontSize->12,
+             FontColor->RGBColor[0, 0, 1],
+             Background->GrayLevel[1]], 
+            Offset[{0, 2}, DynamicLocation[
+             "EdgeLabelID$8", Automatic, Scaled[Rational[1, 6]]]], 
+            ImageScaled[{0.5, 0}],
+            BaseStyle->"Graphics"]}, {
+           
+           TagBox[LineBox[{
+             DynamicLocation["VertexID$7", Automatic, Center], 
+              DynamicLocation["VertexID$17", Automatic, Center]}],
+            "DynamicName",
+            BoxID -> "EdgeLabelID$9"], InsetBox[
+            StyleBox["2",
+             StripOnInput->False,
+             LineColor->RGBColor[0, 0, 1],
+             FrontFaceColor->RGBColor[0, 0, 1],
+             BackFaceColor->RGBColor[0, 0, 1],
+             GraphicsColor->RGBColor[0, 0, 1],
+             FontSize->12,
+             FontColor->RGBColor[0, 0, 1],
+             Background->GrayLevel[1]], 
+            Offset[{0, 2}, DynamicLocation[
+             "EdgeLabelID$9", Automatic, Scaled[Rational[1, 6]]]], 
+            ImageScaled[{0.5, 0}],
+            BaseStyle->"Graphics"]}, {
+           
+           TagBox[LineBox[{
+             DynamicLocation["VertexID$8", Automatic, Center], 
+              DynamicLocation["VertexID$9", Automatic, Center]}],
+            "DynamicName",
+            BoxID -> "EdgeLabelID$10"], InsetBox[
+            StyleBox["9",
+             StripOnInput->False,
+             LineColor->RGBColor[0, 0, 1],
+             FrontFaceColor->RGBColor[0, 0, 1],
+             BackFaceColor->RGBColor[0, 0, 1],
+             GraphicsColor->RGBColor[0, 0, 1],
+             FontSize->12,
+             FontColor->RGBColor[0, 0, 1],
+             Background->GrayLevel[1]], 
+            Offset[{0, 2}, DynamicLocation[
+             "EdgeLabelID$10", Automatic, Scaled[Rational[1, 6]]]], 
+            ImageScaled[{0.5, 0}],
+            BaseStyle->"Graphics"]}, {
+           
+           TagBox[LineBox[{
+             DynamicLocation["VertexID$9", Automatic, Center], 
+              DynamicLocation["VertexID$10", Automatic, Center]}],
+            "DynamicName",
+            BoxID -> "EdgeLabelID$11"], InsetBox[
+            StyleBox["5",
+             StripOnInput->False,
+             LineColor->RGBColor[0, 0, 1],
+             FrontFaceColor->RGBColor[0, 0, 1],
+             BackFaceColor->RGBColor[0, 0, 1],
+             GraphicsColor->RGBColor[0, 0, 1],
+             FontSize->12,
+             FontColor->RGBColor[0, 0, 1],
+             Background->GrayLevel[1]], 
+            Offset[{0, 2}, DynamicLocation[
+             "EdgeLabelID$11", Automatic, Scaled[Rational[1, 6]]]], 
+            ImageScaled[{0.5, 0}],
+            BaseStyle->"Graphics"]}, {
+           
+           TagBox[LineBox[{
+             DynamicLocation["VertexID$11", Automatic, Center], 
+              DynamicLocation["VertexID$12", Automatic, Center]}],
+            "DynamicName",
+            BoxID -> "EdgeLabelID$12"], InsetBox[
+            StyleBox["1",
+             StripOnInput->False,
+             LineColor->RGBColor[0, 0, 1],
+             FrontFaceColor->RGBColor[0, 0, 1],
+             BackFaceColor->RGBColor[0, 0, 1],
+             GraphicsColor->RGBColor[0, 0, 1],
+             FontSize->12,
+             FontColor->RGBColor[0, 0, 1],
+             Background->GrayLevel[1]], 
+            Offset[{0, 2}, DynamicLocation[
+             "EdgeLabelID$12", Automatic, Scaled[Rational[1, 6]]]], 
+            ImageScaled[{0.5, 0}],
+            BaseStyle->"Graphics"]}, {
+           
+           TagBox[LineBox[{
+             DynamicLocation["VertexID$11", Automatic, Center], 
+              DynamicLocation["VertexID$15", Automatic, Center]}],
+            "DynamicName",
+            BoxID -> "EdgeLabelID$13"], InsetBox[
+            StyleBox["9",
+             StripOnInput->False,
+             LineColor->RGBColor[0, 0, 1],
+             FrontFaceColor->RGBColor[0, 0, 1],
+             BackFaceColor->RGBColor[0, 0, 1],
+             GraphicsColor->RGBColor[0, 0, 1],
+             FontSize->12,
+             FontColor->RGBColor[0, 0, 1],
+             Background->GrayLevel[1]], 
+            Offset[{0, 2}, DynamicLocation[
+             "EdgeLabelID$13", Automatic, Scaled[Rational[1, 6]]]], 
+            ImageScaled[{0.5, 0}],
+            BaseStyle->"Graphics"]}, {
+           
+           TagBox[LineBox[{
+             DynamicLocation["VertexID$13", Automatic, Center], 
+              DynamicLocation["VertexID$20", Automatic, Center]}],
+            "DynamicName",
+            BoxID -> "EdgeLabelID$14"], InsetBox[
+            StyleBox["2",
+             StripOnInput->False,
+             LineColor->RGBColor[0, 0, 1],
+             FrontFaceColor->RGBColor[0, 0, 1],
+             BackFaceColor->RGBColor[0, 0, 1],
+             GraphicsColor->RGBColor[0, 0, 1],
+             FontSize->12,
+             FontColor->RGBColor[0, 0, 1],
+             Background->GrayLevel[1]], 
+            Offset[{0, 2}, DynamicLocation[
+             "EdgeLabelID$14", Automatic, Scaled[Rational[1, 6]]]], 
+            ImageScaled[{0.5, 0}],
+            BaseStyle->"Graphics"]}, {
+           
+           TagBox[LineBox[{
+             DynamicLocation["VertexID$14", Automatic, Center], 
+              DynamicLocation["VertexID$15", Automatic, Center]}],
+            "DynamicName",
+            BoxID -> "EdgeLabelID$15"], InsetBox[
+            StyleBox["9",
+             StripOnInput->False,
+             LineColor->RGBColor[0, 0, 1],
+             FrontFaceColor->RGBColor[0, 0, 1],
+             BackFaceColor->RGBColor[0, 0, 1],
+             GraphicsColor->RGBColor[0, 0, 1],
+             FontSize->12,
+             FontColor->RGBColor[0, 0, 1],
+             Background->GrayLevel[1]], 
+            Offset[{0, 2}, DynamicLocation[
+             "EdgeLabelID$15", Automatic, Scaled[Rational[1, 6]]]], 
+            ImageScaled[{0.5, 0}],
+            BaseStyle->"Graphics"]}, {
+           
+           TagBox[LineBox[{
+             DynamicLocation["VertexID$15", Automatic, Center], 
+              DynamicLocation["VertexID$16", Automatic, Center]}],
+            "DynamicName",
+            BoxID -> "EdgeLabelID$16"], InsetBox[
+            StyleBox["2",
+             StripOnInput->False,
+             LineColor->RGBColor[0, 0, 1],
+             FrontFaceColor->RGBColor[0, 0, 1],
+             BackFaceColor->RGBColor[0, 0, 1],
+             GraphicsColor->RGBColor[0, 0, 1],
+             FontSize->12,
+             FontColor->RGBColor[0, 0, 1],
+             Background->GrayLevel[1]], 
+            Offset[{0, 2}, DynamicLocation[
+             "EdgeLabelID$16", Automatic, Scaled[Rational[1, 6]]]], 
+            ImageScaled[{0.5, 0}],
+            BaseStyle->"Graphics"]}, {
+           
+           TagBox[LineBox[{
+             DynamicLocation["VertexID$16", Automatic, Center], 
+              DynamicLocation["VertexID$17", Automatic, Center]}],
+            "DynamicName",
+            BoxID -> "EdgeLabelID$17"], InsetBox[
+            StyleBox["8",
+             StripOnInput->False,
+             LineColor->RGBColor[0, 0, 1],
+             FrontFaceColor->RGBColor[0, 0, 1],
+             BackFaceColor->RGBColor[0, 0, 1],
+             GraphicsColor->RGBColor[0, 0, 1],
+             FontSize->12,
+             FontColor->RGBColor[0, 0, 1],
+             Background->GrayLevel[1]], 
+            Offset[{0, 2}, DynamicLocation[
+             "EdgeLabelID$17", Automatic, Scaled[Rational[1, 6]]]], 
+            ImageScaled[{0.5, 0}],
+            BaseStyle->"Graphics"]}, {
+           TagBox[
+            {RGBColor[1, 0, 0], Thickness[Large], 
+             LineBox[{
+              DynamicLocation["VertexID$18", Automatic, Center], 
+               DynamicLocation["VertexID$19", Automatic, Center]}]},
+            "DynamicName",
+            BoxID -> "EdgeLabelID$18"], InsetBox[
+            StyleBox["6",
+             StripOnInput->False,
+             LineColor->RGBColor[0, 0, 1],
+             FrontFaceColor->RGBColor[0, 0, 1],
+             BackFaceColor->RGBColor[0, 0, 1],
+             GraphicsColor->RGBColor[0, 0, 1],
+             FontSize->12,
+             FontColor->RGBColor[0, 0, 1],
+             Background->GrayLevel[1]], 
+            Offset[{0, 2}, DynamicLocation[
+             "EdgeLabelID$18", Automatic, Scaled[Rational[1, 6]]]], 
+            ImageScaled[{0.5, 0}],
+            BaseStyle->"Graphics"]}, {
+           
+           TagBox[LineBox[{
+             DynamicLocation["VertexID$19", Automatic, Center], 
+              DynamicLocation["VertexID$20", Automatic, Center]}],
+            "DynamicName",
+            BoxID -> "EdgeLabelID$19"], InsetBox[
+            StyleBox["9",
+             StripOnInput->False,
+             LineColor->RGBColor[0, 0, 1],
+             FrontFaceColor->RGBColor[0, 0, 1],
+             BackFaceColor->RGBColor[0, 0, 1],
+             GraphicsColor->RGBColor[0, 0, 1],
+             FontSize->12,
+             FontColor->RGBColor[0, 0, 1],
+             Background->GrayLevel[1]], 
+            Offset[{0, 2}, DynamicLocation[
+             "EdgeLabelID$19", Automatic, Scaled[Rational[1, 6]]]], 
+            ImageScaled[{0.5, 0}],
+            BaseStyle->"Graphics"]}}, 
+         {RGBColor[0.87, 0.94, 1], EdgeForm[GrayLevel[0]], 
+          TagBox[{
+            TagBox[
+             {RGBColor[0, 1, 0], 
+              DiskBox[{4.668204341583133, 2.4147045563644913`}, 
+               0.14702822198136767]},
+             "DynamicName",
+             BoxID -> "VertexID$1"], InsetBox[
+             StyleBox["\<\"A\"\>",
+              StripOnInput->False,
+              FontSize->14,
+              FontWeight->Bold], 
+             Offset[{2, 2}, DynamicLocation[
+              "VertexID$1", Automatic, {Right, Top}]], ImageScaled[{0, 0}],
+             BaseStyle->"Graphics"]},
+           "DynamicName",
+           BoxID -> "VertexLabelID$1"], 
+          TagBox[{
+            
+            TagBox[DiskBox[{3.719029834243286, 2.4010186253400185`}, 
+              0.14702822198136767],
+             "DynamicName",
+             BoxID -> "VertexID$2"], InsetBox[
+             StyleBox["\<\"B\"\>",
+              StripOnInput->False,
+              FontSize->14,
+              FontWeight->Bold], 
+             Offset[{2, 2}, DynamicLocation[
+              "VertexID$2", Automatic, {Right, Top}]], ImageScaled[{0, 0}],
+             BaseStyle->"Graphics"]},
+           "DynamicName",
+           BoxID -> "VertexLabelID$2"], 
+          TagBox[{
+            
+            TagBox[DiskBox[{3.2822781645987096`, 3.040447986017552}, 
+              0.14702822198136767],
+             "DynamicName",
+             BoxID -> "VertexID$3"], InsetBox[
+             StyleBox["\<\"C\"\>",
+              StripOnInput->False,
+              FontSize->14,
+              FontWeight->Bold], 
+             Offset[{2, 2}, DynamicLocation[
+              "VertexID$3", Automatic, {Right, Top}]], ImageScaled[{0, 0}],
+             BaseStyle->"Graphics"]},
+           "DynamicName",
+           BoxID -> "VertexLabelID$3"], 
+          TagBox[{
+            
+            TagBox[DiskBox[{4.204096028224379, 2.8303944210252494`}, 
+              0.14702822198136767],
+             "DynamicName",
+             BoxID -> "VertexID$4"], InsetBox[
+             StyleBox["\<\"D\"\>",
+              StripOnInput->False,
+              FontSize->14,
+              FontWeight->Bold], 
+             Offset[{2, 2}, DynamicLocation[
+              "VertexID$4", Automatic, {Right, Top}]], ImageScaled[{0, 0}],
+             BaseStyle->"Graphics"]},
+           "DynamicName",
+           BoxID -> "VertexLabelID$4"], 
+          TagBox[{
+            
+            TagBox[DiskBox[{4.481748665365493, 1.895835400887163}, 
+              0.14702822198136767],
+             "DynamicName",
+             BoxID -> "VertexID$5"], InsetBox[
+             StyleBox["\<\"E\"\>",
+              StripOnInput->False,
+              FontSize->14,
+              FontWeight->Bold], 
+             Offset[{2, 2}, DynamicLocation[
+              "VertexID$5", Automatic, {Right, Top}]], ImageScaled[{0, 0}],
+             BaseStyle->"Graphics"]},
+           "DynamicName",
+           BoxID -> "VertexLabelID$5"], 
+          TagBox[{
+            
+            TagBox[DiskBox[{3.901916309495109, 1.0083554550334237`}, 
+              0.14702822198136767],
+             "DynamicName",
+             BoxID -> "VertexID$6"], InsetBox[
+             StyleBox["\<\"F\"\>",
+              StripOnInput->False,
+              FontSize->14,
+              FontWeight->Bold], 
+             Offset[{2, 2}, DynamicLocation[
+              "VertexID$6", Automatic, {Right, Top}]], ImageScaled[{0, 0}],
+             BaseStyle->"Graphics"]},
+           "DynamicName",
+           BoxID -> "VertexLabelID$6"], 
+          TagBox[{
+            
+            TagBox[DiskBox[{0.11474536014475056`, 2.6198108069781965`}, 
+              0.14702822198136767],
+             "DynamicName",
+             BoxID -> "VertexID$7"], InsetBox[
+             StyleBox["\<\"G\"\>",
+              StripOnInput->False,
+              FontSize->14,
+              FontWeight->Bold], 
+             Offset[{2, 2}, DynamicLocation[
+              "VertexID$7", Automatic, {Right, Top}]], ImageScaled[{0, 0}],
+             BaseStyle->"Graphics"]},
+           "DynamicName",
+           BoxID -> "VertexLabelID$7"], 
+          TagBox[{
+            
+            TagBox[DiskBox[{0.36322383382905943`, 3.4544269968530656`}, 
+              0.14702822198136767],
+             "DynamicName",
+             BoxID -> "VertexID$8"], InsetBox[
+             StyleBox["\<\"H\"\>",
+              StripOnInput->False,
+              FontSize->14,
+              FontWeight->Bold], 
+             Offset[{2, 2}, DynamicLocation[
+              "VertexID$8", Automatic, {Right, Top}]], ImageScaled[{0, 0}],
+             BaseStyle->"Graphics"]},
+           "DynamicName",
+           BoxID -> "VertexLabelID$8"], 
+          TagBox[{
+            
+            TagBox[DiskBox[{1.2323748161799277`, 3.5770861213602503`}, 
+              0.14702822198136767],
+             "DynamicName",
+             BoxID -> "VertexID$9"], InsetBox[
+             StyleBox["\<\"I\"\>",
+              StripOnInput->False,
+              FontSize->14,
+              FontWeight->Bold], 
+             Offset[{2, 2}, DynamicLocation[
+              "VertexID$9", Automatic, {Right, Top}]], ImageScaled[{0, 0}],
+             BaseStyle->"Graphics"]},
+           "DynamicName",
+           BoxID -> "VertexLabelID$9"], 
+          TagBox[{
+            
+            TagBox[DiskBox[{2.127212085265113, 3.0153160169399635`}, 
+              0.14702822198136767],
+             "DynamicName",
+             BoxID -> "VertexID$10"], InsetBox[
+             StyleBox["\<\"J\"\>",
+              StripOnInput->False,
+              FontSize->14,
+              FontWeight->Bold], 
+             Offset[{2, 2}, DynamicLocation[
+              "VertexID$10", Automatic, {Right, Top}]], ImageScaled[{0, 0}],
+             BaseStyle->"Graphics"]},
+           "DynamicName",
+           BoxID -> "VertexLabelID$10"], 
+          TagBox[{
+            
+            TagBox[DiskBox[{1.8160000209621525`, 1.9472513832878477`}, 
+              0.14702822198136767],
+             "DynamicName",
+             BoxID -> "VertexID$11"], InsetBox[
+             StyleBox["\<\"K\"\>",
+              StripOnInput->False,
+              FontSize->14,
+              FontWeight->Bold], 
+             Offset[{2, 2}, DynamicLocation[
+              "VertexID$11", Automatic, {Right, Top}]], ImageScaled[{0, 0}],
+             BaseStyle->"Graphics"]},
+           "DynamicName",
+           BoxID -> "VertexLabelID$11"], 
+          TagBox[{
+            
+            TagBox[DiskBox[{2.9260576981019657`, 1.723117588626858}, 
+              0.14702822198136767],
+             "DynamicName",
+             BoxID -> "VertexID$12"], InsetBox[
+             StyleBox["\<\"L\"\>",
+              StripOnInput->False,
+              FontSize->14,
+              FontWeight->Bold], 
+             Offset[{2, 2}, DynamicLocation[
+              "VertexID$12", Automatic, {Right, Top}]], ImageScaled[{0, 0}],
+             BaseStyle->"Graphics"]},
+           "DynamicName",
+           BoxID -> "VertexLabelID$12"], 
+          TagBox[{
+            
+            TagBox[DiskBox[{3.27083777496348, 0.762525306780246}, 
+              0.14702822198136767],
+             "DynamicName",
+             BoxID -> "VertexID$13"], InsetBox[
+             StyleBox["\<\"M\"\>",
+              StripOnInput->False,
+              FontSize->14,
+              FontWeight->Bold], 
+             Offset[{2, 2}, DynamicLocation[
+              "VertexID$13", Automatic, {Right, Top}]], ImageScaled[{0, 0}],
+             BaseStyle->"Graphics"]},
+           "DynamicName",
+           BoxID -> "VertexLabelID$13"], 
+          TagBox[{
+            
+            TagBox[DiskBox[{0.09529145913681347, 0.439390688431992}, 
+              0.14702822198136767],
+             "DynamicName",
+             BoxID -> "VertexID$14"], InsetBox[
+             StyleBox["\<\"N\"\>",
+              StripOnInput->False,
+              FontSize->14,
+              FontWeight->Bold], 
+             Offset[{2, 2}, DynamicLocation[
+              "VertexID$14", Automatic, {Right, Top}]], ImageScaled[{0, 0}],
+             BaseStyle->"Graphics"]},
+           "DynamicName",
+           BoxID -> "VertexLabelID$14"], 
+          TagBox[{
+            
+            TagBox[DiskBox[{0.733301258096076, 1.1567799247899853`}, 
+              0.14702822198136767],
+             "DynamicName",
+             BoxID -> "VertexID$15"], InsetBox[
+             StyleBox["\<\"O\"\>",
+              StripOnInput->False,
+              FontSize->14,
+              FontWeight->Bold], 
+             Offset[{2, 2}, DynamicLocation[
+              "VertexID$15", Automatic, {Right, Top}]], ImageScaled[{0, 0}],
+             BaseStyle->"Graphics"]},
+           "DynamicName",
+           BoxID -> "VertexLabelID$15"], 
+          TagBox[{
+            TagBox[DiskBox[{0., 1.2655099532278937`}, 0.14702822198136767],
+             "DynamicName",
+             BoxID -> "VertexID$16"], InsetBox[
+             StyleBox["\<\"P\"\>",
+              StripOnInput->False,
+              FontSize->14,
+              FontWeight->Bold], 
+             Offset[{2, 2}, DynamicLocation[
+              "VertexID$16", Automatic, {Right, Top}]], ImageScaled[{0, 0}],
+             BaseStyle->"Graphics"]},
+           "DynamicName",
+           BoxID -> "VertexLabelID$16"], 
+          TagBox[{
+            
+            TagBox[DiskBox[{0.5598127810016158, 1.6572012688450535`}, 
+              0.14702822198136767],
+             "DynamicName",
+             BoxID -> "VertexID$17"], InsetBox[
+             StyleBox["\<\"Q\"\>",
+              StripOnInput->False,
+              FontSize->14,
+              FontWeight->Bold], 
+             Offset[{2, 2}, DynamicLocation[
+              "VertexID$17", Automatic, {Right, Top}]], ImageScaled[{0, 0}],
+             BaseStyle->"Graphics"]},
+           "DynamicName",
+           BoxID -> "VertexLabelID$17"], 
+          TagBox[{
+            TagBox[
+             {RGBColor[1, 0, 1], 
+              DiskBox[{1.6014899338460669`, 0.9058326473863902}, 
+               0.14702822198136767]},
+             "DynamicName",
+             BoxID -> "VertexID$18"], InsetBox[
+             StyleBox["\<\"R\"\>",
+              StripOnInput->False,
+              FontSize->14,
+              FontWeight->Bold], 
+             Offset[{2, 2}, DynamicLocation[
+              "VertexID$18", Automatic, {Right, Top}]], ImageScaled[{0, 0}],
+             BaseStyle->"Graphics"]},
+           "DynamicName",
+           BoxID -> "VertexLabelID$18"], 
+          TagBox[{
+            
+            TagBox[DiskBox[{2.792893791977769, 0.542839528535334}, 
+              0.14702822198136767],
+             "DynamicName",
+             BoxID -> "VertexID$19"], InsetBox[
+             StyleBox["\<\"S\"\>",
+              StripOnInput->False,
+              FontSize->14,
+              FontWeight->Bold], 
+             Offset[{2, 2}, DynamicLocation[
+              "VertexID$19", Automatic, {Right, Top}]], ImageScaled[{0, 0}],
+             BaseStyle->"Graphics"]},
+           "DynamicName",
+           BoxID -> "VertexLabelID$19"], 
+          TagBox[{
+            TagBox[DiskBox[{3.254839361596293, 0.}, 0.14702822198136767],
+             "DynamicName",
+             BoxID -> "VertexID$20"], InsetBox[
+             StyleBox["\<\"T\"\>",
+              StripOnInput->False,
+              FontSize->14,
+              FontWeight->Bold], 
+             Offset[{2, 2}, DynamicLocation[
+              "VertexID$20", Automatic, {Right, Top}]], ImageScaled[{0, 0}],
+             BaseStyle->"Graphics"]},
+           "DynamicName",
+           BoxID -> "VertexLabelID$20"]}}], {InsetBox[
+         StyleBox["\<\"0\"\>",
+          StripOnInput->False,
+          FontSize->16,
+          FontWeight->Bold], {4.668204341583133, 2.4147045563644913}], 
+        InsetBox[
+         StyleBox["\<\"8\"\>",
+          StripOnInput->False,
+          FontSize->16,
+          FontWeight->Bold], {3.719029834243286, 2.4010186253400185}], 
+        InsetBox[
+         StyleBox["\<\"17\"\>",
+          StripOnInput->False,
+          FontSize->16,
+          FontWeight->Bold], {3.2822781645987096, 3.040447986017552}], 
+        InsetBox[
+         StyleBox["\<\"16\"\>",
+          StripOnInput->False,
+          FontSize->16,
+          FontWeight->Bold], {4.204096028224379, 2.8303944210252494}], 
+        InsetBox[
+         StyleBox["\<\"8\"\>",
+          StripOnInput->False,
+          FontSize->16,
+          FontWeight->Bold], {4.481748665365493, 1.895835400887163}], InsetBox[
+         StyleBox["\<\"9\"\>",
+          StripOnInput->False,
+          FontSize->16,
+          FontWeight->Bold], {3.901916309495109, 1.0083554550334237}], 
+        InsetBox[
+         StyleBox["\<\"40\"\>",
+          StripOnInput->False,
+          FontSize->16,
+          FontWeight->Bold], {0.11474536014475056, 2.6198108069781965}], 
+        InsetBox[
+         StyleBox["\<\"37\"\>",
+          StripOnInput->False,
+          FontSize->16,
+          FontWeight->Bold], {0.36322383382905943, 3.4544269968530656}], 
+        InsetBox[
+         StyleBox["\<\"28\"\>",
+          StripOnInput->False,
+          FontSize->16,
+          FontWeight->Bold], {1.2323748161799277, 3.5770861213602503}], 
+        InsetBox[
+         StyleBox["\<\"23\"\>",
+          StripOnInput->False,
+          FontSize->16,
+          FontWeight->Bold], {2.127212085265113, 3.0153160169399635}], 
+        InsetBox[
+         StyleBox["\<\"19\"\>",
+          StripOnInput->False,
+          FontSize->16,
+          FontWeight->Bold], {1.8160000209621525, 1.9472513832878477}], 
+        InsetBox[
+         StyleBox["\<\"18\"\>",
+          StripOnInput->False,
+          FontSize->16,
+          FontWeight->Bold], {2.9260576981019657, 1.723117588626858}], 
+        InsetBox[
+         StyleBox["\<\"22\"\>",
+          StripOnInput->False,
+          FontSize->16,
+          FontWeight->Bold], {3.27083777496348, 0.762525306780246}], InsetBox[
+         StyleBox["\<\"37\"\>",
+          StripOnInput->False,
+          FontSize->16,
+          FontWeight->Bold], {0.09529145913681347, 0.439390688431992}], 
+        InsetBox[
+         StyleBox["\<\"28\"\>",
+          StripOnInput->False,
+          FontSize->16,
+          FontWeight->Bold], {0.733301258096076, 1.1567799247899853}], 
+        InsetBox[
+         StyleBox["\<\"30\"\>",
+          StripOnInput->False,
+          FontSize->16,
+          FontWeight->Bold], {0., 1.2655099532278937}], InsetBox[
+         StyleBox["\<\"38\"\>",
+          StripOnInput->False,
+          FontSize->16,
+          FontWeight->Bold], {0.5598127810016158, 1.6572012688450535}], 
+        InsetBox[
+         StyleBox["\<\"17\"\>",
+          StripOnInput->False,
+          FontSize->16,
+          FontWeight->Bold], {1.6014899338460669, 0.9058326473863902}], 
+        InsetBox[
+         StyleBox["\<\"11\"\>",
+          StripOnInput->False,
+          FontSize->16,
+          FontWeight->Bold], {2.792893791977769, 0.542839528535334}], InsetBox[
+         StyleBox["\<\"20\"\>",
+          StripOnInput->False,
+          FontSize->16,
+          FontWeight->Bold], {3.254839361596293, 0.}]}},
+      FormatType->TraditionalForm,
+      FrameTicks->None,
+      ImageSize->Large], 
+     TagBox[GridBox[{
+        {
+         StyleBox["\<\"VYSLEDOK\"\>",
+          StripOnInput->False,
+          LineColor->RGBColor[1, 0, 0],
+          FrontFaceColor->RGBColor[1, 0, 0],
+          BackFaceColor->RGBColor[1, 0, 0],
+          GraphicsColor->RGBColor[1, 0, 0],
+          FontSize->16,
+          FontWeight->Bold,
+          FontColor->RGBColor[1, 0, 0]]},
+        {
+         StyleBox["\<\"Toto je finalna kostra celeho grafu, na ktorej s\
+\[UAcute] uk\[AAcute]zan\[EAcute] v\[SHacek]etky cesty z po\[CHacek]iato\
+\[CHacek]n\[EAcute]ho vrcholu A do v\[SHacek]etk\[YAcute]ch ostatn\[YAcute]ch \
+vrcholov, pri\[CHacek]om cesta do vrcholu R je ozna\[CHacek]en\[AAcute] \
+\[CHacek]ervenou farbou.\"\>",
+          StripOnInput->False,
+          LineSpacing->{1.5},
+          FontSize->14]}
+       },
+       DefaultBaseStyle->"Column",
+       GridBoxAlignment->{"Columns" -> {{Left}}},
+       GridBoxItemSize->{"Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}],
+      "Column"]}
+   },
+   AutoDelete->False,
+   GridBoxItemSize->{"Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+   GridBoxSpacings->{"Columns" -> {{2}}, "Rows" -> {{1}}}],
+  "Grid"]], "Print",
+ CellChangeTimes->{
+  3.939885241551691*^9, {3.9398852758345985`*^9, 3.939885285724869*^9}},
+ CellLabel->
+  "During evaluation of \
+In[338]:=",ExpressionUUID->"7363f754-2ac1-9240-ba94-78805670132c"]
+}, Open  ]]
+},
+WindowSize->{1269, 721},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"14.1 for Microsoft Windows (64-bit) (July 16, 2024)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"70cbee22-891b-454b-b67f-5db408786166"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[576, 22, 373, 8, 66, "Input",ExpressionUUID->"8a3da11a-bebe-0348-bdc4-e60f1657b4dd"],
+Cell[952, 32, 31804, 802, 461, "Print",ExpressionUUID->"7363f754-2ac1-9240-ba94-78805670132c"]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
+
