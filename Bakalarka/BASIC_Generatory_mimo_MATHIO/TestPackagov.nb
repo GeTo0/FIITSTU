@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       154,          7]
-NotebookDataLength[     33252,        854]
-NotebookOptionsPosition[     32772,        837]
-NotebookOutlinePosition[     33169,        853]
-CellTagsIndexPosition[     33126,        850]
+NotebookDataLength[     38960,        941]
+NotebookOptionsPosition[     37368,        911]
+NotebookOutlinePosition[     37840,        929]
+CellTagsIndexPosition[     37797,        926]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -22,13 +22,59 @@ Notebook[{
 Cell[CellGroupData[{
 Cell[BoxData[{
  RowBox[{
-  RowBox[{"Needs", "[", "\"\<GeneratorDodecahedronGraph`\>\"", "]"}], 
+  RowBox[{"Needs", "[", "\"\<GeneratorSquareGraph`\>\"", "]"}], 
   "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
  RowBox[{"Equation", "[", 
-  RowBox[{"EASY", ",", "False"}], "]"}]}], "Input",
- CellChangeTimes->{{3.939885199507332*^9, 3.93988522310219*^9}},
- CellLabel->
-  "In[338]:=",ExpressionUUID->"8a3da11a-bebe-0348-bdc4-e60f1657b4dd"],
+  RowBox[{"HARD", ",", "False"}], "]"}], "\[IndentingNewLine]"}], "Input",
+ CellChangeTimes->{{3.9393659132968807`*^9, 3.9393659262292824`*^9}, {
+   3.939365966421644*^9, 3.939365967874056*^9}, {3.939867681164711*^9, 
+   3.9398677134685783`*^9}, {3.939867764726507*^9, 3.9398677663505306`*^9}, {
+   3.939868010592314*^9, 3.9398680168612595`*^9}, 3.939868661242838*^9, {
+   3.9398691744084663`*^9, 3.9398691786606655`*^9}, {3.939869255422447*^9, 
+   3.93986925679492*^9}, {3.939869418868561*^9, 3.939869420209831*^9}, {
+   3.9398694529499855`*^9, 3.9398694543474083`*^9}, {3.9398695007624435`*^9, 
+   3.9398695096389446`*^9}, {3.9398697004045753`*^9, 
+   3.9398697017853794`*^9}, {3.9398697377477264`*^9, 3.939869771970461*^9}, {
+   3.939870006942013*^9, 3.9398700110455837`*^9}, {3.939870253994335*^9, 
+   3.9398702596102085`*^9}, {3.9398704087486897`*^9, 3.9398704094631557`*^9}, 
+   3.939870602628153*^9, {3.939870635929825*^9, 3.939870637380287*^9}, {
+   3.939870973378214*^9, 3.9398709743979244`*^9}, {3.9398712589573975`*^9, 
+   3.9398712939293633`*^9}, {3.9398714580008125`*^9, 3.939871458733347*^9}, 
+   3.939873007459404*^9, {3.9398733433562546`*^9, 3.9398733844812794`*^9}, {
+   3.939873627536846*^9, 3.9398736286893425`*^9}, {3.939880196309927*^9, 
+   3.939880234090212*^9}, {3.939880267229103*^9, 3.9398802807759*^9}, {
+   3.9398806573526535`*^9, 3.9398807668945026`*^9}, 3.9398810538482456`*^9, {
+   3.93988162084877*^9, 3.9398816212310143`*^9}, {3.9398817349027386`*^9, 
+   3.9398817373375244`*^9}, {3.939882159418356*^9, 3.9398822628210316`*^9}, {
+   3.939882406293169*^9, 3.9398824549517784`*^9}, {3.939882512853422*^9, 
+   3.9398825190615826`*^9}, {3.9398826656151752`*^9, 
+   3.9398826665562534`*^9}, {3.9398829221328716`*^9, 
+   3.9398829755130424`*^9}, {3.9398834238840714`*^9, 
+   3.9398834486718216`*^9}, {3.939883494029482*^9, 3.9398835173844624`*^9}, 
+   3.9398855918007565`*^9, {3.9398868724729347`*^9, 3.939886899746628*^9}, {
+   3.9398870134167004`*^9, 3.939887014391884*^9}, {3.939887056891054*^9, 
+   3.939887057326824*^9}, {3.939887096707369*^9, 3.939887097127201*^9}, {
+   3.939887156186331*^9, 3.93988715981987*^9}, {3.9398872697900696`*^9, 
+   3.9398872702444344`*^9}, {3.9398873045214405`*^9, 
+   3.9398873067596455`*^9}, {3.9398873840340614`*^9, 3.939887391704731*^9}, {
+   3.9398878525612316`*^9, 3.939887853232929*^9}, {3.9398880233218136`*^9, 
+   3.9398880542073975`*^9}, {3.939888084312975*^9, 3.939888116593067*^9}, {
+   3.939888403466955*^9, 3.9398884047216473`*^9}, {3.9398888717661114`*^9, 
+   3.93988888673777*^9}, {3.9398893756960297`*^9, 3.9398894061210995`*^9}, {
+   3.9398894681432953`*^9, 3.9398894696449757`*^9}, {3.9398895052480183`*^9, 
+   3.9398895085570297`*^9}, {3.939889651123972*^9, 3.939889651804142*^9}, {
+   3.9398897472747746`*^9, 3.9398897480131874`*^9}, {3.9398897949163*^9, 
+   3.9398897955457287`*^9}, 3.9399792387700386`*^9, {3.9399796801573315`*^9, 
+   3.9399796815203285`*^9}, {3.939980725198969*^9, 3.9399807294286785`*^9}, {
+   3.9399810825468197`*^9, 3.939981084031849*^9}, {3.9399821116843624`*^9, 
+   3.9399821150076523`*^9}, {3.939983047312004*^9, 3.939983049143526*^9}, {
+   3.9399830930506554`*^9, 3.9399830941304665`*^9}, {3.939983129044277*^9, 
+   3.9399831303038425`*^9}, {3.9399831746163883`*^9, 3.939983204831545*^9}, {
+   3.9399832676332264`*^9, 3.939983284370922*^9}, {3.9399833365258694`*^9, 
+   3.939983338806244*^9}, {3.9399834449204865`*^9, 3.9399834592676716`*^9}, {
+   3.939983504715334*^9, 3.9399835053965797`*^9}, {3.9399835683608246`*^9, 
+   3.9399836252273464`*^9}, {3.9399836734665604`*^9, 3.9399836743637314`*^9}},
+ CellLabel->"In[16]:=",ExpressionUUID->"611ae3c0-468b-f545-9ec4-56c9eddd2aef"],
 
 Cell[BoxData[
  TagBox[GridBox[{
@@ -42,7 +88,7 @@ Cell[BoxData[
               DynamicLocation["VertexID$2", Automatic, Center]}],
             "DynamicName",
             BoxID -> "EdgeLabelID$1"], InsetBox[
-            StyleBox["8",
+            StyleBox["1",
              StripOnInput->False,
              LineColor->RGBColor[0, 0, 1],
              FrontFaceColor->RGBColor[0, 0, 1],
@@ -55,14 +101,13 @@ Cell[BoxData[
              "EdgeLabelID$1", Automatic, Scaled[Rational[1, 6]]]], 
             ImageScaled[{0.5, 0}],
             BaseStyle->"Graphics"]}, {
-           TagBox[
-            {RGBColor[1, 0, 0], Thickness[Large], 
-             LineBox[{
-              DynamicLocation["VertexID$1", Automatic, Center], 
-               DynamicLocation["VertexID$5", Automatic, Center]}]},
+           
+           TagBox[LineBox[{
+             DynamicLocation["VertexID$1", Automatic, Center], 
+              DynamicLocation["VertexID$18", Automatic, Center]}],
             "DynamicName",
             BoxID -> "EdgeLabelID$2"], InsetBox[
-            StyleBox["8",
+            StyleBox["3",
              StripOnInput->False,
              LineColor->RGBColor[0, 0, 1],
              FrontFaceColor->RGBColor[0, 0, 1],
@@ -81,7 +126,7 @@ Cell[BoxData[
               DynamicLocation["VertexID$3", Automatic, Center]}],
             "DynamicName",
             BoxID -> "EdgeLabelID$3"], InsetBox[
-            StyleBox["9",
+            StyleBox["4",
              StripOnInput->False,
              LineColor->RGBColor[0, 0, 1],
              FrontFaceColor->RGBColor[0, 0, 1],
@@ -96,11 +141,11 @@ Cell[BoxData[
             BaseStyle->"Graphics"]}, {
            
            TagBox[LineBox[{
-             DynamicLocation["VertexID$2", Automatic, Center], 
-              DynamicLocation["VertexID$12", Automatic, Center]}],
+             DynamicLocation["VertexID$3", Automatic, Center], 
+              DynamicLocation["VertexID$4", Automatic, Center]}],
             "DynamicName",
             BoxID -> "EdgeLabelID$4"], InsetBox[
-            StyleBox["10",
+            StyleBox["6",
              StripOnInput->False,
              LineColor->RGBColor[0, 0, 1],
              FrontFaceColor->RGBColor[0, 0, 1],
@@ -116,10 +161,10 @@ Cell[BoxData[
            
            TagBox[LineBox[{
              DynamicLocation["VertexID$3", Automatic, Center], 
-              DynamicLocation["VertexID$10", Automatic, Center]}],
+              DynamicLocation["VertexID$19", Automatic, Center]}],
             "DynamicName",
             BoxID -> "EdgeLabelID$5"], InsetBox[
-            StyleBox["6",
+            StyleBox["7",
              StripOnInput->False,
              LineColor->RGBColor[0, 0, 1],
              FrontFaceColor->RGBColor[0, 0, 1],
@@ -138,7 +183,7 @@ Cell[BoxData[
               DynamicLocation["VertexID$5", Automatic, Center]}],
             "DynamicName",
             BoxID -> "EdgeLabelID$6"], InsetBox[
-            StyleBox["8",
+            StyleBox["10",
              StripOnInput->False,
              LineColor->RGBColor[0, 0, 1],
              FrontFaceColor->RGBColor[0, 0, 1],
@@ -154,11 +199,11 @@ Cell[BoxData[
            TagBox[
             {RGBColor[1, 0, 0], Thickness[Large], 
              LineBox[{
-              DynamicLocation["VertexID$5", Automatic, Center], 
-               DynamicLocation["VertexID$6", Automatic, Center]}]},
+              DynamicLocation["VertexID$6", Automatic, Center], 
+               DynamicLocation["VertexID$20", Automatic, Center]}]},
             "DynamicName",
             BoxID -> "EdgeLabelID$7"], InsetBox[
-            StyleBox["1",
+            StyleBox["8",
              StripOnInput->False,
              LineColor->RGBColor[0, 0, 1],
              FrontFaceColor->RGBColor[0, 0, 1],
@@ -171,11 +216,10 @@ Cell[BoxData[
              "EdgeLabelID$7", Automatic, Scaled[Rational[1, 6]]]], 
             ImageScaled[{0.5, 0}],
             BaseStyle->"Graphics"]}, {
-           TagBox[
-            {RGBColor[1, 0, 0], Thickness[Large], 
-             LineBox[{
-              DynamicLocation["VertexID$6", Automatic, Center], 
-               DynamicLocation["VertexID$19", Automatic, Center]}]},
+           
+           TagBox[LineBox[{
+             DynamicLocation["VertexID$7", Automatic, Center], 
+              DynamicLocation["VertexID$8", Automatic, Center]}],
             "DynamicName",
             BoxID -> "EdgeLabelID$8"], InsetBox[
             StyleBox["2",
@@ -194,10 +238,10 @@ Cell[BoxData[
            
            TagBox[LineBox[{
              DynamicLocation["VertexID$7", Automatic, Center], 
-              DynamicLocation["VertexID$17", Automatic, Center]}],
+              DynamicLocation["VertexID$19", Automatic, Center]}],
             "DynamicName",
             BoxID -> "EdgeLabelID$9"], InsetBox[
-            StyleBox["2",
+            StyleBox["1",
              StripOnInput->False,
              LineColor->RGBColor[0, 0, 1],
              FrontFaceColor->RGBColor[0, 0, 1],
@@ -216,7 +260,7 @@ Cell[BoxData[
               DynamicLocation["VertexID$9", Automatic, Center]}],
             "DynamicName",
             BoxID -> "EdgeLabelID$10"], InsetBox[
-            StyleBox["9",
+            StyleBox["10",
              StripOnInput->False,
              LineColor->RGBColor[0, 0, 1],
              FrontFaceColor->RGBColor[0, 0, 1],
@@ -231,11 +275,11 @@ Cell[BoxData[
             BaseStyle->"Graphics"]}, {
            
            TagBox[LineBox[{
-             DynamicLocation["VertexID$9", Automatic, Center], 
-              DynamicLocation["VertexID$10", Automatic, Center]}],
+             DynamicLocation["VertexID$10", Automatic, Center], 
+              DynamicLocation["VertexID$11", Automatic, Center]}],
             "DynamicName",
             BoxID -> "EdgeLabelID$11"], InsetBox[
-            StyleBox["5",
+            StyleBox["9",
              StripOnInput->False,
              LineColor->RGBColor[0, 0, 1],
              FrontFaceColor->RGBColor[0, 0, 1],
@@ -254,7 +298,7 @@ Cell[BoxData[
               DynamicLocation["VertexID$12", Automatic, Center]}],
             "DynamicName",
             BoxID -> "EdgeLabelID$12"], InsetBox[
-            StyleBox["1",
+            StyleBox["5",
              StripOnInput->False,
              LineColor->RGBColor[0, 0, 1],
              FrontFaceColor->RGBColor[0, 0, 1],
@@ -269,11 +313,11 @@ Cell[BoxData[
             BaseStyle->"Graphics"]}, {
            
            TagBox[LineBox[{
-             DynamicLocation["VertexID$11", Automatic, Center], 
-              DynamicLocation["VertexID$15", Automatic, Center]}],
+             DynamicLocation["VertexID$12", Automatic, Center], 
+              DynamicLocation["VertexID$20", Automatic, Center]}],
             "DynamicName",
             BoxID -> "EdgeLabelID$13"], InsetBox[
-            StyleBox["9",
+            StyleBox["6",
              StripOnInput->False,
              LineColor->RGBColor[0, 0, 1],
              FrontFaceColor->RGBColor[0, 0, 1],
@@ -289,10 +333,10 @@ Cell[BoxData[
            
            TagBox[LineBox[{
              DynamicLocation["VertexID$13", Automatic, Center], 
-              DynamicLocation["VertexID$20", Automatic, Center]}],
+              DynamicLocation["VertexID$14", Automatic, Center]}],
             "DynamicName",
             BoxID -> "EdgeLabelID$14"], InsetBox[
-            StyleBox["2",
+            StyleBox["4",
              StripOnInput->False,
              LineColor->RGBColor[0, 0, 1],
              FrontFaceColor->RGBColor[0, 0, 1],
@@ -311,7 +355,7 @@ Cell[BoxData[
               DynamicLocation["VertexID$15", Automatic, Center]}],
             "DynamicName",
             BoxID -> "EdgeLabelID$15"], InsetBox[
-            StyleBox["9",
+            StyleBox["7",
              StripOnInput->False,
              LineColor->RGBColor[0, 0, 1],
              FrontFaceColor->RGBColor[0, 0, 1],
@@ -330,7 +374,7 @@ Cell[BoxData[
               DynamicLocation["VertexID$16", Automatic, Center]}],
             "DynamicName",
             BoxID -> "EdgeLabelID$16"], InsetBox[
-            StyleBox["2",
+            StyleBox["9",
              StripOnInput->False,
              LineColor->RGBColor[0, 0, 1],
              FrontFaceColor->RGBColor[0, 0, 1],
@@ -343,13 +387,14 @@ Cell[BoxData[
              "EdgeLabelID$16", Automatic, Scaled[Rational[1, 6]]]], 
             ImageScaled[{0.5, 0}],
             BaseStyle->"Graphics"]}, {
-           
-           TagBox[LineBox[{
-             DynamicLocation["VertexID$16", Automatic, Center], 
-              DynamicLocation["VertexID$17", Automatic, Center]}],
+           TagBox[
+            {RGBColor[1, 0, 0], Thickness[Large], 
+             LineBox[{
+              DynamicLocation["VertexID$15", Automatic, Center], 
+               DynamicLocation["VertexID$20", Automatic, Center]}]},
             "DynamicName",
             BoxID -> "EdgeLabelID$17"], InsetBox[
-            StyleBox["8",
+            StyleBox["2",
              StripOnInput->False,
              LineColor->RGBColor[0, 0, 1],
              FrontFaceColor->RGBColor[0, 0, 1],
@@ -362,14 +407,13 @@ Cell[BoxData[
              "EdgeLabelID$17", Automatic, Scaled[Rational[1, 6]]]], 
             ImageScaled[{0.5, 0}],
             BaseStyle->"Graphics"]}, {
-           TagBox[
-            {RGBColor[1, 0, 0], Thickness[Large], 
-             LineBox[{
-              DynamicLocation["VertexID$18", Automatic, Center], 
-               DynamicLocation["VertexID$19", Automatic, Center]}]},
+           
+           TagBox[LineBox[{
+             DynamicLocation["VertexID$16", Automatic, Center], 
+              DynamicLocation["VertexID$17", Automatic, Center]}],
             "DynamicName",
             BoxID -> "EdgeLabelID$18"], InsetBox[
-            StyleBox["6",
+            StyleBox["8",
              StripOnInput->False,
              LineColor->RGBColor[0, 0, 1],
              FrontFaceColor->RGBColor[0, 0, 1],
@@ -388,7 +432,7 @@ Cell[BoxData[
               DynamicLocation["VertexID$20", Automatic, Center]}],
             "DynamicName",
             BoxID -> "EdgeLabelID$19"], InsetBox[
-            StyleBox["9",
+            StyleBox["8",
              StripOnInput->False,
              LineColor->RGBColor[0, 0, 1],
              FrontFaceColor->RGBColor[0, 0, 1],
@@ -403,10 +447,7 @@ Cell[BoxData[
             BaseStyle->"Graphics"]}}, 
          {RGBColor[0.87, 0.94, 1], EdgeForm[GrayLevel[0]], 
           TagBox[{
-            TagBox[
-             {RGBColor[0, 1, 0], 
-              DiskBox[{4.668204341583133, 2.4147045563644913`}, 
-               0.14702822198136767]},
+            TagBox[DiskBox[{-3., -2.}, 0.18027756377319948],
              "DynamicName",
              BoxID -> "VertexID$1"], InsetBox[
              StyleBox["\<\"A\"\>",
@@ -419,9 +460,7 @@ Cell[BoxData[
            "DynamicName",
            BoxID -> "VertexLabelID$1"], 
           TagBox[{
-            
-            TagBox[DiskBox[{3.719029834243286, 2.4010186253400185`}, 
-              0.14702822198136767],
+            TagBox[DiskBox[{-2., -2.}, 0.18027756377319948],
              "DynamicName",
              BoxID -> "VertexID$2"], InsetBox[
              StyleBox["\<\"B\"\>",
@@ -434,9 +473,7 @@ Cell[BoxData[
            "DynamicName",
            BoxID -> "VertexLabelID$2"], 
           TagBox[{
-            
-            TagBox[DiskBox[{3.2822781645987096`, 3.040447986017552}, 
-              0.14702822198136767],
+            TagBox[DiskBox[{-1., -2.}, 0.18027756377319948],
              "DynamicName",
              BoxID -> "VertexID$3"], InsetBox[
              StyleBox["\<\"C\"\>",
@@ -449,9 +486,7 @@ Cell[BoxData[
            "DynamicName",
            BoxID -> "VertexLabelID$3"], 
           TagBox[{
-            
-            TagBox[DiskBox[{4.204096028224379, 2.8303944210252494`}, 
-              0.14702822198136767],
+            TagBox[DiskBox[{1., -2.}, 0.18027756377319948],
              "DynamicName",
              BoxID -> "VertexID$4"], InsetBox[
              StyleBox["\<\"D\"\>",
@@ -464,9 +499,7 @@ Cell[BoxData[
            "DynamicName",
            BoxID -> "VertexLabelID$4"], 
           TagBox[{
-            
-            TagBox[DiskBox[{4.481748665365493, 1.895835400887163}, 
-              0.14702822198136767],
+            TagBox[DiskBox[{2., -2.}, 0.18027756377319948],
              "DynamicName",
              BoxID -> "VertexID$5"], InsetBox[
              StyleBox["\<\"E\"\>",
@@ -479,9 +512,8 @@ Cell[BoxData[
            "DynamicName",
            BoxID -> "VertexLabelID$5"], 
           TagBox[{
-            
-            TagBox[DiskBox[{3.901916309495109, 1.0083554550334237`}, 
-              0.14702822198136767],
+            TagBox[
+             {RGBColor[1, 0, 1], DiskBox[{3., -2.}, 0.18027756377319948]},
              "DynamicName",
              BoxID -> "VertexID$6"], InsetBox[
              StyleBox["\<\"F\"\>",
@@ -494,9 +526,7 @@ Cell[BoxData[
            "DynamicName",
            BoxID -> "VertexLabelID$6"], 
           TagBox[{
-            
-            TagBox[DiskBox[{0.11474536014475056`, 2.6198108069781965`}, 
-              0.14702822198136767],
+            TagBox[DiskBox[{3., -1.}, 0.18027756377319948],
              "DynamicName",
              BoxID -> "VertexID$7"], InsetBox[
              StyleBox["\<\"G\"\>",
@@ -509,9 +539,7 @@ Cell[BoxData[
            "DynamicName",
            BoxID -> "VertexLabelID$7"], 
           TagBox[{
-            
-            TagBox[DiskBox[{0.36322383382905943`, 3.4544269968530656`}, 
-              0.14702822198136767],
+            TagBox[DiskBox[{3., 0.}, 0.18027756377319948],
              "DynamicName",
              BoxID -> "VertexID$8"], InsetBox[
              StyleBox["\<\"H\"\>",
@@ -524,9 +552,7 @@ Cell[BoxData[
            "DynamicName",
            BoxID -> "VertexLabelID$8"], 
           TagBox[{
-            
-            TagBox[DiskBox[{1.2323748161799277`, 3.5770861213602503`}, 
-              0.14702822198136767],
+            TagBox[DiskBox[{3., 1.}, 0.18027756377319948],
              "DynamicName",
              BoxID -> "VertexID$9"], InsetBox[
              StyleBox["\<\"I\"\>",
@@ -539,9 +565,7 @@ Cell[BoxData[
            "DynamicName",
            BoxID -> "VertexLabelID$9"], 
           TagBox[{
-            
-            TagBox[DiskBox[{2.127212085265113, 3.0153160169399635`}, 
-              0.14702822198136767],
+            TagBox[DiskBox[{3., 2.}, 0.18027756377319948],
              "DynamicName",
              BoxID -> "VertexID$10"], InsetBox[
              StyleBox["\<\"J\"\>",
@@ -554,9 +578,7 @@ Cell[BoxData[
            "DynamicName",
            BoxID -> "VertexLabelID$10"], 
           TagBox[{
-            
-            TagBox[DiskBox[{1.8160000209621525`, 1.9472513832878477`}, 
-              0.14702822198136767],
+            TagBox[DiskBox[{2., 2.}, 0.18027756377319948],
              "DynamicName",
              BoxID -> "VertexID$11"], InsetBox[
              StyleBox["\<\"K\"\>",
@@ -569,9 +591,7 @@ Cell[BoxData[
            "DynamicName",
            BoxID -> "VertexLabelID$11"], 
           TagBox[{
-            
-            TagBox[DiskBox[{2.9260576981019657`, 1.723117588626858}, 
-              0.14702822198136767],
+            TagBox[DiskBox[{1., 2.}, 0.18027756377319948],
              "DynamicName",
              BoxID -> "VertexID$12"], InsetBox[
              StyleBox["\<\"L\"\>",
@@ -584,9 +604,7 @@ Cell[BoxData[
            "DynamicName",
            BoxID -> "VertexLabelID$12"], 
           TagBox[{
-            
-            TagBox[DiskBox[{3.27083777496348, 0.762525306780246}, 
-              0.14702822198136767],
+            TagBox[DiskBox[{-1., 2.}, 0.18027756377319948],
              "DynamicName",
              BoxID -> "VertexID$13"], InsetBox[
              StyleBox["\<\"M\"\>",
@@ -599,9 +617,7 @@ Cell[BoxData[
            "DynamicName",
            BoxID -> "VertexLabelID$13"], 
           TagBox[{
-            
-            TagBox[DiskBox[{0.09529145913681347, 0.439390688431992}, 
-              0.14702822198136767],
+            TagBox[DiskBox[{-2., 2.}, 0.18027756377319948],
              "DynamicName",
              BoxID -> "VertexID$14"], InsetBox[
              StyleBox["\<\"N\"\>",
@@ -614,9 +630,8 @@ Cell[BoxData[
            "DynamicName",
            BoxID -> "VertexLabelID$14"], 
           TagBox[{
-            
-            TagBox[DiskBox[{0.733301258096076, 1.1567799247899853`}, 
-              0.14702822198136767],
+            TagBox[
+             {RGBColor[0, 1, 0], DiskBox[{-3., 2.}, 0.18027756377319948]},
              "DynamicName",
              BoxID -> "VertexID$15"], InsetBox[
              StyleBox["\<\"O\"\>",
@@ -629,7 +644,7 @@ Cell[BoxData[
            "DynamicName",
            BoxID -> "VertexLabelID$15"], 
           TagBox[{
-            TagBox[DiskBox[{0., 1.2655099532278937`}, 0.14702822198136767],
+            TagBox[DiskBox[{-3., 1.}, 0.18027756377319948],
              "DynamicName",
              BoxID -> "VertexID$16"], InsetBox[
              StyleBox["\<\"P\"\>",
@@ -642,9 +657,7 @@ Cell[BoxData[
            "DynamicName",
            BoxID -> "VertexLabelID$16"], 
           TagBox[{
-            
-            TagBox[DiskBox[{0.5598127810016158, 1.6572012688450535`}, 
-              0.14702822198136767],
+            TagBox[DiskBox[{-3., 0.}, 0.18027756377319948],
              "DynamicName",
              BoxID -> "VertexID$17"], InsetBox[
              StyleBox["\<\"Q\"\>",
@@ -657,10 +670,7 @@ Cell[BoxData[
            "DynamicName",
            BoxID -> "VertexLabelID$17"], 
           TagBox[{
-            TagBox[
-             {RGBColor[1, 0, 1], 
-              DiskBox[{1.6014899338460669`, 0.9058326473863902}, 
-               0.14702822198136767]},
+            TagBox[DiskBox[{-3., -1.}, 0.18027756377319948],
              "DynamicName",
              BoxID -> "VertexID$18"], InsetBox[
              StyleBox["\<\"R\"\>",
@@ -673,9 +683,7 @@ Cell[BoxData[
            "DynamicName",
            BoxID -> "VertexLabelID$18"], 
           TagBox[{
-            
-            TagBox[DiskBox[{2.792893791977769, 0.542839528535334}, 
-              0.14702822198136767],
+            TagBox[DiskBox[{-0.5, 0.}, 0.18027756377319948],
              "DynamicName",
              BoxID -> "VertexID$19"], InsetBox[
              StyleBox["\<\"S\"\>",
@@ -688,7 +696,7 @@ Cell[BoxData[
            "DynamicName",
            BoxID -> "VertexLabelID$19"], 
           TagBox[{
-            TagBox[DiskBox[{3.254839361596293, 0.}, 0.14702822198136767],
+            TagBox[DiskBox[{0.5, 0.}, 0.18027756377319948],
              "DynamicName",
              BoxID -> "VertexID$20"], InsetBox[
              StyleBox["\<\"T\"\>",
@@ -700,101 +708,86 @@ Cell[BoxData[
              BaseStyle->"Graphics"]},
            "DynamicName",
            BoxID -> "VertexLabelID$20"]}}], {InsetBox[
-         StyleBox["\<\"0\"\>",
-          StripOnInput->False,
-          FontSize->16,
-          FontWeight->Bold], {4.668204341583133, 2.4147045563644913}], 
-        InsetBox[
-         StyleBox["\<\"8\"\>",
-          StripOnInput->False,
-          FontSize->16,
-          FontWeight->Bold], {3.719029834243286, 2.4010186253400185}], 
-        InsetBox[
-         StyleBox["\<\"17\"\>",
-          StripOnInput->False,
-          FontSize->16,
-          FontWeight->Bold], {3.2822781645987096, 3.040447986017552}], 
-        InsetBox[
-         StyleBox["\<\"16\"\>",
-          StripOnInput->False,
-          FontSize->16,
-          FontWeight->Bold], {4.204096028224379, 2.8303944210252494}], 
-        InsetBox[
-         StyleBox["\<\"8\"\>",
-          StripOnInput->False,
-          FontSize->16,
-          FontWeight->Bold], {4.481748665365493, 1.895835400887163}], InsetBox[
-         StyleBox["\<\"9\"\>",
-          StripOnInput->False,
-          FontSize->16,
-          FontWeight->Bold], {3.901916309495109, 1.0083554550334237}], 
-        InsetBox[
-         StyleBox["\<\"40\"\>",
-          StripOnInput->False,
-          FontSize->16,
-          FontWeight->Bold], {0.11474536014475056, 2.6198108069781965}], 
-        InsetBox[
-         StyleBox["\<\"37\"\>",
-          StripOnInput->False,
-          FontSize->16,
-          FontWeight->Bold], {0.36322383382905943, 3.4544269968530656}], 
-        InsetBox[
-         StyleBox["\<\"28\"\>",
-          StripOnInput->False,
-          FontSize->16,
-          FontWeight->Bold], {1.2323748161799277, 3.5770861213602503}], 
-        InsetBox[
-         StyleBox["\<\"23\"\>",
-          StripOnInput->False,
-          FontSize->16,
-          FontWeight->Bold], {2.127212085265113, 3.0153160169399635}], 
-        InsetBox[
-         StyleBox["\<\"19\"\>",
-          StripOnInput->False,
-          FontSize->16,
-          FontWeight->Bold], {1.8160000209621525, 1.9472513832878477}], 
-        InsetBox[
-         StyleBox["\<\"18\"\>",
-          StripOnInput->False,
-          FontSize->16,
-          FontWeight->Bold], {2.9260576981019657, 1.723117588626858}], 
-        InsetBox[
          StyleBox["\<\"22\"\>",
           StripOnInput->False,
           FontSize->16,
-          FontWeight->Bold], {3.27083777496348, 0.762525306780246}], InsetBox[
-         StyleBox["\<\"37\"\>",
+          FontWeight->Bold], {-3, -2}], InsetBox[
+         StyleBox["\<\"21\"\>",
           StripOnInput->False,
           FontSize->16,
-          FontWeight->Bold], {0.09529145913681347, 0.439390688431992}], 
-        InsetBox[
-         StyleBox["\<\"28\"\>",
-          StripOnInput->False,
-          FontSize->16,
-          FontWeight->Bold], {0.733301258096076, 1.1567799247899853}], 
-        InsetBox[
-         StyleBox["\<\"30\"\>",
-          StripOnInput->False,
-          FontSize->16,
-          FontWeight->Bold], {0., 1.2655099532278937}], InsetBox[
-         StyleBox["\<\"38\"\>",
-          StripOnInput->False,
-          FontSize->16,
-          FontWeight->Bold], {0.5598127810016158, 1.6572012688450535}], 
-        InsetBox[
+          FontWeight->Bold], {-2, -2}], InsetBox[
          StyleBox["\<\"17\"\>",
           StripOnInput->False,
           FontSize->16,
-          FontWeight->Bold], {1.6014899338460669, 0.9058326473863902}], 
-        InsetBox[
+          FontWeight->Bold], {-1, -2}], InsetBox[
+         StyleBox["\<\"23\"\>",
+          StripOnInput->False,
+          FontSize->16,
+          FontWeight->Bold], {1, -2}], InsetBox[
+         StyleBox["\<\"33\"\>",
+          StripOnInput->False,
+          FontSize->16,
+          FontWeight->Bold], {2, -2}], InsetBox[
+         StyleBox["\<\"10\"\>",
+          StripOnInput->False,
+          FontSize->16,
+          FontWeight->Bold], {3, -2}], InsetBox[
          StyleBox["\<\"11\"\>",
           StripOnInput->False,
           FontSize->16,
-          FontWeight->Bold], {2.792893791977769, 0.542839528535334}], InsetBox[
-         StyleBox["\<\"20\"\>",
+          FontWeight->Bold], {3, -1}], InsetBox[
+         StyleBox["\<\"13\"\>",
           StripOnInput->False,
           FontSize->16,
-          FontWeight->Bold], {3.254839361596293, 0.}]}},
+          FontWeight->Bold], {3, 0}], InsetBox[
+         StyleBox["\<\"23\"\>",
+          StripOnInput->False,
+          FontSize->16,
+          FontWeight->Bold], {3, 1}], InsetBox[
+         StyleBox["\<\"22\"\>",
+          StripOnInput->False,
+          FontSize->16,
+          FontWeight->Bold], {3, 2}], InsetBox[
+         StyleBox["\<\"13\"\>",
+          StripOnInput->False,
+          FontSize->16,
+          FontWeight->Bold], {2, 2}], InsetBox[
+         StyleBox["\<\"8\"\>",
+          StripOnInput->False,
+          FontSize->16,
+          FontWeight->Bold], {1, 2}], InsetBox[
+         StyleBox["\<\"11\"\>",
+          StripOnInput->False,
+          FontSize->16,
+          FontWeight->Bold], {-1, 2}], InsetBox[
+         StyleBox["\<\"7\"\>",
+          StripOnInput->False,
+          FontSize->16,
+          FontWeight->Bold], {-2, 2}], InsetBox[
+         StyleBox["\<\"0\"\>",
+          StripOnInput->False,
+          FontSize->16,
+          FontWeight->Bold], {-3, 2}], InsetBox[
+         StyleBox["\<\"9\"\>",
+          StripOnInput->False,
+          FontSize->16,
+          FontWeight->Bold], {-3, 1}], InsetBox[
+         StyleBox["\<\"17\"\>",
+          StripOnInput->False,
+          FontSize->16,
+          FontWeight->Bold], {-3, 0}], InsetBox[
+         StyleBox["\<\"25\"\>",
+          StripOnInput->False,
+          FontSize->16,
+          FontWeight->Bold], {-3, -1}], InsetBox[
+         StyleBox["\<\"10\"\>",
+          StripOnInput->False,
+          FontSize->16,
+          FontWeight->Bold], {-0.5, 0}], InsetBox[
+         StyleBox["\<\"2\"\>",
+          StripOnInput->False,
+          FontSize->16,
+          FontWeight->Bold], {0.5, 0}]}},
       FormatType->TraditionalForm,
       FrameTicks->None,
       ImageSize->Large], 
@@ -810,11 +803,32 @@ Cell[BoxData[
           FontWeight->Bold,
           FontColor->RGBColor[1, 0, 0]]},
         {
-         StyleBox["\<\"Toto je finalna kostra celeho grafu, na ktorej s\
+         StyleBox[
+          TagBox[GridBox[{
+             {"\<\"\[Bullet] Pre\[SHacek]li sme v\[SHacek]etky vrcholy okrem \
+koncov\[EAcute]ho a ohodnotili ich susedov.\"\>"},
+             {"\<\"\[Bullet] T\[YAcute]m p\[AAcute]dom sme dostali pre ka\
+\[ZHacek]d\[YAcute] vrchol najlacnej\[SHacek]ie ohodnotenie, ak\[YAcute]m sa \
+k nemu vieme dosta\[THacek] zo za\[CHacek]iato\[CHacek]n\[EAcute]ho \
+vrcholu.\"\>"},
+             {"\<\"\[Bullet] Vieme tak spravi\[THacek] ak\[UAcute]si kostru \
+grafu, ktor\[AAcute] obsahuje iba tie hrany, cez ktor\[EAcute] sa vieme \
+najlacnej\[SHacek]ie dosta\[THacek] k nejak\[EAcute]mu vrcholu.\"\>"},
+             {"\<\"\[Bullet] Tento krok u\:013eah\[CHacek]uje vidite\:013enos\
+\[THacek] pre kontrolu.\"\>"},
+             {"\<\"\[Bullet] Toto je finalna kostra celeho grafu, na ktorej s\
 \[UAcute] uk\[AAcute]zan\[EAcute] v\[SHacek]etky cesty z po\[CHacek]iato\
-\[CHacek]n\[EAcute]ho vrcholu A do v\[SHacek]etk\[YAcute]ch ostatn\[YAcute]ch \
-vrcholov, pri\[CHacek]om cesta do vrcholu R je ozna\[CHacek]en\[AAcute] \
-\[CHacek]ervenou farbou.\"\>",
+\[CHacek]n\[EAcute]ho vrcholu O do v\[SHacek]etk\[YAcute]ch ostatn\[YAcute]ch \
+vrcholov, pri\[CHacek]om cesta do vrcholu F je ozna\[CHacek]en\[AAcute] \
+\[CHacek]ervenou farbou.\"\>"}
+            },
+            AutoDelete->False,
+            GridBoxAlignment->{"Columns" -> {{Left}}},
+            
+            GridBoxItemSize->{
+             "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+            GridBoxSpacings->{"Columns" -> {{2}}, "Rows" -> {{1}}}],
+           "Grid"],
           StripOnInput->False,
           LineSpacing->{1.5},
           FontSize->14]}
@@ -828,18 +842,80 @@ vrcholov, pri\[CHacek]om cesta do vrcholu R je ozna\[CHacek]en\[AAcute] \
    GridBoxItemSize->{"Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
    GridBoxSpacings->{"Columns" -> {{2}}, "Rows" -> {{1}}}],
   "Grid"]], "Print",
- CellChangeTimes->{
-  3.939885241551691*^9, {3.9398852758345985`*^9, 3.939885285724869*^9}},
+ CellChangeTimes->{{3.939983195341692*^9, 3.939983222475506*^9}, {
+   3.939983274852627*^9, 3.9399832907014217`*^9}, 3.9399833614361744`*^9, 
+   3.939983394975662*^9, {3.939983452403244*^9, 3.939983465215803*^9}, {
+   3.939983501538168*^9, 3.939983525227516*^9}, {3.939983561487665*^9, 
+   3.9399835800063877`*^9}, {3.939983619721121*^9, 3.939983635522335*^9}, 
+   3.9399836931765327`*^9},
  CellLabel->
   "During evaluation of \
-In[338]:=",ExpressionUUID->"7363f754-2ac1-9240-ba94-78805670132c"]
-}, Open  ]]
+In[16]:=",ExpressionUUID->"7b5db2fa-ff8d-c94b-be5f-8c8192428b6a"]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{"\[IndentingNewLine]", "\[IndentingNewLine]"}]], "Input",
+ CellChangeTimes->{{3.939983355339693*^9, 
+  3.939983361785866*^9}},ExpressionUUID->"e9feb0bd-bb5d-b94d-b19d-\
+53963c79f7ac"],
+
+Cell[BoxData["\[IndentingNewLine]"], "Input",
+ CellChangeTimes->{
+  3.9399814136499214`*^9},ExpressionUUID->"c6034dbf-1861-2446-bae5-\
+7c0bf65d8055"],
+
+Cell[BoxData["\[IndentingNewLine]"], "Input",
+ CellChangeTimes->{
+  3.939887093127226*^9},ExpressionUUID->"248edd56-5c28-0742-989f-\
+c685d19d2b1a"],
+
+Cell[BoxData["\[IndentingNewLine]"], "Input",
+ CellChangeTimes->{
+  3.9398835521183643`*^9},ExpressionUUID->"ee429c8a-3004-5d45-a0c4-\
+106de2a7ba96"],
+
+Cell[BoxData["\[IndentingNewLine]"], "Input",
+ CellChangeTimes->{
+  3.9398834809730415`*^9},ExpressionUUID->"51d6fe0d-6b02-7e44-ab44-\
+5692cc1ee55f"],
+
+Cell[BoxData["\[IndentingNewLine]"], "Input",
+ CellChangeTimes->{
+  3.9398828908332253`*^9},ExpressionUUID->"9284fb26-6a21-4b41-ac56-\
+4007b42c3330"],
+
+Cell[BoxData["\[IndentingNewLine]"], "Input",
+ CellChangeTimes->{
+  3.9398718295344925`*^9},ExpressionUUID->"8c3ce649-156e-c34c-9f83-\
+4ec285f524e9"],
+
+Cell[BoxData["\[IndentingNewLine]"], "Input",
+ CellChangeTimes->{
+  3.939871249726921*^9},ExpressionUUID->"1d9bab3c-ebc8-174d-8df3-\
+e099791d2cd9"],
+
+Cell[BoxData["\[IndentingNewLine]"], "Input",
+ CellChangeTimes->{
+  3.939870621793455*^9},ExpressionUUID->"b81965b1-5326-2e48-a1c5-\
+af0309557ae5"],
+
+Cell[BoxData["\[IndentingNewLine]"], "Input",
+ CellChangeTimes->{
+  3.9398694482645855`*^9},ExpressionUUID->"81ba5ed3-b050-0847-86fe-\
+03000c98f6ac"],
+
+Cell[BoxData["\[IndentingNewLine]"], "Input",
+ CellChangeTimes->{
+  3.9398671303029537`*^9},ExpressionUUID->"8fb9b9f1-de38-e341-9475-\
+f3d05598e6ef"]
 },
 WindowSize->{1269, 721},
-WindowMargins->{{0, Automatic}, {Automatic, 0}},
+WindowMargins->{{-5.5, Automatic}, {Automatic, 0}},
+TaggingRules-><|"TryRealOnly" -> False|>,
+Magnification:>0.8 Inherited,
 FrontEndVersion->"14.1 for Microsoft Windows (64-bit) (July 16, 2024)",
 StyleDefinitions->"Default.nb",
-ExpressionUUID->"70cbee22-891b-454b-b67f-5db408786166"
+ExpressionUUID->"6d6ef074-cb0f-7249-91cc-38a4912b0beb"
 ]
 (* End of Notebook Content *)
 
@@ -853,12 +929,21 @@ CellTagsIndex->{}
 (*NotebookFileOutline
 Notebook[{
 Cell[CellGroupData[{
-Cell[576, 22, 373, 8, 66, "Input",ExpressionUUID->"8a3da11a-bebe-0348-bdc4-e60f1657b4dd"],
-Cell[952, 32, 31804, 802, 461, "Print",ExpressionUUID->"7363f754-2ac1-9240-ba94-78805670132c"]
-}, Open  ]]
+Cell[576, 22, 3855, 54, 68, "Input",ExpressionUUID->"611ae3c0-468b-f545-9ec4-56c9eddd2aef"],
+Cell[4434, 78, 31195, 774, 327, "Print",ExpressionUUID->"7b5db2fa-ff8d-c94b-be5f-8c8192428b6a"]
+}, Open  ]],
+Cell[35644, 855, 206, 4, 53, "Input",ExpressionUUID->"e9feb0bd-bb5d-b94d-b19d-53963c79f7ac"],
+Cell[35853, 861, 149, 3, 37, "Input",ExpressionUUID->"c6034dbf-1861-2446-bae5-7c0bf65d8055"],
+Cell[36005, 866, 147, 3, 37, "Input",ExpressionUUID->"248edd56-5c28-0742-989f-c685d19d2b1a"],
+Cell[36155, 871, 149, 3, 37, "Input",ExpressionUUID->"ee429c8a-3004-5d45-a0c4-106de2a7ba96"],
+Cell[36307, 876, 149, 3, 37, "Input",ExpressionUUID->"51d6fe0d-6b02-7e44-ab44-5692cc1ee55f"],
+Cell[36459, 881, 149, 3, 37, "Input",ExpressionUUID->"9284fb26-6a21-4b41-ac56-4007b42c3330"],
+Cell[36611, 886, 149, 3, 37, "Input",ExpressionUUID->"8c3ce649-156e-c34c-9f83-4ec285f524e9"],
+Cell[36763, 891, 147, 3, 37, "Input",ExpressionUUID->"1d9bab3c-ebc8-174d-8df3-e099791d2cd9"],
+Cell[36913, 896, 147, 3, 37, "Input",ExpressionUUID->"b81965b1-5326-2e48-a1c5-af0309557ae5"],
+Cell[37063, 901, 149, 3, 37, "Input",ExpressionUUID->"81ba5ed3-b050-0847-86fe-03000c98f6ac"],
+Cell[37215, 906, 149, 3, 37, "Input",ExpressionUUID->"8fb9b9f1-de38-e341-9475-f3d05598e6ef"]
 }
 ]
 *)
-
-(* End of internal cache information *)
 
